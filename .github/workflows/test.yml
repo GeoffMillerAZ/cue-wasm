@@ -10,9 +10,6 @@ jobs:
   lint:
     name: Lint Go
     runs-on: ubuntu-latest
-    env:
-      GOOS: js
-      GOARCH: wasm
     steps:
       - uses: actions/checkout@v4
       
@@ -22,12 +19,18 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: go mod tidy
+        run: |
+          go mod download
+          go mod tidy
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v4
         with:
           version: latest
+        env:
+          GOOS: js
+          GOARCH: wasm
+          CGO_ENABLED: 0
 
   test:
     name: Test (Node ${{ matrix.node-version }})
