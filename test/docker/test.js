@@ -1,13 +1,13 @@
-const { exec, spawn } = require('child_process');
+const { execFile, spawn } = require('child_process');
 const http = require('http');
 
 const IMAGE_NAME = 'cue-wasm-test-image';
 const PORT = 8081; // Use 8081 to avoid conflict if 8080 is busy
 
-function runCommand(cmd) {
+function runCommand(cmd, args = []) {
     return new Promise((resolve, reject) => {
-        console.log(`Running: ${cmd}`);
-        exec(cmd, (err, stdout, stderr) => {
+        console.log(`Running: ${cmd} ${args.join(' ')}`);
+        execFile(cmd, args, (err, stdout, stderr) => {
             if (err) {
                 console.error(stderr);
                 reject(err);
@@ -22,12 +22,12 @@ async function testDocker() {
     try {
         // 1. Build Image
         console.log("--- 1. Building Docker Image ---");
-        await runCommand(`docker build -f examples/Dockerfile -t ${IMAGE_NAME} .`);
+        await runCommand('docker', ['build', '-f', 'examples/Dockerfile', '-t', IMAGE_NAME, '.']);
         console.log("✅ Image built successfully.");
 
         // 2. Test 'node' mode (CLI examples)
         console.log("\n--- 2. Testing 'node' execution ---");
-        const nodeOutput = await runCommand(`docker run --rm ${IMAGE_NAME} node`);
+        const nodeOutput = await runCommand('docker', ['run', '--rm', IMAGE_NAME, 'node']);
         if (nodeOutput.includes("✅ 01_validate.js passed") || nodeOutput.includes("Validation Result: ✅ Valid")) {
              // The specific output depends on what the examples print, but checking for success indicators
              console.log("✅ Node examples ran successfully.");
@@ -43,7 +43,7 @@ async function testDocker() {
 
         // 3. Test 'serve' mode (Browser Playground)
         console.log("\n--- 3. Testing 'serve' execution ---");
-        const containerId = (await runCommand(`docker run -d -p ${PORT}:8080 ${IMAGE_NAME} serve`)).trim();
+        const containerId = (await runCommand('docker', ['run', '-d', '-p', `${PORT}:8080`, IMAGE_NAME, 'serve'])).trim();
         console.log(`Container started: ${containerId}`);
 
         // Wait for server to be up
@@ -65,8 +65,8 @@ async function testDocker() {
             await checkServer();
         } finally {
             console.log("Stopping container...");
-            await runCommand(`docker stop ${containerId}`);
-            await runCommand(`docker rm ${containerId}`);
+            await runCommand('docker', ['stop', containerId]);
+            await runCommand('docker', ['rm', containerId]);
         }
 
         console.log("\n✅ All Docker tests passed!");
@@ -77,7 +77,7 @@ async function testDocker() {
     } finally {
         // Cleanup image
         try {
-            await runCommand(`docker rmi ${IMAGE_NAME}`);
+            await runCommand('docker', ['rmi', IMAGE_NAME]);
             console.log("Cleaned up image.");
         } catch (_) {}
     }

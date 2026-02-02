@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { execFile } = require('child_process');
 
 const examplesDir = path.join(__dirname, '../examples/node');
 const files = fs.readdirSync(examplesDir).filter(f => f.endsWith('.js'));
@@ -11,8 +11,8 @@ const runExample = (file) => {
     return new Promise((resolve, reject) => {
         const filePath = path.join(examplesDir, file);
         console.log(`Running ${file}...`);
-        
-        exec(`node ${filePath}`, (error, stdout, stderr) => {
+
+        execFile('node', [filePath], (error, stdout, stderr) => {
             if (error) {
                 console.error(`❌ ${file} failed:`);
                 console.error(stderr);
@@ -35,7 +35,7 @@ async function runAll() {
             failed = true;
         }
     }
-    
+
     if (failed) {
         console.error("Some examples failed.");
         process.exit(1);
