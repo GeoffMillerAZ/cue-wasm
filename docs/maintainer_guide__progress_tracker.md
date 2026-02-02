@@ -71,5 +71,5 @@ gantt
     - [x] Updated `release.yml` to use `GITHUB_TOKEN`
     - [x] Added `.npmrc` for registry mapping
 - [x] **Code Quality**
-    - [x] Setup SonarCloud Workflow (`sonarcloud.yml`)
-    - [x] Configure Analysis Scope (`sonar-project.properties`)
+    - [x] Setup CodeQL Workflow (`codeql.yml`)
+    - [x] Configured WASM Build Environment for Analysis
