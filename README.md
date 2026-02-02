@@ -16,9 +16,17 @@ A lightweight, secure WebAssembly (WASM) runtime for [Cuelang](https://cuelang.o
 
 ## Installation
 
-```bash
-npm install cue-wasm
-```
+To install from GitHub Packages:
+
+1. Create an `.npmrc` file in your project:
+   ```ini
+   @GeoffMillerAZ:registry=https://npm.pkg.github.com
+   ```
+
+2. Install the package:
+   ```bash
+   npm install @GeoffMillerAZ/cue-wasm
+   ```
 
 ## Usage
 
@@ -31,7 +39,7 @@ Check out the [examples/](examples/) directory for runnable code samples:
 ### Node.js
 
 ```javascript
-const { loadWasm } = require('cue-wasm');
+const { loadWasm } = require('@GeoffMillerAZ/cue-wasm');
 
 async function main() {
     const cue = await loadWasm();

@@ -66,3 +66,7 @@ gantt
     - [x] Linting: `golangci-lint` step (`test.yml`)
     - [x] Optimization: Go & NPM Caching enabled
     - [x] Safety: Pre-release verification (`release.yml`)
+- [x] **Publishing**
+    - [x] Configured for GitHub Packages (`@GeoffMillerAZ/cue-wasm`)
+    - [x] Updated `release.yml` to use `GITHUB_TOKEN`
+    - [x] Added `.npmrc` for registry mapping
