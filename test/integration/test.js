@@ -52,9 +52,34 @@ setTimeout(async () => {
             await CueWasm.validate("a: int", "a: 'string'");
             assert.fail("Should have thrown error");
         } catch (e) {
-            assert(e.toString().includes("mismatched types"));
-            console.log("PASS: Validate (Invalid)");
+            console.log("Caught Error:", e.toString());
+            // It might be wrapped in "Error: ..." string by Go-WASM bridge,
+            // or return the string directly. Let's inspect.
+            // If it's JSON, we can try to parse it.
+            const msg = e.toString().replace("Error: ", "");
+            try {
+                const errObj = JSON.parse(msg);
+                assert(errObj.message.includes("mismatched types"));
+                console.log("PASS: Structured Error Verified");
+            } catch (parseErr) {
+                // If not JSON, fail
+                console.error("Failed to parse error JSON:", msg);
+                throw e;
+            }
         }
+
+        // Test 4: Export YAML
+        console.log("Test 4: Export YAML");
+        const yaml = await CueWasm.export("a: 1", "yaml");
+        assert(yaml.includes("a: 1"));
+        console.log("PASS: Export YAML");
+
+        // Test 5: Unify with Tags
+        console.log("Test 5: Unify with Tags");
+        const taggedJson = await CueWasm.unify(["a: string @tag(foo)"], ["foo=bar"]);
+        const taggedObj = JSON.parse(taggedJson);
+        assert.strictEqual(taggedObj.a, "bar");
+        console.log("PASS: Unify with Tags");
 
         console.log("All Tests Passed!");
         process.exit(0);

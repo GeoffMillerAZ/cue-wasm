@@ -22,39 +22,26 @@ type CueService interface {
 ## 2. JavaScript Bridge (WASM)
 The Adapter will expose a global object `CueWasm` with the following methods:
 
-### `CueWasm.unify(inputs: string[]) : Promise<string>`
-*   **Input:** Array of Cuelang source strings.
+### `CueWasm.unify(files: Record<string, string>, tags?: string[]) : Promise<string>`
+*   **Input:** Map of filename to source content, optional array of tags.
 *   **Output:** JSON string of the unified result.
+*   **Notes:** All files must have the same package name (or none, in which case they are treated as ad-hoc). To be safe, the library will ensure they are in the same build scope.
 *   **Errors:** Rejects promise with Cue error message.
 
-### `CueWasm.validate(schema: string, data: string) : Promise<boolean>`
-*   **Input:** Schema string, Data string (JSON or Cue).
-*   **Output:** `true` (valid) or throws Error (invalid).
+### `CueWasm.export(code: string, format: "json" | "yaml" | "cue") : Promise<string>`
+*   **Input:** Cuelang source code.
+*   **Output:** Formatted string in target format.
 
-## 2.3. Sequence Logic
+### `CueWasm.version() : string`
+*   **Output:** Version string of the underlying Cuelang SDK.
 
-```mermaid
-sequenceDiagram
-    participant JS as JavaScript
-    participant Bridge as WASM Bridge
-    participant Core as Core Service
-    participant Cue as Cue Runtime
-
-    JS->>Bridge: CueWasm.unify(["a: 1", "b: 2"])
-    activate Bridge
-    Bridge->>Core: Unify([]string{"a: 1", "b: 2"})
-    activate Core
-    loop Every Input
-        Core->>Cue: CompileString()
-        Cue-->>Core: Value
-        Core->>Core: Unify(Value)
-    end
-    Core->>Cue: MarshalJSON()
-    Cue-->>Core: "{\"a\": 1, \"b\": 2}"
-    Core-->>Bridge: JSON String
-    deactivate Core
-    Bridge-->>JS: Promise.resolve(JSON)
-    deactivate Bridge
+### Error Handling
+Errors rejected by Promises will be JSON strings (if possible) or plain text:
+```json
+{
+  "message": "field 'a' not found",
+  "position": { "line": 10, "column": 4, "file": "input.cue" }
+}
 ```
 
 ## 3. Test Scenarios

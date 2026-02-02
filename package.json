@@ -1,0 +1,23 @@
+{
+  "name": "@pac/cue-wasm",
+  "version": "1.0.0",
+  "description": "Cuelang WASM runtime for the browser.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "bin/cue.wasm",
+    "bin/wasm_exec.js"
+  ],
+  "scripts": {
+    "test": "node test/integration/test.js"
+  },
+  "keywords": [
+    "cuelang",
+    "wasm",
+    "configuration",
+    "validation"
+  ],
+  "author": "PAC Team",
+  "license": "MIT"
+}
