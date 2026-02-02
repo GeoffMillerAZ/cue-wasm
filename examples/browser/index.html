@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUE WASM Playground</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .container { display: flex; gap: 20px; }
+        .box { flex: 1; display: flex; flex-direction: column; }
+        textarea { height: 300px; font-family: monospace; padding: 10px; }
+        button { padding: 10px; cursor: pointer; background: #007bff; color: white; border: none; }
+        button:hover { background: #0056b3; }
+        pre { background: #f4f4f4; padding: 10px; overflow: auto; min-height: 100px; }
+        .error { color: red; background: #ffeeee; }
+        h1 { margin-bottom: 10px; }
+        .controls { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>CUE WASM Playground</h1>
+    <p>Run Cuelang validation and export entirely in your browser via WebAssembly.</p>
+
+    <div class="controls">
+        <button id="btn-validate">Validate</button>
+        <button id="btn-export-json">Export JSON</button>
+        <button id="btn-export-yaml">Export YAML</button>
+    </div>
+
+    <div class="container">
+        <div class="box">
+            <h3>Input (CUE)</h3>
+            <textarea id="input">
+#User: {
+    name: string
+    age:  int & >=0
+}
+
+alice: #User & {
+    name: "Alice"
+    age:  30
+}
+            </textarea>
+        </div>
+        <div class="box">
+            <h3>Output / Status</h3>
+            <pre id="output">Loading WASM...</pre>
+        </div>
+    </div>
+
+    <!-- Load the Go WASM shim -->
+    <!-- In a real app, this would be served from your public assets -->
+    <script src="../../bin/wasm_exec.js"></script>
+    
+    <script>
+        const outputEl = document.getElementById('output');
+        const inputEl = document.getElementById('input');
+
+        // Initialize WASM
+        async function initWasm() {
+            if (!WebAssembly.instantiateStreaming) { // polyfill
+                WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                    const source = await (await resp).arrayBuffer();
+                    return await WebAssembly.instantiate(source, importObject);
+                };
+            }
+
+            const go = new Go();
+            try {
+                // Fetch the WASM binary
+                const result = await WebAssembly.instantiateStreaming(
+                    fetch("../../bin/cue.wasm"), 
+                    go.importObject
+                );
+                
+                // Run the Go program (blocks, but registers callbacks)
+                go.run(result.instance);
+                
+                outputEl.textContent = "Ready. WASM loaded.";
+                console.log("CueWasm initialized:", window.CueWasm);
+            } catch (err) {
+                console.error(err);
+                outputEl.textContent = "Error loading WASM: " + err;
+                outputEl.className = "error";
+            }
+        }
+
+        initWasm();
+
+        // Helpers
+        function setOutput(msg, isError = false) {
+            outputEl.textContent = msg;
+            outputEl.className = isError ? "error" : "";
+        }
+
+        async function safeCall(action) {
+            if (!window.CueWasm) {
+                setOutput("WASM not ready yet.", true);
+                return;
+            }
+            try {
+                setOutput("Running...");
+                await action();
+            } catch (e) {
+                let msg = e.toString();
+                // Try to parse structured error
+                try {
+                    const json = msg.replace(/^Error: /, '');
+                    const obj = JSON.parse(json);
+                    msg = `Error: ${obj.message}`;
+                    if(obj.line) msg += `\nLine: ${obj.line}`;
+                } catch (_) {}
+                setOutput(msg, true);
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('btn-validate').addEventListener('click', () => {
+            safeCall(async () => {
+                const code = inputEl.value;
+                // Validate requires separate schema/data usually, but we can pass the same string 
+                // if it contains both constraints and values.
+                // Or we can say Schema is empty and Data is the code (self-contained).
+                const isValid = await CueWasm.validate("", code);
+                setOutput(isValid ? "✅ Valid CUE" : "Invalid");
+            });
+        });
+
+        document.getElementById('btn-export-json').addEventListener('click', () => {
+            safeCall(async () => {
+                const code = inputEl.value;
+                const res = await CueWasm.export(code, 'json');
+                setOutput(res);
+            });
+        });
+
+        document.getElementById('btn-export-yaml').addEventListener('click', () => {
+            safeCall(async () => {
+                const code = inputEl.value;
+                const res = await CueWasm.export(code, 'yaml');
+                setOutput(res);
+            });
+        });
+    </script>
+</body>
+</html>

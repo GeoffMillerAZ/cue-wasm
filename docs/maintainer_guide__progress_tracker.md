@@ -44,3 +44,7 @@ gantt
     - [x] Create `README.md`, `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
     - [x] Create GitHub Issue & PR Templates
     - [x] Setup GitHub Actions (`test.yml`, `release.yml`)
+- [x] **Examples Inventory**
+    - [x] Node.js: Validation, Unification, Tags, Export
+    - [x] Browser: Interactive Playground (`index.html`)
+    - [x] Documentation: `examples/README.md` linked to root
