@@ -45,3 +45,23 @@ npx http-server -p 8080
 
 Then open your browser to:
 [http://localhost:8080/examples/browser/index.html](http://localhost:8080/examples/browser/index.html)
+
+## Docker (The Easy Way)
+
+Don't want to install Go or Node.js? Run everything in Docker!
+
+### 1. Build the Image
+```bash
+docker build -f examples/Dockerfile -t cue-wasm-demo .
+```
+
+### 2. Run Node.js Examples
+```bash
+docker run --rm cue-wasm-demo node
+```
+
+### 3. Run Browser Playground
+```bash
+docker run --rm -p 8080:8080 cue-wasm-demo serve
+```
+Then open [http://localhost:8080/examples/browser/index.html](http://localhost:8080/examples/browser/index.html).
