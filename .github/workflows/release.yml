@@ -18,20 +18,24 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: '1.24.4'
+        cache: true
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18.x'
         registry-url: 'https://registry.npmjs.org'
+        cache: 'npm'
 
     - name: Install dependencies
       run: |
         go mod tidy
         npm ci || npm install
 
-    - name: Build WASM
-      run: ./build.sh
+    - name: Verify Build & Tests
+      run: |
+        ./build.sh
+        npm test
 
     - name: Upload Release Assets
       env:

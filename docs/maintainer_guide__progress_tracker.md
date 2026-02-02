@@ -61,3 +61,8 @@ gantt
     - [x] `slides`: Terminal presentation (`docs/slides.md`)
     - [ ] `vhs`: GIF Demo (Requires `ffmpeg` in env)
     - [x] `GEMINI.md`: Context file for AI Agents
+- [x] **CI/CD Refinement (Gold Standard)**
+    - [x] Matrix Testing: Node 18/20/22 (`test.yml`)
+    - [x] Linting: `golangci-lint` step (`test.yml`)
+    - [x] Optimization: Go & NPM Caching enabled
+    - [x] Safety: Pre-release verification (`release.yml`)

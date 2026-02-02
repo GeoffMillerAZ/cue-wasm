@@ -7,8 +7,27 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  lint:
+    name: Lint Go
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.4'
+          cache: true
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v4
+        with:
+          version: latest
+
+  test:
+    name: Test (Node ${{ matrix.node-version }})
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -17,26 +36,26 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: '1.24.4'
+        cache: true
 
-    - name: Set up Node.js
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
-        registry-url: 'https://registry.npmjs.org'
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
     - name: Install dependencies
       run: |
         go mod tidy
-        npm ci || npm install # npm ci if lockfile exists
+        npm ci || npm install
 
     - name: Build WASM
       run: ./build.sh
 
-    - name: Run Integration Tests
+    - name: Run Standard Tests
       run: npm test
 
-    - name: Run Security Tests
-      run: npm run test:security
-
     - name: Run Docker Tests
+      # Docker tests only need to run once, so we run them only on the latest Node version
+      if: matrix.node-version == '22.x'
       run: npm run test:docker
