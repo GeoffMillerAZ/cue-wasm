@@ -73,3 +73,7 @@ gantt
 - [x] **Code Quality**
     - [x] Setup CodeQL Workflow (`codeql.yml`)
     - [x] Configured WASM Build Environment for Analysis
+- [x] **Agent Tooling (MCP)**
+    - [x] Install Servers (`@modelcontextprotocol/server-github`, `puppeteer`)
+    - [x] Generate Config (`mcp-config.json`)
+    - [ ] Configure Client (User Action Required)
