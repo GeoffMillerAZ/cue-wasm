@@ -18,7 +18,8 @@
     "test:integration": "node test/integration/test.js",
     "test:security": "node test/security/test_lfi.js",
     "test:examples": "node test/examples.js",
-    "test:edge": "node test/integration/edge_cases.js"
+    "test:edge": "node test/integration/edge_cases.js",
+    "test:docker": "node test/docker/test.js"
   },
   "keywords": [
     "cuelang",

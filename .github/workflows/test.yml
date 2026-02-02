@@ -37,3 +37,6 @@ jobs:
 
     - name: Run Security Tests
       run: npm run test:security
+
+    - name: Run Docker Tests
+      run: npm run test:docker

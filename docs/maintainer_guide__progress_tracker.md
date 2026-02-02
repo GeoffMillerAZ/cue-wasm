@@ -54,6 +54,7 @@ gantt
     - [x] Security Regression Tests (`test:security`)
     - [x] Edge Cases & Concurrency (`test:edge`)
     - [x] Examples Verification (`test:examples`)
+    - [x] Docker Verification (`test:docker` - CI enabled)
     - [x] Unified Test Runner (`npm test`)
 - [x] **Documentation Polish (Charm Bracelet)**
     - [x] `freeze`: Generated code snippets (`docs/assets/example_code.png`)
