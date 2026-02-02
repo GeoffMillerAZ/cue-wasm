@@ -1,0 +1,39 @@
+name: Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24.4'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install dependencies
+      run: |
+        go mod tidy
+        npm ci || npm install # npm ci if lockfile exists
+
+    - name: Build WASM
+      run: ./build.sh
+
+    - name: Run Integration Tests
+      run: npm test
+
+    - name: Run Security Tests
+      run: npm run test:security
