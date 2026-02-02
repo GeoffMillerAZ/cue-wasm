@@ -10,6 +10,13 @@ const path = require('path');
 
 function loadWasm(wasmPath) {
     if (typeof Go === 'undefined') {
+        // Polyfill crypto for Node.js < 19 (or where globalThis.crypto is missing)
+        if (!globalThis.crypto) {
+            globalThis.crypto = {
+                getRandomValues: (arr) => require("crypto").randomFillSync(arr)
+            };
+        }
+
         // Try to load local wasm_exec if in Node
         try {
             require('../bin/wasm_exec.js');

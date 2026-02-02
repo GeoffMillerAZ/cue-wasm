@@ -1,5 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+
+// Polyfill crypto for Node.js
+if (!globalThis.crypto) {
+    globalThis.crypto = {
+        getRandomValues: (arr) => require("crypto").randomFillSync(arr)
+    };
+}
+
 require('../../bin/wasm_exec.js');
 
 const go = new Go();

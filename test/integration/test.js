@@ -2,6 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
+// Polyfill crypto for Node.js
+if (!globalThis.crypto) {
+    globalThis.crypto = {
+        getRandomValues: (arr) => require("crypto").randomFillSync(arr)
+    };
+}
+
 // 1. Load WASM Exec Shim
 // Note: In a real CI env, we'd find this dynamically. 
 // For now, we assume build.sh copied it to ../bin/
