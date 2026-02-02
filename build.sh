@@ -25,4 +25,13 @@ echo "Package Version: $VERSION"
 mkdir -p dist
 sed "s/__VERSION__/$VERSION/g" internal/js/loader.js > dist/index.js
 
+# 5. Build React Helpers
+echo "Building React helpers..."
+mkdir -p dist/react
+# Copy source
+cp internal/react/index.js dist/react/
+cp internal/react/index.d.ts dist/react/
+# Fix the require path in the built file: ../../dist/index.js -> ../index.js
+sed -i '' "s|\.\./\.\./dist/index\.js|\../index.js|g" dist/react/index.js 2>/dev/null || sed -i "s|\.\./\.\./dist/index\.js|\../index.js|g" dist/react/index.js
+
 echo "Build complete. Artifacts in bin/ and dist/"

@@ -81,3 +81,4 @@ gantt
     - [ ] Configure Client (User Action Required)
 - [x] **Ecosystem Integrations**
     - [x] Next.js / Bundler Support (CDN Auto-loader, `exports`)
+    - [x] React Helpers (`useCue`, `CueProvider`) for A+ DX
