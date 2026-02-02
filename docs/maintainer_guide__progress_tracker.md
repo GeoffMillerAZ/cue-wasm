@@ -78,3 +78,5 @@ gantt
     - [x] Install Servers (`@modelcontextprotocol/server-github`, `puppeteer`)
     - [x] Generate Config (`mcp-config.json`)
     - [ ] Configure Client (User Action Required)
+- [x] **Ecosystem Integrations**
+    - [x] Next.js / Bundler Support (CDN Auto-loader, `exports`)

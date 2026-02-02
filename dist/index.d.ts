@@ -32,6 +32,14 @@ export interface CueWasmInstance {
     export(code: string, format: Format): Promise<string>;
 }
 
+/**
+ * Loads the WASM runtime.
+ * @param wasmPath Optional path to the cue.wasm binary. 
+ *                 In Browser: Defaults to jsdelivr CDN.
+ *                 In Node: Defaults to local binary.
+ */
+export function loadWasm(wasmPath?: string): Promise<CueWasmInstance>;
+
 declare global {
     const CueWasm: CueWasmInstance;
 }

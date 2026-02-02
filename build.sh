@@ -17,4 +17,12 @@ go build -ldflags="-s -w" -tags netgo,osusergo -o bin/cue.wasm main.go
 echo "Copying wasm_exec.js..."
 cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" bin/
 
-echo "Build complete. Artifacts in bin/"
+# 4. Generate JS Loader (Inject Version)
+echo "Generating dist/index.js..."
+VERSION=$(node -p "require('./package.json').version")
+echo "Package Version: $VERSION"
+
+mkdir -p dist
+sed "s/__VERSION__/$VERSION/g" internal/js/loader.js > dist/index.js
+
+echo "Build complete. Artifacts in bin/ and dist/"

@@ -6,6 +6,10 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "exports": {
+    ".": "./dist/index.js",
+    "./cue.wasm": "./bin/cue.wasm"
+  },
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
