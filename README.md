@@ -22,6 +22,8 @@ npm install cue-wasm
 
 ## Usage
 
+![Usage Example](docs/assets/example_code.png)
+
 Check out the [examples/](examples/) directory for runnable code samples:
 - [Node.js Examples](examples/README.md#nodejs-examples)
 - [Browser Playground](examples/README.md#browser-example)
