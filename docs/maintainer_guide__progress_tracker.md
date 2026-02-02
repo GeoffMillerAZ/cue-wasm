@@ -58,3 +58,4 @@ gantt
     - [x] `freeze`: Generated code snippets (`docs/assets/example_code.png`)
     - [x] `slides`: Terminal presentation (`docs/slides.md`)
     - [ ] `vhs`: GIF Demo (Requires `ffmpeg` in env)
+    - [x] `GEMINI.md`: Context file for AI Agents
