@@ -42,7 +42,8 @@ gantt
     - [x] Verify File System Isolation (LFI Test) (`npm run test:security`)
 - [x] **Community & CI**
     - [x] Create `README.md`, `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
-    - [x] Create GitHub Issue & PR Templates
+    - [x] Create GitHub Issue & PR Templates (Bug, Feature, Support)
+    - [x] Setup Issue Template Config (`config.yml`)
     - [x] Setup GitHub Actions (`test.yml`, `release.yml`)
 - [x] **Examples Inventory**
     - [x] Node.js: Validation, Unification, Tags, Export

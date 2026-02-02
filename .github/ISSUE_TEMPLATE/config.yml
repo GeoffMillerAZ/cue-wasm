@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/GeoffMillerAZ/cue-wasm/discussions
+    about: Please use GitHub Discussions for general questions or usage help.
+  - name: 📖 Documentation
+    url: https://github.com/GeoffMillerAZ/cue-wasm#readme
+    about: Read the official documentation.
+  - name: 🛡️ Security Policy
+    url: https://github.com/GeoffMillerAZ/cue-wasm/security/policy
+    about: Report security vulnerabilities.
