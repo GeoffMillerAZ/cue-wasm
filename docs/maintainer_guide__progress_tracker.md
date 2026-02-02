@@ -51,6 +51,7 @@ gantt
     - [x] Documentation: `examples/README.md` linked to root
     - [x] Docker: Unified multi-stage build for all demos (`examples/Dockerfile`)
 - [x] **Testing Suite (Gold Standard)**
+    - [x] Unit Tests: Loader branching & CDN logic (`test:unit`)
     - [x] Integration Tests (`test:integration`)
     - [x] Security Regression Tests (`test:security`)
     - [x] Edge Cases & Concurrency (`test:edge`)
