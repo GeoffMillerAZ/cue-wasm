@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"pac/pkg/cue-wasm/internal/core"
+	"github.com/GeoffMillerAZ/cue-wasm/internal/core"
 )
 
 func TestExport(t *testing.T) {
