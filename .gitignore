@@ -1,0 +1,12 @@
+# Workspace
+workspace/
+
+# Dependencies
+node_modules/
+
+# OS Files
+.DS_Store
+
+# Build Artifacts
+bin/
+# dist/

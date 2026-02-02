@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const assert = require('assert');
 
 // 1. Load WASM Exec Shim
@@ -9,7 +10,8 @@ require('../../bin/wasm_exec.js');
 const go = new Go();
 
 // 2. Load WASM Module
-const wasmBuffer = fs.readFileSync('../../bin/cue.wasm');
+const wasmPath = path.join(__dirname, '../../bin/cue.wasm');
+const wasmBuffer = fs.readFileSync(wasmPath);
 
 WebAssembly.instantiate(wasmBuffer, go.importObject).then(async (result) => {
     // 3. Run Go Program (It blocks, so we don't await it yet if we want to interact... 

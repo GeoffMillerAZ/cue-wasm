@@ -1,16 +1,21 @@
 {
-  "name": "@pac/cue-wasm",
+  "name": "cue-wasm",
   "version": "1.0.0",
   "description": "Cuelang WASM runtime for the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeoffMillerAZ/cue-wasm.git"
+  },
   "files": [
     "dist/",
     "bin/cue.wasm",
     "bin/wasm_exec.js"
   ],
   "scripts": {
-    "test": "node test/integration/test.js"
+    "test": "node test/integration/test.js",
+    "test:security": "node test/security/test_lfi.js"
   },
   "keywords": [
     "cuelang",
@@ -18,6 +23,9 @@
     "configuration",
     "validation"
   ],
-  "author": "PAC Team",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Geoff Miller",
   "license": "MIT"
 }

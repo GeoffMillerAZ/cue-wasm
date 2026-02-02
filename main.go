@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"pac/pkg/cue-wasm/internal/core"
+	"github.com/GeoffMillerAZ/cue-wasm/internal/core"
 )
 
 func main() {
