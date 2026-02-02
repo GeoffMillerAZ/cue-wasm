@@ -14,8 +14,11 @@
     "bin/wasm_exec.js"
   ],
   "scripts": {
-    "test": "node test/integration/test.js",
-    "test:security": "node test/security/test_lfi.js"
+    "test": "npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge",
+    "test:integration": "node test/integration/test.js",
+    "test:security": "node test/security/test_lfi.js",
+    "test:examples": "node test/examples.js",
+    "test:edge": "node test/integration/edge_cases.js"
   },
   "keywords": [
     "cuelang",

@@ -48,3 +48,9 @@ gantt
     - [x] Node.js: Validation, Unification, Tags, Export
     - [x] Browser: Interactive Playground (`index.html`)
     - [x] Documentation: `examples/README.md` linked to root
+- [x] **Testing Suite (Gold Standard)**
+    - [x] Integration Tests (`test:integration`)
+    - [x] Security Regression Tests (`test:security`)
+    - [x] Edge Cases & Concurrency (`test:edge`)
+    - [x] Examples Verification (`test:examples`)
+    - [x] Unified Test Runner (`npm test`)
