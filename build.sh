@@ -13,6 +13,15 @@ mkdir -p bin
 echo "Building cue.wasm..."
 go build -ldflags="-s -w" -tags netgo,osusergo -o bin/cue.wasm main.go
 
+# Optimization (Optional)
+if command -v wasm-opt &> /dev/null; then
+    echo "Optimizing cue.wasm with wasm-opt..."
+    wasm-opt -Oz --strip-debug bin/cue.wasm -o bin/cue.wasm
+else
+    echo "wasm-opt not found. Skipping extra optimization."
+    echo "Tip: Install binaryen (wasm-opt) for smaller builds."
+fi
+
 # 3. Copy wasm_exec.js (required for runtime)
 echo "Copying wasm_exec.js..."
 cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" bin/

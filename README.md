@@ -14,6 +14,16 @@ A lightweight, secure WebAssembly (WASM) runtime for [Cuelang](https://cuelang.o
 - **Secure**: Runs in a sandboxed WASM environment with no file system access.
 - **Portable**: Works in Node.js (>=18) and modern browsers.
 
+## Performance & Bundle Size
+
+The compiled WebAssembly binary is approximately **30MB** raw. However, in production:
+
+1.  **Compression**: Served via Gzip/Brotli, the transfer size drops to **~6.6MB** (Gzip) or less.
+2.  **Lazy Loading**: The WASM binary is loaded asynchronously. Your application's initial bundle size remains small; the 6MB hit only occurs when the CUE runtime is actually requested.
+3.  **Caching**: If using the default CDN loader, the binary is cached aggressively by the browser (immutable versioned URL).
+
+**Optimization Tip:** If you have `binaryen` installed, the build script will automatically run `wasm-opt` to shrink the binary further.
+
 ## Installation
 
 To install from GitHub Packages:
