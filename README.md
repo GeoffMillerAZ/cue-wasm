@@ -26,17 +26,16 @@ The compiled WebAssembly binary is approximately **30MB** raw. However, in produ
 
 ## Installation
 
-To install from GitHub Packages:
+```bash
+npm install @GeoffMillerAZ/cue-wasm
+```
 
-1. Create an `.npmrc` file in your project:
-   ```ini
-   @GeoffMillerAZ:registry=https://npm.pkg.github.com
-   ```
+### CDN (No Bundler)
 
-2. Install the package:
-   ```bash
-   npm install @GeoffMillerAZ/cue-wasm
-   ```
+The WASM binary is available via free CDNs. The library automatically fetches from jsDelivr by default if no local path is provided.
+
+- **jsDelivr:** `https://cdn.jsdelivr.net/npm/@GeoffMillerAZ/cue-wasm/bin/cue.wasm`
+- **UNPKG:** `https://unpkg.com/@GeoffMillerAZ/cue-wasm/bin/cue.wasm`
 
 ## Usage
 

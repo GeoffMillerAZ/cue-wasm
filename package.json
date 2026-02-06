@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Cuelang WASM runtime for the browser.",
   "main": "dist/index.js",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "exports": {
     ".": "./dist/index.js",
     "./cue.wasm": "./bin/cue.wasm",

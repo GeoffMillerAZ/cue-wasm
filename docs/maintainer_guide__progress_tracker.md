@@ -69,9 +69,9 @@ gantt
     - [x] Optimization: Go & NPM Caching enabled
     - [x] Safety: Pre-release verification (`release.yml`)
 - [x] **Publishing**
-    - [x] Configured for GitHub Packages (`@GeoffMillerAZ/cue-wasm`)
-    - [x] Updated `release.yml` to use `GITHUB_TOKEN`
-    - [x] Added `.npmrc` for registry mapping
+    - [x] Switched to Public NPM Registry (`registry.npmjs.org`)
+    - [x] Updated `release.yml` to use `NPM_TOKEN`
+    - [x] Enabled Free CDN Support (jsDelivr/UNPKG)
 - [x] **Code Quality**
     - [x] Setup CodeQL Workflow (`codeql.yml`)
     - [x] Configured WASM Build Environment for Analysis

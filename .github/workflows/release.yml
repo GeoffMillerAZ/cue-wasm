@@ -43,7 +43,7 @@ jobs:
       run: |
         gh release upload ${{ github.event.release.tag_name }} bin/cue.wasm bin/wasm_exec.js
 
-    - name: Publish to GitHub Packages
+    - name: Publish to NPM
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm publish
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npm publish --access public
