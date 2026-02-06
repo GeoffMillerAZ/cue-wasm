@@ -4,9 +4,9 @@
 const fs = require('fs');
 const path = require('path');
 
-// In a real build, we might inline wasm_exec.js or expect it to be global.
-// For this package, we assume the user sets up the Go global via the provided wasm_exec.js
-// or we require it if we detect node.
+// Injected during build
+const PACKAGE_VERSION = "1.0.0";
+const CDN_URL = `https://cdn.jsdelivr.net/npm/@GeoffMillerAZ/cue-wasm@${PACKAGE_VERSION}/bin/cue.wasm`;
 
 function loadWasm(wasmPath) {
     if (typeof Go === 'undefined') {
@@ -29,14 +29,16 @@ function loadWasm(wasmPath) {
     let wasmBytes;
 
     if (typeof window === 'undefined') {
-        // Node
-        wasmBytes = fs.readFileSync(wasmPath || path.join(__dirname, '../bin/cue.wasm'));
+        // Node Environment
+        // If no path provided, assume relative to this file in the package structure
+        const localPath = wasmPath || path.join(__dirname, '../bin/cue.wasm');
+        wasmBytes = fs.readFileSync(localPath);
     } else {
-        // Browser - return a fetch promise
-        if (!wasmPath) {
-             throw new Error("Must provide path to cue.wasm in browser");
-        }
-        return WebAssembly.instantiateStreaming(fetch(wasmPath), go.importObject).then((result) => {
+        // Browser Environment
+        // If no path provided, default to CDN
+        const url = wasmPath || CDN_URL;
+        
+        return WebAssembly.instantiateStreaming(fetch(url), go.importObject).then((result) => {
             go.run(result.instance);
             return global.CueWasm;
         });
