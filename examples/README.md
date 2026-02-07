@@ -17,6 +17,7 @@ node examples/node/01_validate.js
 node examples/node/02_unify.js
 node examples/node/03_tags.js
 node examples/node/04_export.js
+node examples/node/05_workspace.js
 ```
 
 ### Files:
@@ -24,10 +25,20 @@ node examples/node/04_export.js
 - `02_unify.js`: Merging multiple CUE files/strings into a configuration.
 - `03_tags.js`: Using `@tag` to inject environment variables.
 - `04_export.js`: Converting CUE to JSON, YAML, or formatted CUE.
+- `05_workspace.js`: **[New]** Using the `Workspace` intelligence layer for multi-file projects, syntax validation, formatting, and symbol extraction.
 
-## Browser Example
+## Browser Examples
 
-This example demonstrates a "CUE Playground" running entirely in the browser.
+### 1. Pro Playground (`/browser/index.html`)
+
+A comprehensive, Tailwind-powered IDE experience in the browser.
+
+**Features:**
+- **Virtual Workspace**: Manage multiple CUE files in memory.
+- **Instant Syntax Validation**: As-you-type error reporting using the native Go parser.
+- **Auto-Formatting**: Integrated `cue fmt` logic.
+- **Symbol Outline**: Recursive AST walking to show package and field navigation.
+- **Real-time Unification**: Merge and evaluate the entire workspace into JSON.
 
 ### Running it
 

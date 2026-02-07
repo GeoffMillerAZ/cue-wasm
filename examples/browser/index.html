@@ -1,146 +1,372 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CUE WASM Playground</title>
+    <title>CUE WASM Pro Playground</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../bin/wasm_exec.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .container { display: flex; gap: 20px; }
-        .box { flex: 1; display: flex; flex-direction: column; }
-        textarea { height: 300px; font-family: monospace; padding: 10px; }
-        button { padding: 10px; cursor: pointer; background: #007bff; color: white; border: none; }
-        button:hover { background: #0056b3; }
-        pre { background: #f4f4f4; padding: 10px; overflow: auto; min-height: 100px; }
-        .error { color: red; background: #ffeeee; }
-        h1 { margin-bottom: 10px; }
-        .controls { margin-bottom: 10px; }
+        [hidden] { display: none !important; }
     </style>
 </head>
-<body>
-    <h1>CUE WASM Playground</h1>
-    <p>Run Cuelang validation and export entirely in your browser via WebAssembly.</p>
+<body class="h-full">
+    <div id="app">
+        <!-- Sidebar for Mobile -->
+        <div id="mobile-sidebar" class="relative z-50 lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-900/80 transition-opacity" aria-hidden="true"></div>
+            <div class="fixed inset-0 flex">
+                <div class="relative mr-16 flex w-full max-w-xs flex-1">
+                    <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
+                        <button type="button" class="-m-2.5 p-2.5 text-white" onclick="toggleSidebar()">
+                            <span class="sr-only">Close sidebar</span>
+                            <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Sidebar content -->
+                    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+                        <div class="flex h-16 shrink-0 items-center">
+                            <span class="text-2xl font-bold text-indigo-600">CUE WASM</span>
+                        </div>
+                        <nav class="flex flex-1 flex-col">
+                            <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                                <li>
+                                    <div class="text-xs font-semibold text-gray-400">Files</div>
+                                    <ul id="file-list-mobile" role="list" class="-mx-2 mt-2 space-y-1"></ul>
+                                </li>
+                                <li>
+                                    <div class="text-xs font-semibold text-gray-400">Outline</div>
+                                    <ul id="symbol-list-mobile" role="list" class="-mx-2 mt-2 space-y-1"></ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="controls">
-        <button id="btn-validate">Validate</button>
-        <button id="btn-export-json">Export JSON</button>
-        <button id="btn-export-yaml">Export YAML</button>
+        <!-- Static sidebar for desktop -->
+        <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+            <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+                <div class="flex h-16 shrink-0 items-center">
+                    <span class="text-2xl font-bold text-indigo-600">CUE WASM</span>
+                </div>
+                <nav class="flex flex-1 flex-col">
+                    <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                        <li>
+                            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Workspace Files</div>
+                            <ul id="file-list" role="list" class="-mx-2 mt-2 space-y-1"></ul>
+                            <button onclick="addNewFile()" class="mt-2 w-full flex items-center justify-center gap-x-2 rounded-md border border-dashed border-gray-300 p-2 text-sm font-medium text-gray-600 hover:border-indigo-500 hover:text-indigo-600">
+                                <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                Add File
+                            </button>
+                        </li>
+                        <li>
+                            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Outline</div>
+                            <ul id="symbol-list" role="list" class="-mx-2 mt-2 space-y-1">
+                                <li class="text-sm text-gray-500 italic p-2">Select a file to see symbols</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="lg:pl-72 flex flex-col h-screen">
+            <!-- Header -->
+            <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+                <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" onclick="toggleSidebar()">
+                    <span class="sr-only">Open sidebar</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+
+                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 items-center">
+                    <h1 class="text-lg font-semibold text-gray-900" id="current-file-label">main.cue</h1>
+                    <div class="flex items-center gap-x-2 ml-auto">
+                        <button onclick="formatActiveFile()" class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Format</button>
+                        <button onclick="runUnification()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">Run Unify</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 flex overflow-hidden">
+                <!-- Editor (Left) -->
+                <div class="flex-1 flex flex-col border-r border-gray-200 bg-gray-50">
+                    <div class="p-4 flex-1">
+                        <div class="h-full rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 flex flex-col">
+                            <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 rounded-t-lg flex items-center">
+                                <span class="text-xs font-medium text-gray-500 uppercase">Editor</span>
+                                <span id="syntax-status" class="ml-auto text-xs font-medium text-green-600">Syntax OK</span>
+                            </div>
+                            <textarea id="editor" class="flex-1 p-4 font-mono text-sm outline-none resize-none rounded-b-lg" spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result (Right) -->
+                <div class="w-1/3 flex flex-col bg-gray-50">
+                    <div class="p-4 flex-1 flex flex-col gap-y-4">
+                        <!-- Result Box -->
+                        <div class="flex-1 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 flex flex-col">
+                            <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 rounded-t-lg">
+                                <span class="text-xs font-medium text-gray-500 uppercase">Output (JSON)</span>
+                            </div>
+                            <pre id="output" class="flex-1 p-4 font-mono text-xs overflow-auto text-gray-700 whitespace-pre-wrap"></pre>
+                        </div>
+                        
+                        <!-- Log Box -->
+                        <div class="h-1/4 rounded-lg bg-gray-900 text-gray-300 shadow-sm flex flex-col">
+                            <div class="bg-gray-800 px-4 py-2 border-b border-gray-700 rounded-t-lg">
+                                <span class="text-xs font-medium text-gray-400 uppercase">System Logs</span>
+                            </div>
+                            <div id="logs" class="flex-1 p-4 font-mono text-[10px] overflow-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="box">
-            <h3>Input (CUE)</h3>
-            <textarea id="input">
-#User: {
-    name: string
-    age:  int & >=0
-}
-
-alice: #User & {
-    name: "Alice"
-    age:  30
-}
-            </textarea>
-        </div>
-        <div class="box">
-            <h3>Output / Status</h3>
-            <pre id="output">Loading WASM...</pre>
-        </div>
-    </div>
-
-    <!-- Load the Go WASM shim -->
-    <!-- In a real app, this would be served from your public assets -->
-    <script src="../../bin/wasm_exec.js"></script>
-    
+    <!-- Workspace Implementation (Bundled for demo) -->
     <script>
-        const outputEl = document.getElementById('output');
-        const inputEl = document.getElementById('input');
-
-        // Initialize WASM
-        async function initWasm() {
-            if (!WebAssembly.instantiateStreaming) { // polyfill
-                WebAssembly.instantiateStreaming = async (resp, importObject) => {
-                    const source = await (await resp).arrayBuffer();
-                    return await WebAssembly.instantiate(source, importObject);
-                };
+        class Workspace {
+            constructor() {
+                this.files = new Map();
+                this.entryPoints = new Set();
             }
+            addFile(path, content, isEntryPoint = false) {
+                let normalized = path.startsWith('/') ? path : '/' + path;
+                normalized = normalized.replace(/\/+$/, '');
+                this.files.set(normalized, content);
+                if (isEntryPoint) this.entryPoints.add(normalized);
+            }
+            removeFile(path) {
+                const normalized = path.startsWith('/') ? path : '/' + path;
+                this.files.delete(normalized);
+                this.entryPoints.delete(normalized);
+            }
+            getEntryPoints() { return Array.from(this.entryPoints); }
+            getOverlay() {
+                const overlay = {};
+                for (const [path, content] of this.files) overlay[path] = content;
+                return overlay;
+            }
+            async validateSyntax(path, cue) {
+                const normalized = path.startsWith('/') ? path : '/' + path;
+                const content = this.files.get(normalized);
+                try {
+                    await cue.parse(content);
+                    return { valid: true };
+                } catch (e) {
+                    try { return { valid: false, error: JSON.parse(e) }; }
+                    catch (_) { return { valid: false, error: { message: e } }; }
+                }
+            }
+            async formatFile(path, cue) {
+                const normalized = path.startsWith('/') ? path : '/' + path;
+                const content = this.files.get(normalized);
+                const formatted = await cue.format(content);
+                this.files.set(normalized, formatted);
+                return formatted;
+            }
+            async getSymbols(path, cue) {
+                const normalized = path.startsWith('/') ? path : '/' + path;
+                const content = this.files.get(normalized);
+                const json = await cue.getSymbols(content);
+                return JSON.parse(json);
+            }
+        }
+    </script>
 
+    <!-- App Logic -->
+    <script>
+        const ws = new Workspace();
+        let activeFile = '/main.cue';
+        let cueInstance = null;
+
+        const editorEl = document.getElementById('editor');
+        const outputEl = document.getElementById('output');
+        const logsEl = document.getElementById('logs');
+        const fileListEl = document.getElementById('file-list');
+        const symbolListEl = document.getElementById('symbol-list');
+        const syntaxStatusEl = document.getElementById('syntax-status');
+
+        function log(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = type === 'error' ? 'text-red-400' : 'text-gray-400';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logsEl.appendChild(entry);
+            logsEl.scrollTop = logsEl.scrollHeight;
+        }
+
+        async function init() {
+            log("Initializing WASM engine...");
             const go = new Go();
             try {
-                // Fetch the WASM binary
-                const result = await WebAssembly.instantiateStreaming(
-                    fetch("../../bin/cue.wasm"), 
-                    go.importObject
-                );
-                
-                // Run the Go program (blocks, but registers callbacks)
+                const result = await WebAssembly.instantiateStreaming(fetch("../../bin/cue.wasm"), go.importObject);
                 go.run(result.instance);
+                cueInstance = window.CueWasm;
+                log("CUE WASM engine ready.");
                 
-                outputEl.textContent = "Ready. WASM loaded.";
-                console.log("CueWasm initialized:", window.CueWasm);
+                // Seed initial files
+                ws.addFile('schema.cue', 'package main\n\n#Config: {\n    env: "prod" | "dev"\n    port: int & >1024\n}');
+                ws.addFile('main.cue', 'package main\n\nconfig: #Config & {\n    env: "dev"\n    port: 8080\n}', true);
+                
+                updateFileList();
+                switchFile('/main.cue');
+                runUnification();
             } catch (err) {
-                console.error(err);
-                outputEl.textContent = "Error loading WASM: " + err;
-                outputEl.className = "error";
+                log("Failed to load WASM: " + err, "error");
             }
         }
 
-        initWasm();
-
-        // Helpers
-        function setOutput(msg, isError = false) {
-            outputEl.textContent = msg;
-            outputEl.className = isError ? "error" : "";
+        function updateFileList() {
+            fileListEl.innerHTML = '';
+            for (const [path, _] of ws.files) {
+                const li = document.createElement('li');
+                const isEntry = ws.entryPoints.has(path);
+                const activeClass = path === activeFile ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50';
+                
+                li.innerHTML = `
+                    <div class="group flex items-center justify-between rounded-md p-2 text-sm font-semibold leading-6 ${activeClass}">
+                        <button onclick="switchFile('${path}')" class="flex-1 text-left truncate">${path}</button>
+                        ${path !== '/cue.mod/module.cue' ? `
+                            <button onclick="toggleEntryPoint('${path}')" title="Entry Point" class="ml-2 ${isEntry ? 'text-indigo-600' : 'text-gray-300 hover:text-gray-500'}">
+                                <svg class="size-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"/></svg>
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                fileListEl.appendChild(li);
+            }
         }
 
-        async function safeCall(action) {
-            if (!window.CueWasm) {
-                setOutput("WASM not ready yet.", true);
-                return;
-            }
+        async function updateSymbols() {
+            if (!cueInstance) return;
             try {
-                setOutput("Running...");
-                await action();
+                const symbols = await ws.getSymbols(activeFile, cueInstance);
+                symbolListEl.innerHTML = '';
+                if (symbols.length === 0) {
+                    symbolListEl.innerHTML = '<li class="text-xs text-gray-400 p-2 italic">No symbols found</li>';
+                    return;
+                }
+                symbols.forEach(s => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-center gap-x-2 p-2 text-xs text-gray-600 hover:bg-gray-100 rounded cursor-pointer";
+                    li.onclick = () => { editorEl.focus(); /* Scroll logic here if needed */ };
+                    li.innerHTML = `
+                        <span class="size-2 rounded-full ${s.type === 'package' ? 'bg-purple-400' : 'bg-blue-400'}"></span>
+                        <span class="font-medium">${s.name}</span>
+                        <span class="ml-auto text-gray-400">L${s.line}</span>
+                    `;
+                    symbolListEl.appendChild(li);
+                });
             } catch (e) {
-                let msg = e.toString();
-                // Try to parse structured error
-                try {
-                    const json = msg.replace(/^Error: /, '');
-                    const obj = JSON.parse(json);
-                    msg = `Error: ${obj.message}`;
-                    if(obj.line) msg += `\nLine: ${obj.line}`;
-                } catch (_) {}
-                setOutput(msg, true);
+                symbolListEl.innerHTML = '<li class="text-xs text-red-400 p-2 italic">Error extracting symbols</li>';
             }
         }
 
-        // Event Listeners
-        document.getElementById('btn-validate').addEventListener('click', () => {
-            safeCall(async () => {
-                const code = inputEl.value;
-                // Validate requires separate schema/data usually, but we can pass the same string 
-                // if it contains both constraints and values.
-                // Or we can say Schema is empty and Data is the code (self-contained).
-                const isValid = await CueWasm.validate("", code);
-                setOutput(isValid ? "✅ Valid CUE" : "Invalid");
-            });
+        function switchFile(path) {
+            // Save current editor content back to workspace
+            if (ws.files.has(activeFile)) {
+                ws.files.set(activeFile, editorEl.value);
+            }
+            
+            activeFile = path;
+            document.getElementById('current-file-label').textContent = path;
+            editorEl.value = ws.files.get(path) || '';
+            updateFileList();
+            updateSymbols();
+            validateSyntax();
+        }
+
+        function toggleEntryPoint(path) {
+            if (ws.entryPoints.has(path)) ws.entryPoints.delete(path);
+            else ws.entryPoints.add(path);
+            updateFileList();
+        }
+
+        async function validateSyntax() {
+            if (!cueInstance) return;
+            const res = await ws.validateSyntax(activeFile, cueInstance);
+            if (res.valid) {
+                syntaxStatusEl.textContent = "Syntax OK";
+                syntaxStatusEl.className = "ml-auto text-xs font-medium text-green-600";
+            } else {
+                syntaxStatusEl.textContent = `Error L${res.error.line}: ${res.error.message}`;
+                syntaxStatusEl.className = "ml-auto text-xs font-medium text-red-600";
+            }
+        }
+
+        async function formatActiveFile() {
+            if (!cueInstance) return;
+            try {
+                ws.files.set(activeFile, editorEl.value);
+                const formatted = await ws.formatFile(activeFile, cueInstance);
+                editorEl.value = formatted;
+                log(`Formatted ${activeFile}`);
+                validateSyntax();
+            } catch (e) {
+                log("Format failed: " + e, "error");
+            }
+        }
+
+        async function runUnification() {
+            if (!cueInstance) return;
+            // Save current content
+            ws.files.set(activeFile, editorEl.value);
+            log("Running unification...");
+            try {
+                const overlay = ws.getOverlay();
+                const entries = ws.getEntryPoints();
+                const res = await cueInstance.unify(overlay, entries);
+                outputEl.textContent = JSON.stringify(JSON.parse(res), null, 2);
+                outputEl.className = "flex-1 p-4 font-mono text-xs overflow-auto text-gray-700";
+                log("Unification successful.");
+            } catch (e) {
+                outputEl.textContent = e;
+                outputEl.className = "flex-1 p-4 font-mono text-xs overflow-auto text-red-600 bg-red-50";
+                log("Unification failed: " + e, "error");
+            }
+        }
+
+        function addNewFile() {
+            const name = prompt("Enter file name (e.g. env.cue):");
+            if (name) {
+                ws.addFile(name, "package main\n\n");
+                switchFile(name.startsWith('/') ? name : '/' + name);
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('mobile-sidebar').classList.toggle('hidden');
+        }
+
+        editorEl.addEventListener('input', () => {
+            ws.files.set(activeFile, editorEl.value);
+            validateSyntax();
+            updateSymbols();
         });
 
-        document.getElementById('btn-export-json').addEventListener('click', () => {
-            safeCall(async () => {
-                const code = inputEl.value;
-                const res = await CueWasm.export(code, 'json');
-                setOutput(res);
-            });
+        // Tab support in textarea
+        editorEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editorEl.selectionStart;
+                const end = editorEl.selectionEnd;
+                editorEl.value = editorEl.value.substring(0, start) + "    " + editorEl.value.substring(end);
+                editorEl.selectionStart = editorEl.selectionEnd = start + 4;
+            }
         });
 
-        document.getElementById('btn-export-yaml').addEventListener('click', () => {
-            safeCall(async () => {
-                const code = inputEl.value;
-                const res = await CueWasm.export(code, 'yaml');
-                setOutput(res);
-            });
-        });
+        init();
     </script>
 </body>
 </html>

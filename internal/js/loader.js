@@ -51,4 +51,6 @@ function loadWasm(wasmPath) {
     return global.CueWasm;
 }
 
-module.exports = { loadWasm };
+const { Workspace } = require('./workspace.js');
+
+module.exports = { loadWasm, Workspace };

@@ -40,6 +40,22 @@ export interface CueWasmInstance {
  */
 export function loadWasm(wasmPath?: string): Promise<CueWasmInstance>;
 
+/**
+ * Workspace manages an in-memory file system for CUE projects.
+ */
+export class Workspace {
+    constructor();
+    addFile(path: string, content: string, isEntryPoint?: boolean): void;
+    removeFile(path: string): void;
+    getEntryPoints(): string[];
+    getOverlay(): Record<string, string>;
+    validateSyntax(path: string, cue: CueWasmInstance): Promise<{valid: boolean, error?: any}>;
+    formatFile(path: string, cue: CueWasmInstance): Promise<string>;
+    getSymbols(path: string, cue: CueWasmInstance): Promise<Array<{name: string, type: string, line: number, column: number}>>;
+    clear(): void;
+    setModule(name: string, version?: string): void;
+}
+
 declare global {
     const CueWasm: CueWasmInstance;
 }
