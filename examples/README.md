@@ -13,19 +13,19 @@ Prerequisites:
 Run them directly:
 
 ```bash
-node examples/node/01_validate.cjs
-node examples/node/02_unify.cjs
-node examples/node/03_tags.cjs
-node examples/node/04_export.cjs
-node examples/node/05_workspace.cjs
+node examples/node/01_validate.js
+node examples/node/02_unify.js
+node examples/node/03_tags.js
+node examples/node/04_export.js
+node examples/node/05_workspace.js
 ```
 
 ### Files:
-- `01_validate.cjs`: Basic schema validation with structured error handling.
-- `02_unify.cjs`: Merging multiple CUE files/strings into a configuration.
-- `03_tags.cjs`: Using `@tag` to inject environment variables.
-- `04_export.cjs`: Converting CUE to JSON, YAML, or formatted CUE.
-- `05_workspace.cjs`: **[New]** Using the `Workspace` intelligence layer for multi-file projects, syntax validation, formatting, and symbol extraction.
+- `01_validate.js`: Basic schema validation with structured error handling.
+- `02_unify.js`: Merging multiple CUE files/strings into a configuration.
+- `03_tags.js`: Using `@tag` to inject environment variables.
+- `04_export.js`: Converting CUE to JSON, YAML, or formatted CUE.
+- `05_workspace.js`: **[New]** Using the `Workspace` intelligence layer for multi-file projects, syntax validation, formatting, and symbol extraction.
 
 ## Browser Examples
 

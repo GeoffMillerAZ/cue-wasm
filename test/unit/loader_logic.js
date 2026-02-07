@@ -1,11 +1,13 @@
-const assert = require('assert');
-const path = require('path');
+import assert from 'assert';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
-// We use the generated file to ensure we are testing reality
-const loaderPath = path.resolve(__dirname, '../../dist/index.js');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const loaderPath = 'file://' + path.resolve(__dirname, '../../dist/index.js');
 
 // Mocking Browser Environment
-function testBrowserLogic() {
+async function testBrowserLogic() {
     console.log("Testing Browser Branching Logic...");
     
     // Save original state
@@ -38,18 +40,19 @@ function testBrowserLogic() {
             run() {}
         };
 
-        const { loadWasm } = require(loaderPath);
+        const { loadWasm } = await import(loaderPath);
         
         // Test Case 1: Default CDN
-        loadWasm();
-        const version = require('../../package.json').version;
+        await loadWasm();
+        const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8'));
+        const version = pkg.version;
         const expectedCdn = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${version}/bin/cue-engine.wasm`;
         assert.strictEqual(fetchedUrl, expectedCdn, "Should use CDN URL by default in browser");
         console.log("✅ Correctly defaulted to CDN in browser.");
 
         // Test Case 2: Custom Path
         const customPath = "/my/local/cue.wasm";
-        loadWasm(customPath);
+        await loadWasm(customPath);
         assert.strictEqual(fetchedUrl, customPath, "Should respect custom path in browser");
         console.log("✅ Correctly respected custom path in browser.");
 
@@ -59,8 +62,6 @@ function testBrowserLogic() {
         global.fetch = originalFetch;
         global.WebAssembly = originalWebAssembly;
         delete global.Go;
-        // Clear cache for next tests if needed
-        delete require.cache[loaderPath];
     }
 }
 
@@ -90,7 +91,7 @@ async function testNodeLogic() {
             Instance: class { constructor() { this.exports = {}; } }
         };
 
-        const { loadWasm } = require(loaderPath);
+        const { loadWasm } = await import(loaderPath);
         
         try {
             await loadWasm();
@@ -107,13 +108,12 @@ async function testNodeLogic() {
         global.fetch = originalFetch;
         global.window = originalWindow;
         delete global.Go;
-        delete require.cache[loaderPath];
     }
 }
 
 async function run() {
     try {
-        testBrowserLogic();
+        await testBrowserLogic();
         await testNodeLogic();
         console.log("\nLoader Logic Verification Passed!");
     } catch (e) {

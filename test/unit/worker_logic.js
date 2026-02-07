@@ -1,6 +1,10 @@
-const test = require('node:test');
-const assert = require('node:assert');
-const { WorkerManager } = require('../../internal/js/worker-manager.js');
+import test from 'node:test';
+import assert from 'node:assert';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const managerPath = 'file://' + path.resolve(__dirname, '../../dist/worker-manager.js');
 
 test('Worker Manager - TDD Suite', async (t) => {
 
@@ -11,6 +15,7 @@ test('Worker Manager - TDD Suite', async (t) => {
             constructor(path) {
                 this.path = path;
                 setTimeout(() => {
+                    // Simulate worker successful init
                     this.onmessage({ data: { id: 1, success: true } });
                 }, 10);
             }
@@ -19,6 +24,7 @@ test('Worker Manager - TDD Suite', async (t) => {
             }
         };
 
+        const { WorkerManager } = await import(managerPath);
         const manager = new WorkerManager('worker.js', 'cue.wasm', '1.2.9');
         await manager.init();
         
@@ -36,6 +42,7 @@ test('Worker Manager - TDD Suite', async (t) => {
             postMessage() {}
         };
 
+        const { WorkerManager } = await import(managerPath);
         const manager = new WorkerManager('w.js', 'c.wasm', '1');
         await assert.rejects(manager.init(), /WASM Panic/);
     });
@@ -51,6 +58,7 @@ test('Worker Manager - TDD Suite', async (t) => {
             postMessage(msg) { sentMessage = msg; }
         };
 
+        const { WorkerManager } = await import(managerPath);
         const manager = new WorkerManager('w.js', 'c.wasm', '1');
         const res = await manager.unify({ 'a.cue': 'a: 1' });
         

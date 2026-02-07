@@ -1,6 +1,6 @@
-const test = require('node:test');
-const assert = require('node:assert');
-const { Workspace } = require('../../internal/js/workspace.js');
+import test from 'node:test';
+import assert from 'node:assert';
+const { Workspace } = await import('../../internal/js/workspace.js');
 
 test('Workspace Manager - TDD Suite', async (t) => {
 
@@ -43,7 +43,7 @@ test('Workspace Manager - TDD Suite', async (t) => {
     });
 
     await t.test('INTEGRATION: should unify multiple files via Workspace and WASM', async () => {
-        const { loadWasm } = require('../../dist/index.js');
+        const { loadWasm } = await import('../../dist/index.js');
         const cue = await loadWasm();
         const ws = new Workspace();
 
@@ -60,7 +60,7 @@ test('Workspace Manager - TDD Suite', async (t) => {
     });
 
     await t.test('Fast Syntax Validation - should catch syntax errors instantly', async () => {
-        const { loadWasm } = require('../../dist/index.js');
+        const { loadWasm } = await import('../../dist/index.js');
         const cue = await loadWasm();
         
         // 1. Valid Syntax
@@ -84,7 +84,7 @@ test('Workspace Manager - TDD Suite', async (t) => {
     });
 
     await t.test('Automatic Formatting - should normalize code and preserve comments', async () => {
-        const { loadWasm } = require('../../dist/index.js');
+        const { loadWasm } = await import('../../dist/index.js');
         const cue = await loadWasm();
         const ws = new Workspace();
 
@@ -104,7 +104,7 @@ test('Workspace Manager - TDD Suite', async (t) => {
     });
 
     await t.test('Symbol Extraction - should identify fields and packages with positions', async () => {
-        const { loadWasm } = require('../../dist/index.js');
+        const { loadWasm } = await import('../../dist/index.js');
         const cue = await loadWasm();
         const ws = new Workspace();
 

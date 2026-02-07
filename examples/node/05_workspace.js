@@ -1,4 +1,4 @@
-const { loadWasm, Workspace } = require('../../dist/index.js');
+const { loadWasm, Workspace } = await import('../../dist/index.js');
 
 async function run() {
     try {

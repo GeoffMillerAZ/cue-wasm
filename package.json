@@ -1,6 +1,6 @@
 {
   "name": "@geoff4lf/cue-wasm",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Cuelang WASM runtime for the browser.",
   "type": "module",
   "main": "dist/index.js",
@@ -22,11 +22,11 @@
   ],
   "scripts": {
     "test": "npm run test:unit && npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge",
-    "test:unit": "node test/unit/loader_logic.cjs && node test/unit/worker_logic.cjs",
-    "test:integration": "node test/integration/test.cjs",
-    "test:security": "node test/security/test_lfi.cjs",
-    "test:examples": "node test/examples.cjs",
-    "test:edge": "node test/integration/edge_cases.cjs",
+    "test:unit": "node test/unit/loader_logic.js && node test/unit/worker_logic.js",
+    "test:integration": "node test/integration/test.js",
+    "test:security": "node test/security/test_lfi.js",
+    "test:examples": "node test/examples.js",
+    "test:edge": "node test/integration/edge_cases.js",
     "test:docker": "node test/docker/test.js"
   },
   "keywords": [

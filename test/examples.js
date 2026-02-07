@@ -1,9 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const { execFile } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execFile } from 'child_process';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const examplesDir = path.join(__dirname, '../examples/node');
-const files = fs.readdirSync(examplesDir).filter(f => f.endsWith('.cjs'));
+const files = fs.readdirSync(examplesDir).filter(f => f.endsWith('.js'));
 
 console.log(`Found ${files.length} examples to test.`);
 
@@ -19,7 +21,6 @@ const runExample = (file) => {
                 reject(error);
             } else {
                 console.log(`✅ ${file} passed.`);
-                // console.log(stdout); // Optional: print output
                 resolve();
             }
         });
