@@ -12,7 +12,6 @@ import (
 	"cuelang.org/go/cue/format"
 	"cuelang.org/go/cue/load"
 	"cuelang.org/go/cue/parser"
-	"cuelang.org/go/cue/token"
 	"cuelang.org/go/encoding/yaml"
 )
 
@@ -214,15 +213,29 @@ func (s *CueService) Parse(input string) (string, error) {
 	
 		// GetSymbols walks the AST and returns a list of symbols
 	
+		
+	
 		func (s *CueService) GetSymbols(input string) (string, error) {
+	
+		
 	
 			f, err := parser.ParseFile("input.cue", input, parser.ParseComments)
 	
+		
+	
 			if err != nil {
+	
+		
 	
 				return "", fmt.Errorf("%s", FormatError(err))
 	
+		
+	
 			}
+	
+		
+	
+		
 	
 		
 	
@@ -230,49 +243,99 @@ func (s *CueService) Parse(input string) (string, error) {
 	
 		
 	
-			// Helper to add symbols
-	
-			add := func(name, kind string, pos token.Pos) {
-	
-				symbols = append(symbols, Symbol{
-	
-					Name:   name,
-	
-					Type:   kind,
-	
-					Line:   pos.Line(),
-	
-					Column: pos.Column(),
-	
-				})
-	
-			}
+		
 	
 		
 	
-			// Walk the top-level declarations
+			// Recursive walk using ast.Walk
 	
-			for _, decl := range f.Decls {
+		
 	
-				switch d := decl.(type) {
+			ast.Walk(f, func(n ast.Node) bool {
+	
+		
+	
+				switch d := n.(type) {
+	
+		
 	
 				case *ast.Package:
 	
-					add(d.Name.Name, "package", d.Pos())
+		
+	
+					symbols = append(symbols, Symbol{
+	
+		
+	
+						Name:   d.Name.Name,
+	
+		
+	
+						Type:   "package",
+	
+		
+	
+						Line:   d.Pos().Line(),
+	
+		
+	
+						Column: d.Pos().Column(),
+	
+		
+	
+					})
+	
+		
 	
 				case *ast.Field:
 	
-					// Extract field name (handles both simple and quoted labels)
+		
 	
 					if label, _, err := ast.LabelName(d.Label); err == nil {
 	
-						add(label, "field", d.Label.Pos())
+		
+	
+						symbols = append(symbols, Symbol{
+	
+		
+	
+							Name:   label,
+	
+		
+	
+							Type:   "field",
+	
+		
+	
+							Line:   d.Label.Pos().Line(),
+	
+		
+	
+							Column: d.Label.Pos().Column(),
+	
+		
+	
+						})
+	
+		
 	
 					}
 	
+		
+	
 				}
 	
-			}
+		
+	
+				return true
+	
+		
+	
+			}, nil)
+	
+		
+	
+		
 	
 		
 	

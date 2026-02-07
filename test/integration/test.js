@@ -85,7 +85,7 @@ setTimeout(async () => {
 
         // Test 5: Unify with Tags
         console.log("Test 5: Unify with Tags");
-        const taggedJson = await CueWasm.unify(["a: string @tag(foo)"], ["foo=bar"]);
+        const taggedJson = await CueWasm.unify(["a: string @tag(foo)"], null, ["foo=bar"]);
         const taggedObj = JSON.parse(taggedJson);
         assert.strictEqual(taggedObj.a, "bar");
         console.log("PASS: Unify with Tags");
