@@ -47,7 +47,7 @@ func TestUnify(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := svc.Unify(tt.files, tt.tags)
+			got, err := svc.Unify(tt.files, nil, tt.tags)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Unify() error = %v, wantErr %v", err, tt.wantErr)
 				return
