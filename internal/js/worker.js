@@ -1,7 +1,7 @@
-// Web Worker for CUE-WASM with IndexedDB Caching
-// Offloads heavy computation and WASM compilation.
-
+// Web Worker for CUE-WASM with Phased Loading & IndexedDB Caching
 let cue = null;
+let isFullEngine = false;
+
 const DB_NAME = 'CUE_WASM_CACHE';
 const STORE_NAME = 'wasm_modules';
 
@@ -14,28 +14,26 @@ self.onmessage = async (event) => {
     try {
         switch (action) {
             case 'init':
-                await init(payload.wasmPath, payload.version);
-                self.postMessage({ id, success: true });
+                await init(payload.wasmPath, payload.version, payload.isReader);
+                self.postMessage({ id, success: true, isFullEngine });
                 break;
             case 'unify':
-                const result = await cue.unify(payload.overlay, payload.entryPoints, payload.tags);
-                self.postMessage({ id, success: true, result });
-                break;
             case 'validate':
-                const isValid = await cue.validate(payload.schema, payload.data);
-                self.postMessage({ id, success: true, result: isValid });
+                if (!isFullEngine) {
+                    throw new Error("Evaluation requires the Full Engine (still loading...)");
+                }
+                const res = action === 'unify' 
+                    ? await cue.unify(payload.overlay, payload.entryPoints, payload.tags)
+                    : await cue.validate(payload.schema, payload.data);
+                self.postMessage({ id, success: true, result: res });
                 break;
             case 'format':
-                const formatted = await cue.format(payload.code);
-                self.postMessage({ id, success: true, result: formatted });
-                break;
             case 'getSymbols':
-                const symbols = await cue.getSymbols(payload.code);
-                self.postMessage({ id, success: true, result: JSON.parse(symbols) });
-                break;
             case 'parse':
-                const parseRes = await cue.parse(payload.code);
-                self.postMessage({ id, success: true, result: parseRes });
+                const result = action === 'format' ? await cue.format(payload.code)
+                             : action === 'getSymbols' ? JSON.parse(await cue.getSymbols(payload.code))
+                             : await cue.parse(payload.code);
+                self.postMessage({ id, success: true, result });
                 break;
             default:
                 throw new Error(`Unknown action: ${action}`);
@@ -46,39 +44,30 @@ self.onmessage = async (event) => {
 };
 
 /**
- * Initializes the WASM engine with IndexedDB caching.
+ * Initializes the WASM engine.
  */
-async function init(wasmPath, version) {
+async function init(wasmPath, version, isReaderRequest) {
     if (typeof Go === 'undefined') {
         importScripts('./wasm_exec.js');
     }
 
     const go = new Go();
-    let module = await getCachedModule(version);
+    const cacheKey = `${version}_${isReaderRequest ? 'reader' : 'engine'}`;
+    let module = await getCachedModule(cacheKey);
 
-    if (module) {
-        console.log(`[CUE-WORKER] Loading cached WASM module (v${version})`);
-    } else {
-        console.log(`[CUE-WORKER] Compiling WASM from network...`);
+    if (!module) {
         const response = await fetch(wasmPath);
-        if (!WebAssembly.compileStreaming) {
-            const bytes = await response.arrayBuffer();
-            module = await WebAssembly.compile(bytes);
-        } else {
-            module = await WebAssembly.compileStreaming(response);
-        }
-        await cacheModule(version, module);
+        module = await (WebAssembly.compileStreaming ? WebAssembly.compileStreaming(response) : WebAssembly.compile(await response.arrayBuffer()));
+        await cacheModule(cacheKey, module);
     }
 
     const instance = await WebAssembly.instantiate(module, go.importObject);
     go.run(instance);
     cue = self.CueWasm;
+    isFullEngine = !isReaderRequest;
 }
 
-/**
- * Retrieves a compiled WebAssembly.Module from IndexedDB.
- */
-async function getCachedModule(version) {
+async function getCachedModule(key) {
     return new Promise((resolve) => {
         try {
             const request = indexedDB.open(DB_NAME, 1);
@@ -86,36 +75,25 @@ async function getCachedModule(version) {
             request.onsuccess = (e) => {
                 const db = e.target.result;
                 const transaction = db.transaction(STORE_NAME, 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-                const getReq = store.get(version);
+                const getReq = transaction.objectStore(STORE_NAME).get(key);
                 getReq.onsuccess = () => resolve(getReq.result);
                 getReq.onerror = () => resolve(null);
             };
             request.onerror = () => resolve(null);
-        } catch (_) {
-            resolve(null);
-        }
+        } catch (_) { resolve(null); }
     });
 }
 
-/**
- * Stores a compiled WebAssembly.Module in IndexedDB.
- */
-async function cacheModule(version, module) {
+async function cacheModule(key, module) {
     return new Promise((resolve) => {
         try {
             const request = indexedDB.open(DB_NAME, 1);
             request.onsuccess = (e) => {
                 const db = e.target.result;
                 const transaction = db.transaction(STORE_NAME, 'readwrite');
-                const store = transaction.objectStore(STORE_NAME);
-                // Clear old versions
-                store.clear();
-                store.put(module, version);
+                transaction.objectStore(STORE_NAME).put(module, key);
                 transaction.oncomplete = () => resolve();
             };
-        } catch (_) {
-            resolve();
-        }
+        } catch (_) { resolve(); }
     });
 }

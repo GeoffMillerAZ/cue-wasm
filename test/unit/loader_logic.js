@@ -41,7 +41,7 @@ function testBrowserLogic() {
         // Test Case 1: Default CDN
         loadWasm();
         const version = require('../../package.json').version;
-        const expectedCdn = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${version}/bin/cue.wasm`;
+        const expectedCdn = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${version}/bin/cue-engine.wasm`;
         assert.strictEqual(fetchedUrl, expectedCdn, "Should use CDN URL by default in browser");
         console.log("✅ Correctly defaulted to CDN in browser.");
 
