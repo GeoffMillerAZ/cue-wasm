@@ -30,6 +30,7 @@ fi
 
 # 3. Copy wasm_exec.js
 cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" bin/
+echo '{"type": "commonjs"}' > bin/package.json
 
 # 4. Generate JS Loader
 VERSION=$(grep '"version":' package.json | head -1 | cut -d '"' -f 4)

@@ -2,7 +2,7 @@
 import { Workspace } from './workspace.js';
 import { WorkerManager } from './worker-manager.js';
 
-const PACKAGE_VERSION = "1.4.3";
+const PACKAGE_VERSION = "1.4.5";
 const BASE_CDN = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${PACKAGE_VERSION}`;
 
 /**
