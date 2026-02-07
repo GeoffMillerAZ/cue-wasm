@@ -16,6 +16,7 @@ func main() {
 		"unify":    unifyFunc(svc),
 		"validate": validateFunc(svc),
 		"export":   exportFunc(svc),
+		"parse":    parseFunc(svc),
 		"version": js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 			return js.ValueOf("v0.15.4") // Sync with go.mod version manually for now or use build tags
 		}),
@@ -85,10 +86,20 @@ func unifyFunc(svc *core.CueService) js.Func {
 			return js.ValueOf("error: first argument must be an object or array")
 		}
 
-		// Optional Tags
-		var tags []string
+		// Optional Load Paths (Array of strings)
+		var loadPaths []string
 		if len(args) > 1 && !args[1].IsUndefined() && !args[1].IsNull() {
-			jsTags := args[1]
+			jsPaths := args[1]
+			loadPaths = make([]string, jsPaths.Length())
+			for i := 0; i < jsPaths.Length(); i++ {
+				loadPaths[i] = jsPaths.Index(i).String()
+			}
+		}
+
+		// Optional Tags (Array of strings)
+		var tags []string
+		if len(args) > 2 && !args[2].IsUndefined() && !args[2].IsNull() {
+			jsTags := args[2]
 			tags = make([]string, jsTags.Length())
 			for i := 0; i < jsTags.Length(); i++ {
 				tags[i] = jsTags.Index(i).String()
@@ -100,7 +111,7 @@ func unifyFunc(svc *core.CueService) js.Func {
 			reject := promiseArgs[1]
 
 			go func() {
-				res, err := svc.Unify(files, tags)
+				res, err := svc.Unify(files, loadPaths, tags)
 				if err != nil {
 					reject.Invoke(js.ValueOf(err.Error()))
 					return
@@ -136,6 +147,35 @@ func validateFunc(svc *core.CueService) js.Func {
 					return
 				}
 				resolve.Invoke(js.ValueOf(true))
+			}()
+
+			return nil
+		})
+
+		promiseClass := js.Global().Get("Promise")
+		return promiseClass.New(handler)
+	})
+}
+
+func parseFunc(svc *core.CueService) js.Func {
+	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if len(args) < 1 {
+			return js.ValueOf("error: missing arguments")
+		}
+
+		code := args[0].String()
+
+		handler := js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+			resolve := promiseArgs[0]
+			reject := promiseArgs[1]
+
+			go func() {
+				res, err := svc.Parse(code)
+				if err != nil {
+					reject.Invoke(js.ValueOf(err.Error()))
+					return
+				}
+				resolve.Invoke(js.ValueOf(res))
 			}()
 
 			return nil

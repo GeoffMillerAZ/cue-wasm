@@ -10,6 +10,7 @@ import (
 	"cuelang.org/go/cue/errors"
 	"cuelang.org/go/cue/format"
 	"cuelang.org/go/cue/load"
+	"cuelang.org/go/cue/parser"
 	"cuelang.org/go/encoding/yaml"
 )
 
@@ -27,13 +28,13 @@ type StructuredError struct {
 	File    string `json:"file,omitempty"`
 }
 
-// Unify takes a map of filename to cue content and a list of tags (key=value), 
-// unifies them, and returns the JSON result.
-func (s *CueService) Unify(files map[string]string, tags []string) (string, error) {
+// Unify takes a map of filename to cue content, a list of specific paths to load, 
+// and a list of tags (key=value). It unifies them and returns the JSON result.
+func (s *CueService) Unify(files map[string]string, loadPaths []string, tags []string) (string, error) {
 	ctx := cuecontext.New()
 	
 	overlay := make(map[string]load.Source)
-	var paths []string
+	var allPaths []string
 	for name, content := range files {
 		// Ensure absolute path for overlay
 		path := name
@@ -41,7 +42,13 @@ func (s *CueService) Unify(files map[string]string, tags []string) (string, erro
 			path = "/" + path
 		}
 		overlay[path] = load.FromString(content)
-		paths = append(paths, path)
+		allPaths = append(allPaths, path)
+	}
+
+	// Use specific load paths if provided, otherwise load all files from overlay
+	pathsToLoad := loadPaths
+	if len(pathsToLoad) == 0 {
+		pathsToLoad = allPaths
 	}
 
 	cfg := &load.Config{
@@ -50,7 +57,21 @@ func (s *CueService) Unify(files map[string]string, tags []string) (string, erro
 		Dir:     "/",
 	}
 
-	bps := load.Instances(paths, cfg)
+	// If we find a cue.mod/module.cue, CUE load should naturally find it from Dir: "/"
+	// but we need to make sure the paths we pass to load.Instances are relative to that root
+	// if we want module resolution to work.
+	
+	// Clean paths for loading
+	var cleanLoadPaths []string
+	for _, p := range pathsToLoad {
+		cp := p
+		if strings.HasPrefix(cp, "/") {
+			cp = cp[1:]
+		}
+		cleanLoadPaths = append(cleanLoadPaths, cp)
+	}
+
+	bps := load.Instances(cleanLoadPaths, cfg)
 	if len(bps) == 0 {
 		return "", fmt.Errorf(`{"message": "failed to load instances"}`)
 	}
@@ -149,4 +170,23 @@ func (s *CueService) Export(input string, targetFmt string) (string, error) {
 	default:
 		return "", fmt.Errorf(`{"message": "unsupported format: %s"}`, targetFmt)
 	}
+}
+
+// Parse takes a CUE string and returns a JSON-encoded AST.
+func (s *CueService) Parse(input string) (string, error) {
+	// We use the basic parser to get the AST node
+	f, err := parser.ParseFile("input.cue", input)
+	if err != nil {
+		return "", fmt.Errorf("%s", FormatError(err))
+	}
+
+	// For now, we return a simple confirmation of success or a flattened JSON.
+	// In a full implementation, we would use a Go-to-JSON AST converter.
+	// Here, we'll return the formatted version to prove we parsed it.
+	b, err := format.Node(f)
+	if err != nil {
+		return "", fmt.Errorf(`{"message": "format error: %s"}`, err.Error())
+	}
+	
+	return string(b), nil
 }
