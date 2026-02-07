@@ -3,12 +3,13 @@
 echo "Building Playground Image..."
 docker build -f examples/performance/Dockerfile -t cue-wasm-playground .
 
-# Run the container
-# We mount the root project directory to /app so the server can see:
-# - /examples/performance (The site)
-# - /bin (The WASM binaries)
-# - /dist (The JS artifacts)
-echo "Starting Playground on http://localhost:8080/examples/performance/"
-docker run --rm -p 8080:8080 \
+# Stop existing container if any
+docker stop cue-wasm-playground-instance 2>/dev/null || true
+
+# Run the container in background
+echo "Starting Playground on http://localhost:9876/examples/performance/"
+docker run -d --name cue-wasm-playground-instance --rm -p 9876:8080 \
   -v "$(pwd):/app" \
   cue-wasm-playground
+
+echo "Container started. Logs available with: docker logs -f cue-wasm-playground-instance"

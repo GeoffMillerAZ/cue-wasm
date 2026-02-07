@@ -12,7 +12,7 @@ if [ "$1" = "serve" ]; then
 elif [ "$1" = "node" ]; then
     echo "Running Node.js Examples..."
     echo "----------------------------------------"
-    for f in examples/node/*.js; do
+    for f in examples/node/*.cjs; do
         echo ">>> Running $f"
         node "$f"
         echo ""

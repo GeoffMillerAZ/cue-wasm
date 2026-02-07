@@ -3,7 +3,7 @@ const path = require('path');
 const { execFile } = require('child_process');
 
 const examplesDir = path.join(__dirname, '../examples/node');
-const files = fs.readdirSync(examplesDir).filter(f => f.endsWith('.js'));
+const files = fs.readdirSync(examplesDir).filter(f => f.endsWith('.cjs'));
 
 console.log(`Found ${files.length} examples to test.`);
 

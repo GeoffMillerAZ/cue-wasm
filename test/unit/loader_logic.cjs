@@ -27,12 +27,14 @@ function testBrowserLogic() {
 
         // Mock WebAssembly
         global.WebAssembly = {
-            instantiateStreaming: () => Promise.resolve({ instance: { exports: {} } })
+            instantiateStreaming: () => Promise.resolve({ instance: { exports: {} } }),
+            Module: class {},
+            Instance: class { constructor() { this.exports = {}; } }
         };
 
         // Mock Go (required by loader)
         global.Go = class {
-            constructor() { this.importObject = {}; }
+            constructor() { this.importObject = { gojs: {} }; }
             run() {}
         };
 
@@ -62,34 +64,62 @@ function testBrowserLogic() {
     }
 }
 
-function testNodeLogic() {
+async function testNodeLogic() {
     console.log("\nTesting Node Branching Logic...");
-    const { loadWasm } = require(loaderPath);
     
-    // In Node, loadWasm returns a Promise that resolves immediately (due to our select{} in Go, 
-    // it's a bit sync/async mix, but the current test.js verifies the functional part).
-    // Here we just verify it doesn't try to 'fetch'.
-    
+    // ENSURE Node detection
+    const originalWindow = global.window;
+    global.window = undefined;
+
     const originalFetch = global.fetch;
     global.fetch = () => { throw new Error("Should NOT call fetch in Node"); };
-    
+
     try {
-        // We expect this to fail in this unit test because 'Go' isn't fully mocked for Node sync load,
-        // but we want to see it NOT hitting the 'fetch' branch.
-        loadWasm();
-    } catch (e) {
-        assert.ok(!e.message.includes("fetch"), "Node should use fs, not fetch");
-        console.log("✅ Node branch correctly avoided fetch.");
+        // Mock Go for Node check
+        global.Go = class {
+            constructor() { this.importObject = { gojs: {} }; }
+            run() {}
+        };
+
+        // Mock WebAssembly for Node
+        const originalWA = global.WebAssembly;
+        global.WebAssembly = {
+            Module: function() {
+                throw new Error("FS_SUCCESS_SIGNAL");
+            },
+            Instance: class { constructor() { this.exports = {}; } }
+        };
+
+        const { loadWasm } = require(loaderPath);
+        
+        try {
+            await loadWasm();
+        } catch (e) {
+            if (e.message === "FS_SUCCESS_SIGNAL") {
+                console.log("✅ Node branch correctly avoided fetch and reached FS logic.");
+            } else {
+                assert.ok(!e.message.includes("fetch"), "Node should use fs, not fetch. Got: " + e.message);
+            }
+        }
+
+        global.WebAssembly = originalWA;
     } finally {
         global.fetch = originalFetch;
+        global.window = originalWindow;
+        delete global.Go;
+        delete require.cache[loaderPath];
     }
 }
 
-try {
-    testBrowserLogic();
-    testNodeLogic();
-    console.log("\nLoader Logic Verification Passed!");
-} catch (e) {
-    console.error("Verification Failed:", e);
-    process.exit(1);
+async function run() {
+    try {
+        testBrowserLogic();
+        await testNodeLogic();
+        console.log("\nLoader Logic Verification Passed!");
+    } catch (e) {
+        console.error("Verification Failed:", e);
+        process.exit(1);
+    }
 }
+
+run();
