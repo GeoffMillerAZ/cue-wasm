@@ -1,108 +1,94 @@
-# cue-wasm
+# @GeoffMillerAZ/cue-wasm
 
-A lightweight, secure WebAssembly (WASM) runtime for [Cuelang](https://cuelang.org/), enabling you to run CUE validation, unification, and export directly in the browser or Node.js environments without a backend.
+[![NPM Version](https://img.shields.io/npm/v/@GeoffMillerAZ/cue-wasm)](https://www.npmjs.com/package/@GeoffMillerAZ/cue-wasm)
+[![CI Status](https://github.com/GeoffMillerAZ/cue-wasm/actions/workflows/test.yml/badge.svg)](https://github.com/GeoffMillerAZ/cue-wasm/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![CUE Version](https://img.shields.io/badge/CUE-v0.15.4-blue)
+**Cuelang for the Modern Web.** A "Gold Standard" WebAssembly runtime and tooling layer for [Cuelang](https://cuelang.org/), designed for zero-config integration in Next.js, Browsers, and Node.js.
 
-## Features
+---
 
-- **Unify**: Merge multiple CUE files/strings and apply tags.
-- **Validate**: Verify data against a CUE schema with structured error reporting.
-- **Export**: Convert CUE to JSON, YAML, or CUE formats.
-- **Secure**: Runs in a sandboxed WASM environment with no file system access.
-- **Portable**: Works in Node.js (>=18) and modern browsers.
+## 🚀 Key Features
 
-## Performance & Bundle Size
+- **Full CUE Engine**: Authority-level Unification, Validation, and Export powered by the official Go CUE API.
+- **Zero-Config CDN**: Browser builds automatically fetch the WASM binary from jsDelivr—no manual file copying required.
+- **Interactive Tooling**: JS-native `Workspace` manager for multi-file projects, AST symbol extraction, and auto-formatting.
+- **Next.js & React Ready**: Built-in `useCue` hook and singleton management for A+ developer experience.
+- **Security Hardened**: Strict WASM sandbox isolation with verified LFI protection.
 
-The compiled WebAssembly binary is approximately **30MB** raw. However, in production:
-
-1.  **Compression**: Served via Gzip/Brotli, the transfer size drops to **~6.6MB** (Gzip) or less.
-2.  **Lazy Loading**: The WASM binary is loaded asynchronously. Your application's initial bundle size remains small; the 6MB hit only occurs when the CUE runtime is actually requested.
-3.  **Caching**: If using the default CDN loader, the binary is cached aggressively by the browser (immutable versioned URL).
-
-**Optimization Tip:** If you have `binaryen` installed, the build script will automatically run `wasm-opt` to shrink the binary further.
-
-## Installation
+## 📦 Installation
 
 ```bash
 npm install @GeoffMillerAZ/cue-wasm
 ```
 
-### CDN (No Bundler)
+## 🛠 Usage
 
-The WASM binary is available via free CDNs. The library automatically fetches from jsDelivr by default if no local path is provided.
+### 1. In React / Next.js (Recommended)
 
-- **jsDelivr:** `https://cdn.jsdelivr.net/npm/@GeoffMillerAZ/cue-wasm/bin/cue.wasm`
-- **UNPKG:** `https://unpkg.com/@GeoffMillerAZ/cue-wasm/bin/cue.wasm`
+```tsx
+import { CueProvider, useCue } from '@GeoffMillerAZ/cue-wasm/react';
 
-## Usage
-
-![Usage Example](docs/assets/example_code.png)
-
-Check out the [examples/](examples/) directory for runnable code samples:
-- [Node.js Examples](examples/README.md#nodejs-examples)
-- [Browser Playground](examples/README.md#browser-example)
-
-### Node.js
-
-```javascript
-const { loadWasm } = require('@GeoffMillerAZ/cue-wasm');
-
-async function main() {
-    const cue = await loadWasm();
-
-    // 1. Unify
-    const result = await cue.unify({
-        'schema.cue': 'val: string',
-        'data.cue': 'val: "hello"'
-    });
-    console.log(result); // {"val": "hello"}
-
-    // 2. Validate
-    try {
-        await cue.validate('val: int', 'val: "string"');
-    } catch (e) {
-        console.error(e.message); // conflicting values...
-    }
+function App() {
+  return (
+    <CueProvider>
+      <Validator />
+    </CueProvider>
+  );
 }
 
-main();
+function Validator() {
+  const { validate, isLoading } = useCue();
+
+  const check = async () => {
+    const isValid = await validate("age: int & >18", "age: 25");
+    alert(isValid ? "Valid!" : "Invalid");
+  };
+
+  return (
+    <button disabled={isLoading} onClick={check}>
+      {isLoading ? 'Loading Engine...' : 'Validate CUE'}
+    </button>
+  );
+}
 ```
 
-## Development
+### 2. In Node.js / Plain JS
 
-### Prerequisites
+```javascript
+const { loadWasm, Workspace } = require('@GeoffMillerAZ/cue-wasm');
 
-- Go 1.24+
-- Node.js 18+
+async function run() {
+  const cue = await loadWasm();
+  const ws = new Workspace();
 
-### Build
+  ws.addFile('schema.cue', 'package main\n#User: { name: string }');
+  ws.addFile('data.cue', 'package main\nuser: #User & { name: "Geoff" }', true);
 
-To compile the Go source into WASM:
-
-```bash
-./build.sh
+  const res = await cue.unify(ws.getOverlay(), ws.getEntryPoints());
+  console.log(JSON.parse(res));
+}
 ```
 
-### Test
+## 📐 Architecture & Performance
 
-Run the integration and security test suites:
+To prevent accidental "bloat" in your JS bundles, this library is split into two distinct layers:
 
-```bash
-npm test          # Integration tests
-npm run test:security  # Security regression tests
-```
+1.  **WASM Engine (30MB raw / ~6MB compressed)**: The authoritative CUE logic. It is **lazy-loaded** on demand and cached by the browser CDN.
+2.  **JS Tooling (<20KB)**: The ergonomic API and workspace management you import into your application.
 
-## Contributing
+> For detailed information on the integration contract and boundaries, see [Architecture & Contract](./docs/design/architecture.md).
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+## 🧪 Documentation & Examples
 
-## Security
+- **[Examples Inventory](./examples)**: Comprehensive Node, Browser, and Docker demos.
+- **[API Reference](./docs/specs/001-api-surface.md)**: Full method signatures and types.
+- **[Maintainer Guide](./docs/maintainer_guide.md)**: Contribution and build instructions.
 
-See [SECURITY.md](SECURITY.md) for our security policy and reporting guidelines.
+## 🛡 Security
 
-## License
+This project adheres to strict security standards. The WASM runtime is isolated from the host filesystem. For more details, see [SECURITY.md](./SECURITY.md).
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📄 License
+
+MIT © [Geoff Miller](https://github.com/GeoffMillerAZ)

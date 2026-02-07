@@ -6,7 +6,8 @@
   "exports": {
     ".": "./dist/index.js",
     "./cue.wasm": "./bin/cue.wasm",
-    "./react": "./dist/react/index.js"
+    "./react": "./dist/react/index.js",
+    "./tools": "./dist/workspace.js"
   },
   "types": "dist/index.d.ts",
   "repository": {
