@@ -1,7 +1,7 @@
-# @GeoffMillerAZ/cue-wasm
+# @geoffmilleraz/cue-wasm
 
-[![NPM Version](https://img.shields.io/npm/v/@GeoffMillerAZ/cue-wasm)](https://www.npmjs.com/package/@GeoffMillerAZ/cue-wasm)
-[![CI Status](https://github.com/GeoffMillerAZ/cue-wasm/actions/workflows/test.yml/badge.svg)](https://github.com/GeoffMillerAZ/cue-wasm/actions)
+[![NPM Version](https://img.shields.io/npm/v/@geoffmilleraz/cue-wasm)](https://www.npmjs.com/package/@geoffmilleraz/cue-wasm)
+[![CI Status](https://github.com/geoffmilleraz/cue-wasm/actions/workflows/test.yml/badge.svg)](https://github.com/geoffmilleraz/cue-wasm/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Cuelang for the Modern Web.** A "Gold Standard" WebAssembly runtime and tooling layer for [Cuelang](https://cuelang.org/), designed for zero-config integration in Next.js, Browsers, and Node.js.
@@ -19,7 +19,7 @@
 ## 📦 Installation
 
 ```bash
-npm install @GeoffMillerAZ/cue-wasm
+npm install @geoffmilleraz/cue-wasm
 ```
 
 ## 🛠 Usage
@@ -27,7 +27,7 @@ npm install @GeoffMillerAZ/cue-wasm
 ### 1. In React / Next.js (Recommended)
 
 ```tsx
-import { CueProvider, useCue } from '@GeoffMillerAZ/cue-wasm/react';
+import { CueProvider, useCue } from '@geoffmilleraz/cue-wasm/react';
 
 function App() {
   return (
@@ -56,7 +56,7 @@ function Validator() {
 ### 2. In Node.js / Plain JS
 
 ```javascript
-const { loadWasm, Workspace } = require('@GeoffMillerAZ/cue-wasm');
+const { loadWasm, Workspace } = require('@geoffmilleraz/cue-wasm');
 
 async function run() {
   const cue = await loadWasm();
