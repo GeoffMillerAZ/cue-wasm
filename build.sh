@@ -34,6 +34,8 @@ echo "Package Version: $VERSION"
 mkdir -p dist
 sed "s/__VERSION__/$VERSION/g" internal/js/loader.js > dist/index.js
 cp internal/js/workspace.js dist/
+cp internal/js/worker.js dist/
+cp internal/js/worker-manager.js dist/
 
 # 5. Build React Helpers
 echo "Building React helpers..."

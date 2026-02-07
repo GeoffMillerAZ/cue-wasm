@@ -1,23 +1,23 @@
 // Helper script to load the WASM in a browser or node environment
-// This acts as the entry point for the NPM package.
-
 const fs = require('fs');
 const path = require('path');
+const { Workspace } = require('./workspace.js');
+const { WorkerManager } = require('./worker-manager.js');
 
-// Injected during build
 const PACKAGE_VERSION = "__VERSION__";
 const CDN_URL = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${PACKAGE_VERSION}/bin/cue.wasm`;
 
+/**
+ * Traditional synchronous (Node) or streaming (Browser) loader.
+ * Runs on the main thread.
+ */
 function loadWasm(wasmPath) {
     if (typeof Go === 'undefined') {
-        // Polyfill crypto for Node.js < 19 (or where globalThis.crypto is missing)
         if (!globalThis.crypto) {
             globalThis.crypto = {
                 getRandomValues: (arr) => require("crypto").randomFillSync(arr)
             };
         }
-
-        // Try to load local wasm_exec if in Node
         try {
             require('../bin/wasm_exec.js');
         } catch (e) {
@@ -26,31 +26,37 @@ function loadWasm(wasmPath) {
     }
 
     const go = new Go();
-    let wasmBytes;
-
     if (typeof window === 'undefined') {
-        // Node Environment
-        // If no path provided, assume relative to this file in the package structure
         const localPath = wasmPath || path.join(__dirname, '../bin/cue.wasm');
-        wasmBytes = fs.readFileSync(localPath);
+        const wasmBytes = fs.readFileSync(localPath);
+        const mod = new WebAssembly.Module(wasmBytes);
+        const inst = new WebAssembly.Instance(mod, go.importObject);
+        go.run(inst);
+        return global.CueWasm;
     } else {
-        // Browser Environment
-        // If no path provided, default to CDN
         const url = wasmPath || CDN_URL;
-        
         return WebAssembly.instantiateStreaming(fetch(url), go.importObject).then((result) => {
             go.run(result.instance);
             return global.CueWasm;
         });
     }
-
-    // Node Sync Load
-    const mod = new WebAssembly.Module(wasmBytes);
-    const inst = new WebAssembly.Instance(mod, go.importObject);
-    go.run(inst);
-    return global.CueWasm;
 }
 
-const { Workspace } = require('./workspace.js');
+/**
+ * High-performance Web Worker loader with IndexedDB caching.
+ * Prevents UI jank and enables instant reloads.
+ */
+async function loadWasmWorker(options = {}) {
+    if (typeof window === 'undefined') {
+        throw new Error("loadWasmWorker is only supported in browser environments.");
+    }
 
-module.exports = { loadWasm, Workspace };
+    const workerPath = options.workerPath || `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${PACKAGE_VERSION}/dist/worker.js`;
+    const wasmPath = options.wasmPath || CDN_URL;
+    
+    const manager = new WorkerManager(workerPath, wasmPath, PACKAGE_VERSION);
+    await manager.init();
+    return manager;
+}
+
+module.exports = { loadWasm, loadWasmWorker, Workspace };
