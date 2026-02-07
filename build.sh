@@ -16,7 +16,7 @@ go build -ldflags="-s -w" -tags netgo,osusergo -o bin/cue.wasm main.go
 # Optimization (Optional)
 if command -v wasm-opt &> /dev/null; then
     echo "Optimizing cue.wasm with wasm-opt..."
-    wasm-opt -Oz --strip-debug bin/cue.wasm -o bin/cue.wasm
+    wasm-opt -Oz --strip-debug --enable-bulk-memory bin/cue.wasm -o bin/cue.wasm
 else
     echo "wasm-opt not found. Skipping extra optimization."
     echo "Tip: Install binaryen (wasm-opt) for smaller builds."
@@ -28,7 +28,7 @@ cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" bin/
 
 # 4. Generate JS Loader (Inject Version)
 echo "Generating dist/index.js..."
-VERSION=$(node -p "require('./package.json').version")
+VERSION=$(grep '"version":' package.json | head -1 | cut -d '"' -f 4)
 echo "Package Version: $VERSION"
 
 mkdir -p dist
