@@ -20,7 +20,7 @@ func main() {
 		"format":   formatFunc(svc),
 		"getSymbols": getSymbolsFunc(svc),
 		"version": js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-			return js.ValueOf("v1.4.2") // Sync with package.json
+			return js.ValueOf("v1.4.3") // Sync with package.json
 		}),
 	}))
 

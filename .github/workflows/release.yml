@@ -43,7 +43,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         gh release create ${{ github.ref_name }} \
-          bin/cue.wasm \
+          bin/cue-reader.wasm \
+          bin/cue-engine.wasm \
           bin/wasm_exec.js \
           --title "Release ${{ github.ref_name }}" \
           --generate-notes
