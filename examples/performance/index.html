@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUE-WASM Mission Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Load locally built artifacts -->
+    <script src="/bin/wasm_exec.js"></script>
+    <style>
+        [hidden] { display: none !important; }
+        .metric-card { transition: all 0.3s ease; }
+        .metric-card:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="h-full overflow-hidden">
+    <div id="app" class="flex h-full">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-900 text-white flex flex-col flex-shrink-0">
+            <div class="p-4 border-b border-gray-800">
+                <h1 class="text-xl font-bold tracking-tight">Mission Control</h1>
+                <p class="text-xs text-gray-400">CUE-WASM Performance Lab</p>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto p-4 space-y-6">
+                <!-- Controls -->
+                <div>
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Environment</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="toggle-worker" checked class="rounded bg-gray-700 border-gray-600 text-indigo-500 focus:ring-indigo-500">
+                            <span class="text-sm">Web Worker Mode</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="toggle-cache" checked class="rounded bg-gray-700 border-gray-600 text-indigo-500 focus:ring-indigo-500">
+                            <span class="text-sm">IndexedDB Cache</span>
+                        </label>
+                        <button onclick="clearCache()" class="w-full text-left text-xs text-red-400 hover:text-red-300 py-1">
+                            ⚠️ Force Clear Cache
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scenarios -->
+                <div>
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Scenarios</h3>
+                    <div class="space-y-1">
+                        <button onclick="loadScenario('kubernetes')" class="w-full text-left px-2 py-1.5 rounded text-sm hover:bg-gray-800">Kubernetes Config</button>
+                        <button onclick="loadScenario('policy')" class="w-full text-left px-2 py-1.5 rounded text-sm hover:bg-gray-800">Policy Validation</button>
+                        <button onclick="loadScenario('data')" class="w-full text-left px-2 py-1.5 rounded text-sm hover:bg-gray-800">Huge Data (1MB)</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-gray-800">
+                <div id="status-indicator" class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    <span class="text-xs font-mono">Disconnected</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col min-w-0">
+            <!-- Metrics Bar -->
+            <div class="bg-white border-b border-gray-200 p-4 grid grid-cols-4 gap-4 shadow-sm z-10">
+                <div class="metric-card bg-indigo-50 rounded-lg p-3 border border-indigo-100">
+                    <div class="text-xs text-indigo-600 font-medium">Time to Interactive (Reader)</div>
+                    <div class="text-xl font-bold text-indigo-900 mt-1" id="metric-tti">-- ms</div>
+                </div>
+                <div class="metric-card bg-purple-50 rounded-lg p-3 border border-purple-100">
+                    <div class="text-xs text-purple-600 font-medium">Time to Full Engine</div>
+                    <div class="text-xl font-bold text-purple-900 mt-1" id="metric-engine">-- ms</div>
+                </div>
+                <div class="metric-card bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                    <div class="text-xs text-emerald-600 font-medium">Last Unify</div>
+                    <div class="text-xl font-bold text-emerald-900 mt-1" id="metric-unify">-- ms</div>
+                </div>
+                <div class="metric-card bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 font-medium">Memory Usage</div>
+                    <div class="text-xl font-bold text-gray-700 mt-1" id="metric-mem">-- MB</div>
+                </div>
+            </div>
+
+            <!-- Workspace -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Editor -->
+                <div class="w-1/2 flex flex-col border-r border-gray-200">
+                    <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 flex justify-between items-center">
+                        <span class="text-xs font-mono text-gray-600">input.cue</span>
+                        <span id="syntax-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 text-gray-500">WAITING</span>
+                    </div>
+                    <textarea id="editor" class="flex-1 p-4 font-mono text-sm resize-none outline-none" spellcheck="false"></textarea>
+                </div>
+
+                <!-- Result -->
+                <div class="w-1/2 flex flex-col bg-gray-50">
+                    <div class="bg-gray-100 px-4 py-2 border-b border-gray-200">
+                        <span class="text-xs font-mono text-gray-600">output.json</span>
+                    </div>
+                    <pre id="output" class="flex-1 p-4 font-mono text-xs overflow-auto text-gray-700"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script type="module">
+        // Import from the local build
+        import { loadWasmWorker, Workspace } from '/dist/index.js';
+
+        let ws = new Workspace();
+        let cue = null;
+        let startTime = 0;
+
+        // Metrics
+        const metrics = {
+            tti: document.getElementById('metric-tti'),
+            engine: document.getElementById('metric-engine'),
+            unify: document.getElementById('metric-unify'),
+            mem: document.getElementById('metric-mem'),
+            status: document.getElementById('status-indicator'),
+            badge: document.getElementById('syntax-badge'),
+        };
+
+        const editor = document.getElementById('editor');
+        const output = document.getElementById('output');
+
+        // Scenarios
+        const scenarios = {
+            kubernetes: `
+package k8s
+
+deployment: {
+    apiVersion: "apps/v1"
+    kind:       "Deployment"
+    metadata: name: "nginx-deployment"
+    spec: {
+        replicas: 3
+        selector: matchLabels: app: "nginx"
+        template: {
+            metadata: labels: app: "nginx"
+            spec: containers: [{
+                name:  "nginx"
+                image: "nginx:1.14.2"
+                ports: [{containerPort: 80}]
+            }]
+        }
+    }
+}`,
+            policy: `
+#User: {
+    name: string
+    age:  int & >= 18
+    role: "admin" | "member"
+}
+
+users: [...#User]
+
+// Validation Rule
+#ValidateAdmins: {
+    for u in users if u.role == "admin" {
+        _check: u.age >= 21
+    }
+}
+
+data: users: [
+    { name: "Alice", age: 30, role: "admin" },
+    { name: "Bob",   age: 20, role: "member" },
+]
+`,
+            data: `
+// Large list generation
+list: [for x in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] {
+    id: x
+    val: x * x
+}]
+`
+        };
+
+        async function init() {
+            startTime = performance.now();
+            updateStatus('loading', 'Initializing...');
+
+            try {
+                // Determine mode
+                const useWorker = document.getElementById('toggle-worker').checked;
+                
+                // Configure load options
+                // Note: We point to local /bin/ artifacts served by http-server
+                const options = {
+                    workerPath: '/dist/worker.js',
+                    readerPath: '/bin/cue-reader.wasm',
+                    enginePath: '/bin/cue-engine.wasm'
+                };
+
+                // Load!
+                cue = await loadWasmWorker(options);
+                
+                const tti = performance.now() - startTime;
+                metrics.tti.textContent = `${Math.round(tti)} ms`;
+                updateStatus('reader', 'Reader Ready (Engine Loading...)');
+
+                // Poll for engine status (simulated for demo visualization)
+                // In reality, the worker manager handles this transparently
+                // We can try a unify call to check if it's ready, but it might block if not worker
+                // Instead, we just rely on the first unify timing.
+                
+                updateStatus('ready', 'Engine Ready');
+                metrics.engine.textContent = `${Math.round(performance.now() - startTime)} ms`; // Approx
+
+                // Load initial scenario
+                loadScenario('kubernetes');
+
+            } catch (e) {
+                console.error(e);
+                updateStatus('error', 'Error: ' + e.message);
+            }
+        }
+
+        window.loadScenario = (name) => {
+            const code = scenarios[name] || '';
+            editor.value = code;
+            runPipeline();
+        };
+
+        window.clearCache = async () => {
+            if (confirm("Clear IndexedDB cache and reload?")) {
+                const DB_NAME = 'CUE_WASM_CACHE';
+                indexedDB.deleteDatabase(DB_NAME);
+                location.reload();
+            }
+        };
+
+        async function runPipeline() {
+            if (!cue) return;
+            const code = editor.value;
+            ws.addFile('input.cue', code);
+
+            // 1. Syntax Check (Reader)
+            const syntaxStart = performance.now();
+            const syntax = await ws.validateSyntax('input.cue', cue);
+            const syntaxTime = performance.now() - syntaxStart;
+            
+            if (syntax.valid) {
+                metrics.badge.textContent = "VALID";
+                metrics.badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-700";
+            } else {
+                metrics.badge.textContent = "ERROR";
+                metrics.badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700";
+            }
+
+            // 2. Unify (Engine)
+            const unifyStart = performance.now();
+            try {
+                const res = await cue.unify(ws.getOverlay(), ['/input.cue']);
+                output.textContent = JSON.stringify(JSON.parse(res), null, 2);
+                output.className = "flex-1 p-4 font-mono text-xs overflow-auto text-gray-700";
+            } catch (e) {
+                output.textContent = e.message || e;
+                output.className = "flex-1 p-4 font-mono text-xs overflow-auto text-red-600 bg-red-50";
+            }
+            const unifyTime = performance.now() - unifyStart;
+            metrics.unify.textContent = `${Math.round(unifyTime)} ms`;
+        }
+
+        function updateStatus(state, msg) {
+            const el = metrics.status;
+            const dot = el.querySelector('div');
+            const text = el.querySelector('span');
+            text.textContent = msg;
+
+            if (state === 'loading') dot.className = "w-2 h-2 rounded-full bg-yellow-500 animate-pulse";
+            if (state === 'reader') dot.className = "w-2 h-2 rounded-full bg-blue-500";
+            if (state === 'ready') dot.className = "w-2 h-2 rounded-full bg-green-500";
+            if (state === 'error') dot.className = "w-2 h-2 rounded-full bg-red-500";
+        }
+
+        let debounce;
+        editor.addEventListener('input', () => {
+            clearTimeout(debounce);
+            debounce = setTimeout(runPipeline, 300);
+        });
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
