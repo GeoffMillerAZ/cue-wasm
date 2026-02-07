@@ -17,6 +17,8 @@ func main() {
 		"validate": validateFunc(svc),
 		"export":   exportFunc(svc),
 		"parse":    parseFunc(svc),
+		"format":   formatFunc(svc),
+		"getSymbols": getSymbolsFunc(svc),
 		"version": js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 			return js.ValueOf("v0.15.4") // Sync with go.mod version manually for now or use build tags
 		}),
@@ -171,6 +173,64 @@ func parseFunc(svc *core.CueService) js.Func {
 
 			go func() {
 				res, err := svc.Parse(code)
+				if err != nil {
+					reject.Invoke(js.ValueOf(err.Error()))
+					return
+				}
+				resolve.Invoke(js.ValueOf(res))
+			}()
+
+			return nil
+		})
+
+		promiseClass := js.Global().Get("Promise")
+		return promiseClass.New(handler)
+	})
+}
+
+func formatFunc(svc *core.CueService) js.Func {
+	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if len(args) < 1 {
+			return js.ValueOf("error: missing arguments")
+		}
+
+		code := args[0].String()
+
+		handler := js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+			resolve := promiseArgs[0]
+			reject := promiseArgs[1]
+
+			go func() {
+				res, err := svc.Format(code)
+				if err != nil {
+					reject.Invoke(js.ValueOf(err.Error()))
+					return
+				}
+				resolve.Invoke(js.ValueOf(res))
+			}()
+
+			return nil
+		})
+
+		promiseClass := js.Global().Get("Promise")
+		return promiseClass.New(handler)
+	})
+}
+
+func getSymbolsFunc(svc *core.CueService) js.Func {
+	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if len(args) < 1 {
+			return js.ValueOf("error: missing arguments")
+		}
+
+		code := args[0].String()
+
+		handler := js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+			resolve := promiseArgs[0]
+			reject := promiseArgs[1]
+
+			go func() {
+				res, err := svc.GetSymbols(code)
 				if err != nil {
 					reject.Invoke(js.ValueOf(err.Error()))
 					return

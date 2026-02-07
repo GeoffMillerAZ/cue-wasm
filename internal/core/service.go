@@ -6,11 +6,13 @@ import (
 	"strings"
 
 	"cuelang.org/go/cue"
+	"cuelang.org/go/cue/ast"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/errors"
 	"cuelang.org/go/cue/format"
 	"cuelang.org/go/cue/load"
 	"cuelang.org/go/cue/parser"
+	"cuelang.org/go/cue/token"
 	"cuelang.org/go/encoding/yaml"
 )
 
@@ -188,5 +190,138 @@ func (s *CueService) Parse(input string) (string, error) {
 		return "", fmt.Errorf(`{"message": "format error: %s"}`, err.Error())
 	}
 	
-	return string(b), nil
-}
+			return string(b), nil
+	
+		}
+	
+		
+	
+		// Symbol represents a field or package definition in the AST
+	
+		type Symbol struct {
+	
+			Name   string `json:"name"`
+	
+			Type   string `json:"type"`
+	
+			Line   int    `json:"line"`
+	
+			Column int    `json:"column"`
+	
+		}
+	
+		
+	
+		// GetSymbols walks the AST and returns a list of symbols
+	
+		func (s *CueService) GetSymbols(input string) (string, error) {
+	
+			f, err := parser.ParseFile("input.cue", input, parser.ParseComments)
+	
+			if err != nil {
+	
+				return "", fmt.Errorf("%s", FormatError(err))
+	
+			}
+	
+		
+	
+			var symbols []Symbol
+	
+		
+	
+			// Helper to add symbols
+	
+			add := func(name, kind string, pos token.Pos) {
+	
+				symbols = append(symbols, Symbol{
+	
+					Name:   name,
+	
+					Type:   kind,
+	
+					Line:   pos.Line(),
+	
+					Column: pos.Column(),
+	
+				})
+	
+			}
+	
+		
+	
+			// Walk the top-level declarations
+	
+			for _, decl := range f.Decls {
+	
+				switch d := decl.(type) {
+	
+				case *ast.Package:
+	
+					add(d.Name.Name, "package", d.Pos())
+	
+				case *ast.Field:
+	
+					// Extract field name (handles both simple and quoted labels)
+	
+					if label, _, err := ast.LabelName(d.Label); err == nil {
+	
+						add(label, "field", d.Label.Pos())
+	
+					}
+	
+				}
+	
+			}
+	
+		
+	
+			b, err := json.Marshal(symbols)
+	
+			if err != nil {
+	
+				return "", fmt.Errorf(`{"message": "marshal error: %s"}`, err.Error())
+	
+			}
+	
+		
+	
+			return string(b), nil
+	
+		}
+	
+		
+	
+	
+	
+	// Format parses the input CUE and returns a formatted/simplified version.
+	
+	// This is equivalent to 'cue fmt'.
+	
+	func (s *CueService) Format(input string) (string, error) {
+	
+		f, err := parser.ParseFile("input.cue", input, parser.ParseComments)
+	
+		if err != nil {
+	
+			return "", fmt.Errorf("%s", FormatError(err))
+	
+		}
+	
+	
+	
+		b, err := format.Node(f)
+	
+		if err != nil {
+	
+			return "", fmt.Errorf(`{"message": "format error: %s"}`, err.Error())
+	
+		}
+	
+	
+	
+		return string(b), nil
+	
+	}
+	
+	

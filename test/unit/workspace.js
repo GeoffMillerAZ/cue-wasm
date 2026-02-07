@@ -82,4 +82,57 @@ test('Workspace Manager - TDD Suite', async (t) => {
             console.log("✅ Syntax error caught with line info.");
         }
     });
+
+    await t.test('Automatic Formatting - should normalize code and preserve comments', async () => {
+        const { loadWasm } = require('../../dist/index.js');
+        const cue = await loadWasm();
+        const ws = new Workspace();
+
+        const messyCode = `
+        // Important comment
+        a:   1
+        b: 2    // Side comment
+        `;
+
+        ws.addFile('messy.cue', messyCode);
+        const formatted = await ws.formatFile('messy.cue', cue);
+
+        assert(formatted.includes('// Important comment'));
+        assert(formatted.includes('a: 1')); // Whitespace collapsed
+        assert(formatted.includes('b: 2 // Side comment'));
+        console.log("✅ Formatting verified: preserved comments and cleaned whitespace.");
+    });
+
+    await t.test('Symbol Extraction - should identify fields and packages with positions', async () => {
+        const { loadWasm } = require('../../dist/index.js');
+        const cue = await loadWasm();
+        const ws = new Workspace();
+
+        const code = `
+        package config
+        
+        user: {
+            name: "geoff"
+        }
+        version: 1.0
+        `;
+
+        ws.addFile('config.cue', code);
+        const symbols = await ws.getSymbols('config.cue', cue);
+
+        // Verify package
+        const pkg = symbols.find(s => s.type === 'package');
+        assert.strictEqual(pkg.name, 'config');
+        assert.strictEqual(pkg.line, 2);
+
+        // Verify top-level fields
+        const userField = symbols.find(s => s.name === 'user');
+        assert.strictEqual(userField.type, 'field');
+        assert.strictEqual(userField.line, 4);
+
+        const versionField = symbols.find(s => s.name === 'version');
+        assert.strictEqual(versionField.line, 7);
+
+        console.log("✅ Symbol extraction verified: found package and fields with correct lines.");
+    });
 });

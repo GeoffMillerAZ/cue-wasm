@@ -91,6 +91,38 @@ class Workspace {
     }
 
     /**
+     * Formats a specific file in the workspace using 'cue fmt' logic.
+     * Updates the file content in-place and returns the formatted string.
+     * @param {string} path The file to format.
+     * @param {any} cue The loaded CUE WASM instance.
+     * @returns {Promise<string>} The formatted content.
+     */
+    async formatFile(path, cue) {
+        const normalized = path.startsWith('/') ? path : '/' + path;
+        const content = this.files.get(normalized);
+        if (!content) throw new Error(`File not found: ${path}`);
+
+        const formatted = await cue.format(content);
+        this.files.set(normalized, formatted);
+        return formatted;
+    }
+
+    /**
+     * Extracts symbols (fields, packages) from a specific file.
+     * @param {string} path The file to analyze.
+     * @param {any} cue The loaded CUE WASM instance.
+     * @returns {Promise<Array<{name: string, type: string, line: number, column: number}>>}
+     */
+    async getSymbols(path, cue) {
+        const normalized = path.startsWith('/') ? path : '/' + path;
+        const content = this.files.get(normalized);
+        if (!content) throw new Error(`File not found: ${path}`);
+
+        const json = await cue.getSymbols(content);
+        return JSON.parse(json);
+    }
+
+    /**
      * Clears all files from the workspace.
      */
     clear() {
