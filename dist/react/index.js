@@ -1,5 +1,5 @@
-const React = require('react');
-const { loadWasm } = require('../index.js'); // Relative to where this file ends up in dist/
+import React from 'react';
+import { loadWasm, loadWasmWorker } from '../index.js'; // Fixed via build.sh
 
 // Create Context
 const CueContext = React.createContext({
@@ -9,13 +9,16 @@ const CueContext = React.createContext({
     // Default no-op functions that warn if used before load
     validate: async () => { throw new Error("CUE WASM not loaded yet"); },
     unify: async () => { throw new Error("CUE WASM not loaded yet"); },
-    export: async () => { throw new Error("CUE WASM not loaded yet"); }
+    export: async () => { throw new Error("CUE WASM not loaded yet"); },
+    parse: async () => { throw new Error("CUE WASM not loaded yet"); },
+    format: async () => { throw new Error("CUE WASM not loaded yet"); },
+    getSymbols: async () => { throw new Error("CUE WASM not loaded yet"); }
 });
 
 // Singleton promise to prevent double-loading
 let loadingPromise = null;
 
-function CueProvider({ children, wasmPath }) {
+function CueProvider({ children, wasmPath, useWorker = false, workerOptions = {} }) {
     const [state, setState] = React.useState({
         instance: null,
         isLoading: true,
@@ -26,7 +29,7 @@ function CueProvider({ children, wasmPath }) {
         if (state.instance) return;
 
         if (!loadingPromise) {
-            loadingPromise = loadWasm(wasmPath);
+            loadingPromise = useWorker ? loadWasmWorker(workerOptions) : loadWasm(wasmPath);
         }
 
         loadingPromise
@@ -40,13 +43,16 @@ function CueProvider({ children, wasmPath }) {
             .catch(err => {
                 setState(prev => ({ ...prev, isLoading: false, error: err }));
             });
-    }, [wasmPath, state.instance]);
+    }, [wasmPath, useWorker, workerOptions, state.instance]);
 
     // Helpers bound to the instance
     const helpers = React.useMemo(() => ({
         validate: state.instance ? state.instance.validate.bind(state.instance) : async () => {},
         unify: state.instance ? state.instance.unify.bind(state.instance) : async () => {},
-        export: state.instance ? state.instance.export.bind(state.instance) : async () => {},
+        export: state.instance ? (state.instance.export ? state.instance.export.bind(state.instance) : async () => {}) : async () => {},
+        parse: state.instance ? state.instance.parse.bind(state.instance) : async () => {},
+        format: state.instance ? state.instance.format.bind(state.instance) : async () => {},
+        getSymbols: state.instance ? state.instance.getSymbols.bind(state.instance) : async () => {},
     }), [state.instance]);
 
     const value = {
@@ -61,4 +67,4 @@ function useCue() {
     return React.useContext(CueContext);
 }
 
-module.exports = { CueProvider, useCue };
+export { CueProvider, useCue };

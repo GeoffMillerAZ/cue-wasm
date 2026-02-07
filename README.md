@@ -11,9 +11,10 @@
 ## 🚀 Key Features
 
 - **Full CUE Engine**: Authority-level Unification, Validation, and Export powered by the official Go CUE API.
+- **Phased Loading**: Lightweight Reader (**5.2MB**) for instant interactivity, warming up the full Engine (**27.1MB**) in the background.
 - **Zero-Config CDN**: Browser builds automatically fetch the WASM binary from jsDelivr—no manual file copying required.
 - **Interactive Tooling**: JS-native `Workspace` manager for multi-file projects, AST symbol extraction, and auto-formatting.
-- **Next.js & React Ready**: Built-in `useCue` hook and singleton management for A+ developer experience.
+- **Next.js & React Ready**: Built-in `useCue` hook with high-performance Web Worker and IndexedDB caching support.
 - **Security Hardened**: Strict WASM sandbox isolation with verified LFI protection.
 
 ## 📦 Installation
@@ -21,6 +22,15 @@
 ```bash
 npm install @geoff4lf/cue-wasm
 ```
+
+## 🎮 Performance Playground (Mission Control)
+
+Test the phased loading architecture and caching performance in our Dockerized playground:
+
+```bash
+./examples/performance/run.sh
+```
+Then visit [http://localhost:9876/examples/performance/](http://localhost:9876/examples/performance/)
 
 ## 🛠 Usage
 
@@ -31,24 +41,10 @@ import { CueProvider, useCue } from '@geoff4lf/cue-wasm/react';
 
 function App() {
   return (
-    <CueProvider>
+    // useWorker enables phased loading, web workers, and indexedDB caching
+    <CueProvider useWorker={true}>
       <Validator />
     </CueProvider>
-  );
-}
-
-function Validator() {
-  const { validate, isLoading } = useCue();
-
-  const check = async () => {
-    const isValid = await validate("age: int & >18", "age: 25");
-    alert(isValid ? "Valid!" : "Invalid");
-  };
-
-  return (
-    <button disabled={isLoading} onClick={check}>
-      {isLoading ? 'Loading Engine...' : 'Validate CUE'}
-    </button>
   );
 }
 ```
@@ -56,7 +52,7 @@ function Validator() {
 ### 2. In Node.js / Plain JS
 
 ```javascript
-const { loadWasm, Workspace } = require('@geoff4lf/cue-wasm');
+import { loadWasm, Workspace } from '@geoff4lf/cue-wasm';
 
 async function run() {
   const cue = await loadWasm();
@@ -72,12 +68,12 @@ async function run() {
 
 ## 📐 Architecture & Performance
 
-To prevent accidental "bloat" in your JS bundles, this library is split into two distinct layers:
+To prevent accidental "bloat" in your JS bundles and achieve near-instant TTI, this library is split into two distinct layers:
 
-1.  **WASM Engine (30MB raw / ~6MB compressed)**: The authoritative CUE logic. It is **lazy-loaded** on demand and cached by the browser CDN.
-2.  **JS Tooling (<20KB)**: The ergonomic API and workspace management you import into your application.
+1.  **WASM Reader (~5.2MB raw / <1MB compressed)**: The lightweight syntax and formatting engine.
+2.  **WASM Engine (~27.1MB raw / ~6MB compressed)**: The authoritative evaluator.
 
-> For detailed information on the integration contract and boundaries, see [Architecture & Contract](./docs/design/architecture.md).
+> For detailed optimization strategies (HTTP Preloading, Compression), see the [Performance Guide](./docs/performance_guide.md).
 
 ## 🧪 Documentation & Examples
 

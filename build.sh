@@ -44,6 +44,7 @@ echo "Building React helpers..."
 mkdir -p dist/react
 cp internal/react/index.js dist/react/
 cp internal/react/index.d.ts dist/react/
+# Fix the import path in the built file: ../../dist/index.js -> ../index.js
 sed -i '' "s|\.\./\.\./dist/index\.js|\../index.js|g" dist/react/index.js 2>/dev/null || sed -i "s|\.\./\.\./dist/index\.js|\../index.js|g" dist/react/index.js
 
 echo "Build complete."
