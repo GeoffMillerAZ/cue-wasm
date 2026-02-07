@@ -1,6 +1,6 @@
 {
-  "name": "@geoffmilleraz/cue-wasm",
-  "version": "1.2.8",
+  "name": "@geoff4lf/cue-wasm",
+  "version": "1.2.9",
   "description": "Cuelang WASM runtime for the browser.",
   "main": "dist/index.js",
   "exports": {

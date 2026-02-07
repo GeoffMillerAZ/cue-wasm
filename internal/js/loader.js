@@ -6,7 +6,7 @@ const path = require('path');
 
 // Injected during build
 const PACKAGE_VERSION = "__VERSION__";
-const CDN_URL = `https://cdn.jsdelivr.net/npm/@geoffmilleraz/cue-wasm@${PACKAGE_VERSION}/bin/cue.wasm`;
+const CDN_URL = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${PACKAGE_VERSION}/bin/cue.wasm`;
 
 function loadWasm(wasmPath) {
     if (typeof Go === 'undefined') {

@@ -18,9 +18,9 @@ To prevent "bundling accidents" (e.g., accidentally including the 30MB WASM bina
 
 1.  **Lazy Loading**: The WASM binary is **never** imported via `require` or `import` in a way that allows bundlers (Webpack/Esbuild) to inline it. It is always fetched as an external asset via `fetch()` (Browser) or `fs.readFile()` (Node).
 2.  **Explicit Exports**: The `package.json` uses the `exports` field to strictly separate the JS logic from the WASM asset.
-    - `import { Workspace } from '@geoffmilleraz/cue-wasm'` -> JS Only (~10KB)
-    - `import { loadWasm } from '@geoffmilleraz/cue-wasm'` -> Loader (~2KB)
-    - The WASM binary is located at `@geoffmilleraz/cue-wasm/cue.wasm`.
+    - `import { Workspace } from '@geoff4lf/cue-wasm'` -> JS Only (~10KB)
+    - `import { loadWasm } from '@geoff4lf/cue-wasm'` -> Loader (~2KB)
+    - The WASM binary is located at `@geoff4lf/cue-wasm/cue.wasm`.
 
 ## 3. The WASM Contract (API Surface)
 
