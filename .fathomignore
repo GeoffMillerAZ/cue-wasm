@@ -1,0 +1,16 @@
+# Repo-specific index excludes (gitignore-style; see fathom internal/filter).
+
+# 81 MB of third-party JS — not our code, and it drowns real symbols in the
+# ranking. This is 55% of the repo by size.
+node_modules/
+
+# 60 MB of build output (compiled wasm + binaries): zero extractable symbols,
+# and connector reads bytes BEFORE the binary sniff, so excluding by path keeps
+# them out of the walk entirely.
+bin/
+dist/
+*.wasm
+
+# OS + tool state
+.DS_Store
+.playwright-mcp/
