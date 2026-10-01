@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "files": {
+    ".agents/skills/fathom-activate/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:4784309ef839d091049a75d2a78ea31a8aea4eebb7b7faaee8682f185398e087",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-custodian/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:615743018280e1a838fc6f107119748bd448f45cfcc5fdafd89fd3a3963fa52e",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-doctor/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:477fb013a1fe265bf6c652b20a7d969a71ae48c490b41881a24d6f85be1e7f1c",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-feedback/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:a83e4419ea74479ec854b4b6d0b56d5d811fb02e6ffa6b61d9504bfb299ebc7e",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-findings/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:8f7f757ef2efe6f44db7689fa640b889d69b7f0d840013b483e34030af4fd2ec",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-impact/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:6bfd59a2b89b6df6ff367ff99ac0acdead8565b08a39d3c5123e02bf3a62c727",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-onboard/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:327cefe745ac0d92e3a06420f919eee68b180c9c8b5e9bc11db639d0bf660bfc",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-plan/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:a3dcc4e9462d0a019bf47abaa206405bbb275f33934dd291dd0a771166f7f0b8",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-rewire/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:a9aecb06bc04805d25c2adb80b6dfb028f8aeb26e06525d9f1341cbdb83da986",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".agents/skills/fathom-verify/SKILL.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:3ce83a3f1587825213ccf9a32557780fac15ded4b22dfa71a024b4d025413400",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".claude/settings.json": [
+      {
+        "id": "ConfigChange||fathom config audit --hook",
+        "digest": "sha256:cd16af4546094f583eb0141ba9583550bd6964a20224ed76ecae0f0d0a5d000a",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "CwdChanged||fathom session-hook --event cwd-changed",
+        "digest": "sha256:c8575710dc2cc0480196602b75aa3f88cfa6aaa1dc5540bb32f4ee3e32450ecd",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "DirectoryAdded||fathom session-hook --event cwd-changed",
+        "digest": "sha256:c8575710dc2cc0480196602b75aa3f88cfa6aaa1dc5540bb32f4ee3e32450ecd",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "FileChanged|CLAUDE.md|AGENTS.md|concerns.cue|config.toml|fathom config audit --hook --event file-changed",
+        "digest": "sha256:9b7ce3410f290c4486123ef313574b402e68ef01979573c995d6358ffa3d38c5",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "InstructionsLoaded||fathom session-hook --event instructions-loaded",
+        "digest": "sha256:6de5317ea723393d2ea4dc8259cbfef2ef864985904c24c2a2940a1fac797045",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "PostToolUseFailure|Bash|fathom session-hook --event failed-test-run",
+        "digest": "sha256:a97baebdde1fcf5db5e38242b829c0198e3ba4973a6eb53c16ded08904a61f9c",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "PostToolUseFailure|mcp__fathom__.*|mcp__plugin_[^_]*_fathom__.*|fathom session-hook --event tool-failure",
+        "digest": "sha256:2305c89d76ba75463ea9301005cb9ba21324e8031246ecd099c94bcdb0c898ba",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "PostToolUse|Bash|fathom edit-hook",
+        "digest": "sha256:6acaa5808eac7adb40eeab7ae95029197d95c58a6508ca30a9985907a8acd0e9",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "PostToolUse|Bash|fathom session-hook --event test-run",
+        "digest": "sha256:ab3d123da93a05d4ece0362f7a9b28803c8491f2665c598534b2516940300bd1",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "Setup||fathom doctor --brief",
+        "digest": "sha256:eb340c1b78dc8d2c6c6edea1cbc0da26419513c2d88c4cb11ed9c905679e5336",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "SubagentStart||fathom session-hook --event subagent-start",
+        "digest": "sha256:c7ef100a9339d35badf441190ba4391dd53b436d2b07ec67f544aa06a1aa7a64",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "UserPromptSubmit||fathom prompt-hook",
+        "digest": "sha256:2dabd9a33f2738891caa3d303d0bedd8512062bc5735f5d2de899e15c487f35f",
+        "wrote": "2026-09-28T18:50:14Z"
+      }
+    ],
+    ".claude/skills/fathom-activate/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:3d5f2ccc98f087279719f638e8a775671feecc7d27ebb1fd45c1d20fd33ceb5a",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:3108b49010a113e0132b4458ab2f39b34135a70e19417385df32559ddae7db4b",
+        "wrote": "2026-09-28"
+      }
+    ],
+    ".claude/skills/fathom-custodian/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:5bb37cbf6bd9a1748eca05a77cc24f1a8a9fe625237a19f6d3e361cb819cdc63",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:954a97a00b0a67efdaa852addd541e91be6a875adf944d2337d23f9305b533d2",
+        "wrote": "2026-09-28"
+      }
+    ],
+    ".claude/skills/fathom-doctor/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:529a5e25af544a5b5e588494538259b4118361f7cb6851669c7a2fb9e16b6511",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:5e76a84cce60dbe70b9090424c1bef51a82dd2fd903089ab6250c888db938185",
+        "wrote": "2026-09-28"
+      }
+    ],
+    ".claude/skills/fathom-feedback/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:a83e4419ea74479ec854b4b6d0b56d5d811fb02e6ffa6b61d9504bfb299ebc7e",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:a83e4419ea74479ec854b4b6d0b56d5d811fb02e6ffa6b61d9504bfb299ebc7e",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".claude/skills/fathom-findings/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:8f7f757ef2efe6f44db7689fa640b889d69b7f0d840013b483e34030af4fd2ec",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:8f7f757ef2efe6f44db7689fa640b889d69b7f0d840013b483e34030af4fd2ec",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".claude/skills/fathom-impact/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:6bfd59a2b89b6df6ff367ff99ac0acdead8565b08a39d3c5123e02bf3a62c727",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:6bfd59a2b89b6df6ff367ff99ac0acdead8565b08a39d3c5123e02bf3a62c727",
+        "wrote": "2026-09-30"
+      }
+    ],
+    ".claude/skills/fathom-onboard/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:950975e70ebf36e7938af49192ec376500b47c4db24c9c9c8a72306eb177ed74",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:8fd41692db47bdcee5f7fab5dceef541a29830859803c3480017fa287e68398d",
+        "wrote": "2026-09-28"
+      }
+    ],
+    ".claude/skills/fathom-plan/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:0762cd51889a97ce5f94f7ca4c383939a5db95264e1762e58f08e7c6d9234440",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:639c0878af3d477cb67315ca7f6fed978a93a06a5a5511593c49957ef682c16d",
+        "wrote": "2026-09-28"
+      }
+    ],
+    ".claude/skills/fathom-rewire/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:66cd6f5dd5ec1091f9c50a268cc7fdc580339479e31006ee0ca0b450ee705cff",
+        "wrote": "2026-09-30T17:17:20Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:6a6fe63d2494906da065e094f3f4f0239725fa954aab8dddb634f6fd762a397a",
+        "wrote": "2026-09-28"
+      }
+    ],
+    ".claude/skills/fathom-verify/SKILL.md": [
+      {
+        "id": "file",
+        "digest": "sha256:3ce83a3f1587825213ccf9a32557780fac15ded4b22dfa71a024b4d025413400",
+        "wrote": "2026-09-28T18:50:14Z"
+      },
+      {
+        "id": "skill",
+        "digest": "sha256:3ce83a3f1587825213ccf9a32557780fac15ded4b22dfa71a024b4d025413400",
+        "wrote": "2026-09-30"
+      }
+    ],
+    "~/.claude.json": [
+      {
+        "id": "mcp|mcpServers.fathom",
+        "digest": "sha256:91bc969ef46ae928202768622f3df5f2102736d49b46ba2bad05f3754c7f35e2",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/config.toml": [
+      {
+        "id": "mcp|mcp_servers.fathom",
+        "digest": "sha256:0b752c5fabdbfa2b2c34d098b076f10c775f645a132ec3e28f373f14766c3f28",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-activate.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:fac69dd48c9b18672de2e685cc98e438d48cdeeb2b82df294208c7c272c712a3",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-custodian.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:addd640e34c7b8c9540c4f99fbfefef2b804271f429c2994af1b0dc520e26510",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-doctor.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:b250a7f91f7c740d7e968330835b3b8c1bb1c5f8d79a2eb87b05d3ed78088b0c",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-feedback.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:dcaa13280a5f13926e65148fbaf6bb1815f4e9fe8f4e928eac24739f2f3326d3",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-impact.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:4aad5786cfbac6e6533f23ad0824ba256261cac3fdc4d5fa1e71cff629ed4f30",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-onboard.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:87067b17ae83dbef46ba5364eb9273a9ed449f79761a0f0d0b475a6973562cee",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-plan.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:16bdf3905c9a829e9f41606e84ed27f245ef0379c4f37af0397311d25c29f88e",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-rewire.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:79733f6776e3ed7b2c0587badeac3297ff4433b17059b7591d8c3623f1cd6629",
+        "wrote": "2026-09-28"
+      }
+    ],
+    "~/.codex/prompts/fathom-verify.md": [
+      {
+        "id": "skill",
+        "digest": "sha256:c36527eec83bdbd811c5e699496baf4db17b51bed7a32c4764b2a96e785e3a62",
+        "wrote": "2026-09-28"
+      }
+    ]
+  }
+}

@@ -1,5 +1,8 @@
 # Cue-WASM: Design Overview
 
+> Historical record. Current scope and acceptance: [intent](../intent/README.md) and [tracker](../tracking/implementation_tracker.md). Public signatures: internal/js/index.d.ts; migration: docs/design/runtime-migration.md.
+
+
 ## Mission
 To provide a rock-solid, reusable Go library that exposes Cuelang's core capabilities (Load, Unify, Validate, Export) to a WebAssembly environment, usable by JavaScript clients.
 

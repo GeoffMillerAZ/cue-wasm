@@ -1,38 +1,26 @@
-# Roadmap: Cue-WASM Ecosystem
+# Roadmap
 
-**Current Version:** v1.0.0 (WASM Library)
+[Vision](../VISION.md) and [intent](intent/README.md) define the outcome.
+[Implementation tracker](tracking/implementation_tracker.md) owns current evidence.
+No release or publication is implied by a milestone.
 
-## Vision
-To build the universal "Cuelang Engine" that allows any environment (Browser, Server, CLI) to leverage Cuelang's powerful configuration unification and validation capabilities without invoking the heavy `cue` CLI binary.
+1. **Reliable ownership and package closure:** actual installed assets; engine/reader
+   capability selection; bounded queue/input/deadline; failure, abort and disposal;
+   accurate framework-neutral and optional React APIs. Actual browser verification.
+2. **Authoritative, reproducible computation:** pinned Go/CUE builds and shim,
+   deterministic JS generation, artifact manifests; native/WASM corpus and trust
+   boundary regression/fuzz tests. Resolve compatibility differences deliberately.
+3. **Efficient delivery:** measure compressed assets and cold/warm initialization;
+   lazy opt-in evaluation, reader-only syntax; compare streaming/HTTP caching before
+   custom cache or binary chunking. Freeze workload/resource gates before claiming gains.
+4. **Useful adoption:** independent local authoring workbench for theme/configuration
+   and visualization specifications; invalid drafts with actionable errors, cancellation,
+   retry and export. [Configuration studio](../examples/authoring/README.md) exercises
+   the packaged path; domain-specific adoption and resource qualification remain.
+   No sibling checkout dependency.
+5. **Release readiness:** clean-checkout/CI matrix, browser/React adoption, resource
+   evidence, migration, security review and explicit support levels. Publication needs
+   separate authorization.
 
-## Future Phases
-
-### Phase 2: Server-Side & Microservices
-*   **Goal:** Enable non-Go applications (Python, Node, Ruby) to use Cuelang logic via network or IPC.
-*   **Deliverable:** `cmd/cue-server`
-*   **Architecture:**
-    *   Simple HTTP/gRPC server wrapping `internal/core`.
-    *   Endpoints: `POST /unify`, `POST /validate`, `POST /export`.
-*   **Use Cases:**
-    *   **Sidecar Pattern:** Running alongside a legacy app to handle config validation.
-    *   **CI/CD Gate:** A centralized service to validate PR configs.
-
-### Phase 3: CLI Utility (`qub`)
-*   **Goal:** A lightweight, single-binary alternative to `cue` for specific embedded tasks.
-*   **Deliverable:** `cmd/qub`
-*   **Features:**
-    *   Focused strictly on data manipulation (JSON -> Cue -> JSON).
-    *   Zero dependencies (static binary).
-
-### Phase 4: Wasi Interface (Server-Side WASM)
-*   **Goal:** Run the existing WASM binary outside the browser using `wasmtime` or `wazero`.
-*   **Architecture:** Adapt the `main.go` to support WASI (WebAssembly System Interface) standard I/O instead of `syscall/js`.
-*   **Value:** Safe execution of untrusted Cuelang code in a sandboxed environment (Plugin Systems).
-
-### Phase 5: Advanced Tooling
-*   **LSP (Language Server):** Expose an LSP implementation over WASM for web IDEs (Monaco/CodeMirror).
-*   **Formatter:** Expose `cue fmt` logic to auto-format text in textareas.
-
-## Community Integration
-*   **NPM Registry:** Publish `@pac/cue-wasm`.
-*   **Docker Hub:** Publish `pac/cue-server` image.
+Future server/CLI/WASI/LSP ideas moved to [futures](intent/futures.md) with admission
+conditions. They do not compete with these deliverables or imply current availability.

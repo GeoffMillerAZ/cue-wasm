@@ -10,3 +10,6 @@ node_modules/
 # Build Artifacts
 bin/
 # dist/
+
+# Task-owned verification caches and scratch; curated evidence lives in docs.
+/.cache/

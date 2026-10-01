@@ -2,15 +2,19 @@
 
 This document defines the strict boundaries and integration contract between the Go-based WASM engine and the JavaScript tooling layer.
 
+Current owner-directed work: [runtime hardening](runtime-hardening.md) governs explicit
+readiness, bounded lifecycle, package closure and independent adoption. Older size,
+singleton and phased-loading descriptions are not runtime acceptance evidence.
+
 ## 1. The Core Philosophy: "Authority vs. Intelligence"
 
 To maintain high performance and small bundle sizes, we split responsibilities:
 
 | Layer | Component | Language | Role | Authority |
 | :--- | :--- | :--- | :--- | :--- |
-| **Engine** | `cue.wasm` | Go | Semantic Truth | Single source of truth for Unification, Validation, and Export. |
+| **Engine** | `cue.wasm` | Go | CUE semantics | Single source of truth for Unification, Validation, and Export. |
 | **Tooling** | `Workspace` | JavaScript | Orchestration | Handles virtual file paths, AST navigation, and IDE integration. |
-| **React** | `useCue` | JavaScript | Lifecycle | Manages the singleton instance and loading states. |
+| **React** | `useCue` | JavaScript | Lifecycle | Manages provider-owned instances, retry and loading states. |
 
 ## 2. Dependency Boundaries
 

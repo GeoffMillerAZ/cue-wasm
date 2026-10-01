@@ -1,30 +1,32 @@
-<!-- fathom:begin -->
-## fathom code intelligence
+# cue-wasm contributor guidance
 
-This repo is indexed by fathom as service "cue-wasm". Before any Grep/Read
-sweep, resolve where/what/who-calls via the fathom MCP tools:
-`find_symbol`, `references`, `symbol_context`, `outline`, `repo_map`,
-`pack_context`, `verify_plan`. Read files to *edit* them, not to discover
-them — the index replaces exploratory grep.
+## Project intent
 
-Refresh the index via the `ingest` MCP tool (`{"service":"cue-wasm"}`) at
-session start and after each commit; it is hash-gated, so a clean repo
-refreshes in well under a second.
+Read docs/intent/README.md before material design or architecture work; load only
+its routes. Vision: VISION.md. Decisions: docs/adr/README.md. Honor invariants and
+state fired revisit triggers. Use intent-design for material design, intent-decide
+for consequential decisions, and intent-doctor for structural verification.
 
-Obligations — governing rules for the file you are about to touch — are
-injected automatically on every edit via the PostToolUse hook. Treat them
-as binding, not advisory.
+Change records: conventional commits with an honest Verified line, one reviewable
+unit per commit; no WIP on main. Update CHANGELOG.md for observable compatibility
+changes. docs/intent/scope.md defines the surface; do not publish without authority.
 
-Continuity: run `fathom thread brief` at session start if your harness has
-no SessionStart hook (Codex does not) — it prints the open threads, or
-nothing. File what the next session must know: `fathom thread note "…"`.
+Autonomy: implement and verify scoped reversible work; preserve unrelated edits.
+Publication, global configuration, paid inference and private-data transmission need
+specific authority. Never bypass controls. Full policy: docs/intent/autonomy.md.
 
-Done means proven: a plan task is only "done" when the index proves it, not
-when it is claimed. Before checking off a `docs/plans/*.md` item, run:
+## Working boundaries
 
-    fathom verify --service cue-wasm --plan docs/plans/<plan>.md
+Resume from docs/tracking/implementation_tracker.md; acceptance is in
+docs/design/runtime-hardening.md. Update evidence and next action there.
+Go/CUE owns semantics, internal/js owns JS source; dist is generated. React is optional.
+Run npm run build:js, node scripts/generate-js.mjs --check, npm test and native tests
+appropriate to changes. Browser proof: node test/browser/serve.mjs then run fixture.
+Never infer browser, security or performance support from compilation/static analysis.
+Independent authoring: examples/authoring/README.md. Optional real React/types proof:
+test/react-consumer/README.md; its current-source guard prevents stale archive passes.
+Read docs/design/fathom-integration.md for index boundaries and wiring limitations.
 
-Exit 0 = every claimed task verifies. Exit 1 = a claimed task is unproven —
-fix the code or uncheck the box. Exit 2 = operational (daemon down / index
-stale) — fail-open, not a verification failure.
+<!-- fathom:begin v3 sha256:918b1c90559355ef78f33fdf3562f2b021ef8bdfd8a5c8415e5decd44934de55 -->
+@AGENTS.md
 <!-- fathom:end -->

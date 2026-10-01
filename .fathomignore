@@ -14,3 +14,12 @@ dist/
 # OS + tool state
 .DS_Store
 .playwright-mcp/
+
+# Private and generated evidence boundaries
+.env
+.env.*
+*.pem
+*.key
+.cache/
+workspace/
+*.tar.gz

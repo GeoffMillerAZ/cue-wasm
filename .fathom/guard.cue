@@ -1,24 +1,5 @@
-// guard.cue — pre-edit guidance for critical scopes (docs/design/
-// guarded-edits.md). Files/commands matched here get their governing
-// rules injected BEFORE the edit/command runs, not just after.
-//
-// Uncomment and edit to guard a scope. Every field below except "scopes"
-// (or "command_scopes" in the second example) is OPTIONAL — omit a line
-// entirely to leave it unset; never leave a trailing '?' on a field name
-// here (that syntax belongs in the SCHEMA, not an instance — see
-// schema/guard/schema.cue — and would silently drop the field instead of
-// setting it):
-//
-// guards: [{
-// 	scopes: ["internal/store/**", "**/migrations/**"]  // consumer-tree globs
-// 	note:            "Store schema is spec-governed; read docs/spec first."
-// 	max_rules:       4    // OPTIONAL: pre-edit payload cap (default 4)
-// 	include_modules: true // OPTIONAL: also serve bound platform-module rules
-// }]
-//
-// Commands can be guarded the same way (§2.5):
-//
-// guards: [{
-// 	command_scopes: ["terraform apply*", "kubectl *", "*/migrate *"]
-// 	note: "Infra commands are guarded; check the runbook first."
-// }]
+guards: [
+ {scopes: ["package.json", "build.sh", "scripts/generate-js.mjs"], note: "ADR-0002: package closure previously failed despite checkout tests. Run installed archive positive/negative smoke, generated drift checks, and retain matching WASM/shim provenance. Never rely on ambient wasm-opt.", max_rules: 3},
+ {scopes: ["internal/js/worker*.js", "internal/react/*.js"], note: "ADR-0001: readiness previously preceded evaluation and callbacks leaked on failure. Preserve explicit capabilities, bounded ownership and promise settlement; verify abort/crash/disposal and actual browser tasks.", max_rules: 3},
+ {scopes: ["internal/core/*.go", "main.go"], note: "ADR-0002: validation previously concatenated schema/data and temporary Go callbacks were not released. Preserve schema scope and independent values; run native regressions, rebuilt WASM differential corpus and browser lifecycle. Successful validation is not factual authority.", max_rules: 3},
+]
