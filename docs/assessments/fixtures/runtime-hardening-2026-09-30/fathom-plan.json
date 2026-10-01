@@ -1,0 +1,136 @@
+{
+  "gate": {
+    "failures": null,
+    "pass": true
+  },
+  "reports": [
+    {
+      "service": "cue-wasm",
+      "summary": {
+        "fail": 2,
+        "pass": 1,
+        "total": 3,
+        "unknown": 0
+      },
+      "tasks": [
+        {
+          "criteria": [
+            {
+              "detail": "WorkerManager at internal/js/worker-manager.js:11",
+              "name": "symbol_present",
+              "status": "pass"
+            },
+            {
+              "detail": "verified (\u003e= required verified)",
+              "name": "tier",
+              "status": "pass"
+            },
+            {
+              "detail": "no Test* statically reaches it",
+              "name": "test_reaches",
+              "status": "fail"
+            },
+            {
+              "detail": "no conflicting evidence",
+              "name": "no_contradiction",
+              "status": "pass"
+            },
+            {
+              "detail": "wiring is computed for Go symbols only",
+              "name": "wired",
+              "status": "n/a"
+            },
+            {
+              "detail": "no CI/coverage evidence ingested — static checks cannot prove the test passes",
+              "name": "runtime_pass",
+              "status": "unknown"
+            }
+          ],
+          "id": "CW-101",
+          "label": "present-but-untested",
+          "line": 8,
+          "status": "fail",
+          "title": "Harden worker lifecycle and qualify supported hosts"
+        },
+        {
+          "criteria": [
+            {
+              "detail": "NewCueService at internal/core/reader.go:15",
+              "name": "symbol_present",
+              "status": "pass"
+            },
+            {
+              "detail": "verified (\u003e= required verified)",
+              "name": "tier",
+              "status": "pass"
+            },
+            {
+              "detail": "4 test(s) statically reach it, e.g. cue-wasm::internal/core/core_test.TestExport",
+              "name": "test_reaches",
+              "status": "pass"
+            },
+            {
+              "detail": "no conflicting evidence",
+              "name": "no_contradiction",
+              "status": "pass"
+            },
+            {
+              "detail": "product entry point cue-wasm::main.main reaches it",
+              "name": "wired",
+              "status": "pass"
+            },
+            {
+              "detail": "no CI/coverage evidence ingested — static checks cannot prove the test passes",
+              "name": "runtime_pass",
+              "status": "unknown"
+            }
+          ],
+          "id": "CW-102",
+          "label": "verified",
+          "line": 9,
+          "status": "pass",
+          "title": "Preserve authoritative computation and qualify differential corpus"
+        },
+        {
+          "criteria": [
+            {
+              "detail": "Workspace at internal/js/index.d.ts:39",
+              "name": "symbol_present",
+              "status": "pass"
+            },
+            {
+              "detail": "verified (\u003e= required verified)",
+              "name": "tier",
+              "status": "pass"
+            },
+            {
+              "detail": "no Test* statically reaches it",
+              "name": "test_reaches",
+              "status": "fail"
+            },
+            {
+              "detail": "no conflicting evidence",
+              "name": "no_contradiction",
+              "status": "pass"
+            },
+            {
+              "detail": "wiring is computed for Go symbols only",
+              "name": "wired",
+              "status": "n/a"
+            },
+            {
+              "detail": "no CI/coverage evidence ingested — static checks cannot prove the test passes",
+              "name": "runtime_pass",
+              "status": "unknown"
+            }
+          ],
+          "id": "CW-103",
+          "label": "present-but-untested",
+          "line": 10,
+          "status": "fail",
+          "title": "Complete independent authoring consumer and resource qualification"
+        }
+      ]
+    }
+  ]
+}

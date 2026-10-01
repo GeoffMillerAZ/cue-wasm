@@ -5,11 +5,11 @@ echo "========================================"
 echo "   cue-wasm Examples (Dockerized)"
 echo "========================================"
 
-if [ "$1" = "serve" ]; then
+if [ "${1:-}" = "serve" ]; then
     echo "Starting Browser Playground..."
     echo "Open http://localhost:8080/examples/browser/index.html"
-    exec http-server -p 8080 .
-elif [ "$1" = "node" ]; then
+    exec node examples/static-server.mjs
+elif [ "${1:-}" = "node" ]; then
     echo "Running Node.js Examples..."
     echo "----------------------------------------"
     for f in examples/node/*.js; do
@@ -17,7 +17,7 @@ elif [ "$1" = "node" ]; then
         node "$f"
         echo ""
     done
-elif [ "$1" = "shell" ]; then
+elif [ "${1:-}" = "shell" ]; then
     exec /bin/sh
 else
     echo "Usage:"

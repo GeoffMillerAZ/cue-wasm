@@ -1,0 +1,4 @@
+
+> @geoff4lf/cue-wasm@1.4.5 check:generated
+> node scripts/generate-js.mjs --check
+

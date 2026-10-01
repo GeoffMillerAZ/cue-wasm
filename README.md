@@ -62,3 +62,11 @@ startup and memory. [Security](SECURITY.md) describes current boundaries and gap
 No paid provider, backend, Fathom checkout or private corpus is required.
 
 MIT. Contributions follow [AGENTS.md](AGENTS.md) and [intent](docs/intent/README.md).
+
+## Upstream attribution
+
+`bin/THIRD_PARTY_NOTICES.txt` is generated from the pinned reader/engine dependency
+graph, including Go and CUE. Keep it with redistributed WASM/shim assets; the package
+MIT license does not replace upstream terms. The build manifest hashes the notice
+and the installed-package gate rejects its omission. No license fetching is needed
+beyond the pinned Go modules used by the build.

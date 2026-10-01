@@ -1,0 +1,32 @@
+[
+  {
+    "gate": "native",
+    "exit": 0,
+    "seconds": 4.77
+  },
+  {
+    "gate": "suite",
+    "exit": 0,
+    "seconds": 11.97
+  },
+  {
+    "gate": "semantic",
+    "exit": 0,
+    "seconds": 0.95
+  },
+  {
+    "gate": "authoring",
+    "exit": 0,
+    "seconds": 1.23
+  },
+  {
+    "gate": "generated",
+    "exit": 0,
+    "seconds": 0.34
+  },
+  {
+    "gate": "intent",
+    "exit": 0,
+    "seconds": 0.29
+  }
+]

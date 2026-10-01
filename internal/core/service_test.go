@@ -1,11 +1,40 @@
 package core_test
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 
 	"github.com/GeoffMillerAZ/cue-wasm/internal/core"
 )
+
+func TestGetSymbols(t *testing.T) {
+	svc := core.NewCueService()
+	for _, tc := range []struct {
+		name, input, want string
+		wantErr           bool
+	}{
+		{name: "empty", input: "", want: "[]"},
+		{name: "symbol-free scalar", input: "42", want: "[]"},
+		{name: "field", input: "answer: 42", want: `[{"name":"answer","type":"field","line":1,"column":1}]`},
+		{name: "invalid syntax", input: "answer: ;", wantErr: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := svc.GetSymbols(tc.input)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("GetSymbols() error = %v, wantErr %v", err, tc.wantErr)
+			}
+			if tc.wantErr {
+				var detail core.StructuredError
+				if got != "" || json.Unmarshal([]byte(err.Error()), &detail) != nil || detail.Message == "" {
+					t.Fatalf("expected empty output and structured error, got %q, %v", got, err)
+				}
+			} else if got != tc.want {
+				t.Fatalf("GetSymbols() = %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
 
 func TestUnify(t *testing.T) {
 	svc := core.NewCueService()

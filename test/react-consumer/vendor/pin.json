@@ -1,8 +1,10 @@
 {
-  "archive": "cue-wasm-1.4.5-types-fixed.tgz",
-  "sha256": "1633ff5429dfaa7c01cdd0a3328eb02deacf03f4dfd76e98d07ad8e7847efe7b",
-  "origin": "npm pack --offline --ignore-scripts of current main-owned cue-wasm package after declaration fixes; frozen archive, no live source dependency",
+  "archive": "cue-wasm-1.4.5-landing-20261001.tgz",
+  "sha256": "c35dbfcc8e6797fc00e88443e856f60756293cbd6dda2f8391df33dcd578fea1",
+  "origin": "npm pack --offline --ignore-scripts of landing candidate with empty-symbol fix and pinned third-party notices; frozen archive, no live source dependency",
   "packageVersion": "1.4.5",
   "beforeFixArchive": "cue-wasm-1.4.5.tgz",
-  "beforeFixSha256": "9ad024bb06aa8b3b1f600dc97ae1d8f19a21c9fd5fa16ebd3107d3978f407eeb"
+  "beforeFixSha256": "9ad024bb06aa8b3b1f600dc97ae1d8f19a21c9fd5fa16ebd3107d3978f407eeb",
+  "previousArchive": "cue-wasm-1.4.5-types-fixed.tgz",
+  "previousSha256": "1633ff5429dfaa7c01cdd0a3328eb02deacf03f4dfd76e98d07ad8e7847efe7b"
 }

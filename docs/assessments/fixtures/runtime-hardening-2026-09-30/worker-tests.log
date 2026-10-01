@@ -1,0 +1,19 @@
+✔ readiness means selected engine ready; no background reader or hidden runtime (1.847375ms)
+✔ single active call, exact routing and immutable queued payloads (0.856291ms)
+✔ loading/unsupported/queue/input refusals do not dispatch extra work (0.872625ms)
+✔ reader supports syntax and explicitly refuses evaluation (0.267459ms)
+✔ evaluation errors settle one call and allow the next call (0.405458ms)
+✔ queued cancellation removes only that request; active abort rejects all and terminates (0.589833ms)
+✔ deadlines include queue wait and kill active computation (0.471458ms)
+✔ crash, decoding failure, runtime exit and malformed reply settle active and queued work (0.449708ms)
+✔ disposal during initialization is idempotent and settles all pending work (0.131833ms)
+✔ failed initialization rejects loader and disposes the worker (0.101667ms)
+✔ export and Workspace symbol results have the same shape as direct engine (0.191292ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.614583

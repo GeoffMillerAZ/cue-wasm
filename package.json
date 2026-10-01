@@ -14,7 +14,8 @@
     "./cue-reader.wasm": "./bin/cue-reader.wasm",
     "./wasm_exec.js": "./bin/wasm_exec.js",
     "./worker.js": "./dist/worker.js",
-    "./manifest.json": "./bin/manifest.json"
+    "./manifest.json": "./bin/manifest.json",
+    "./THIRD_PARTY_NOTICES.txt": "./bin/THIRD_PARTY_NOTICES.txt"
   },
   "types": "dist/index.d.ts",
   "repository": {
@@ -28,7 +29,8 @@
     "bin/cue-reader.wasm",
     "bin/wasm_exec.js",
     "bin/package.json",
-    "bin/manifest.json"
+    "bin/manifest.json",
+    "bin/THIRD_PARTY_NOTICES.txt"
   ],
   "scripts": {
     "test": "npm run build:js && npm run test:unit && npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge && npm run test:package",

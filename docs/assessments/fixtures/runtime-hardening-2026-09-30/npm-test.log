@@ -1,0 +1,108 @@
+
+> @geoff4lf/cue-wasm@1.4.5 test
+> npm run build:js && npm run test:unit && npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge && npm run test:package
+
+
+> @geoff4lf/cue-wasm@1.4.5 build:js
+> node scripts/generate-js.mjs
+
+
+> @geoff4lf/cue-wasm@1.4.5 test:unit
+> node test/unit/loader_logic.js && node test/unit/worker_logic.js
+
+Testing Browser Branching Logic...
+✅ Correctly defaulted to CDN in browser.
+✅ Correctly respected custom path in browser.
+
+Testing Node Branching Logic...
+✅ Node branch correctly avoided fetch and reached FS logic.
+
+Loader Logic Verification Passed!
+✔ readiness means selected engine ready; no background reader or hidden runtime (1.425083ms)
+✔ single active call, exact routing and immutable queued payloads (0.742167ms)
+✔ loading/unsupported/queue/input refusals do not dispatch extra work (1.131375ms)
+✔ reader supports syntax and explicitly refuses evaluation (0.307542ms)
+✔ evaluation errors settle one call and allow the next call (0.3445ms)
+✔ queued cancellation removes only that request; active abort rejects all and terminates (0.397208ms)
+✔ deadlines include queue wait and kill active computation (0.448875ms)
+✔ crash, decoding failure, runtime exit and malformed reply settle active and queued work (0.525792ms)
+✔ disposal during initialization is idempotent and settles all pending work (0.118875ms)
+✔ failed initialization rejects loader and disposes the worker (0.117292ms)
+✔ export and Workspace symbol results have the same shape as direct engine (0.193167ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10.658667
+
+> @geoff4lf/cue-wasm@1.4.5 test:integration
+> node test/integration/test.js
+
+Running Integration Tests...
+Cue-WASM Initializing...
+Cue-WASM Ready.
+Test 1: Unify
+PASS: Unify
+Test 2: Validate (Valid)
+PASS: Validate (Valid)
+Test 3: Validate (Invalid)
+Caught Error: {"message":"conflicting values int and 'string' (mismatched types int and bytes)"}
+PASS: Structured Error Verified
+Test 4: Export YAML
+PASS: Export YAML
+Test 5: Unify with Tags
+PASS: Unify with Tags
+All Tests Passed!
+
+> @geoff4lf/cue-wasm@1.4.5 test:security
+> node test/security/test_lfi.js
+
+Attempting LFI...
+Cue-WASM Initializing...
+Cue-WASM Ready.
+Caught expected error (safe): {"message":"import failed","line":2,"column":16,"file":"/input_0.cue"}
+PASS: Did not read from disk (or failed to import)
+
+> @geoff4lf/cue-wasm@1.4.5 test:examples
+> node test/examples.js
+
+Found 5 examples to test.
+Running 01_validate.js...
+✅ 01_validate.js passed.
+Running 02_unify.js...
+✅ 02_unify.js passed.
+Running 03_tags.js...
+✅ 03_tags.js passed.
+Running 04_export.js...
+✅ 04_export.js passed.
+Running 05_workspace.js...
+✅ 05_workspace.js passed.
+All examples passed!
+
+> @geoff4lf/cue-wasm@1.4.5 test:edge
+> node test/integration/edge_cases.js
+
+Cue WASM loaded for Edge Case Tests.
+Cue-WASM Initializing...
+Cue-WASM Ready.
+Test 1: Null/Undefined Arguments
+Test 2: Invalid Argument Types
+Test 3: Parallel Execution
+✅ 50 Parallel Unify calls passed.
+Test 4: Large Input
+✅ Processed 1000 items in 54ms
+All Edge Case Tests Passed!
+
+> @geoff4lf/cue-wasm@1.4.5 test:package
+> npm run build:js && node test/package/smoke.mjs
+
+
+> @geoff4lf/cue-wasm@1.4.5 build:js
+> node scripts/generate-js.mjs
+
+PASS: independent tarball default load/evaluation without React
+PASS: missing-default-engine archive rejected by guard and default loader
+Receipt: /Volumes/m2ext/code/geoffmilleraz/cue-wasm/test/package/receipt.json

@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "workload": "authoring-resources-v1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+  "cache": "retained browser/compiler caches; HTTP no-store",
+  "transport": "loopback raw assets",
+  "samples": [
+    {
+      "pair": 0,
+      "mode": "engine",
+      "initMs": 203.2000000178814,
+      "callMs": 61.599999994039536,
+      "lifetimeMs": 264.90000000596046,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 0,
+      "mode": "reader",
+      "initMs": 95.5,
+      "callMs": 13.5,
+      "lifetimeMs": 109,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 1,
+      "mode": "engine",
+      "initMs": 214,
+      "callMs": 55.30000001192093,
+      "lifetimeMs": 269.30000001192093,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 1,
+      "mode": "reader",
+      "initMs": 63.900000005960464,
+      "callMs": 8.199999988079071,
+      "lifetimeMs": 72.09999999403954,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 2,
+      "mode": "engine",
+      "initMs": 138.09999999403954,
+      "callMs": 54,
+      "lifetimeMs": 192.19999998807907,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 2,
+      "mode": "reader",
+      "initMs": 64,
+      "callMs": 11.700000017881393,
+      "lifetimeMs": 75.7000000178814,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 3,
+      "mode": "engine",
+      "initMs": 164.19999998807907,
+      "callMs": 73.09999999403954,
+      "lifetimeMs": 237.40000000596046,
+      "disposeCallMs": 0.10000002384185791,
+      "state": "disposed"
+    },
+    {
+      "pair": 3,
+      "mode": "reader",
+      "initMs": 83.09999999403954,
+      "callMs": 8.299999982118607,
+      "lifetimeMs": 91.39999997615814,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 4,
+      "mode": "engine",
+      "initMs": 192,
+      "callMs": 49.80000001192093,
+      "lifetimeMs": 241.90000000596046,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 4,
+      "mode": "reader",
+      "initMs": 62.80000001192093,
+      "callMs": 10.599999994039536,
+      "lifetimeMs": 73.5,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 5,
+      "mode": "engine",
+      "initMs": 143.2000000178814,
+      "callMs": 50.599999994039536,
+      "lifetimeMs": 193.90000000596046,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 5,
+      "mode": "reader",
+      "initMs": 54.900000005960464,
+      "callMs": 10,
+      "lifetimeMs": 64.90000000596046,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 6,
+      "mode": "engine",
+      "initMs": 131,
+      "callMs": 40.19999998807907,
+      "lifetimeMs": 171.2999999821186,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 6,
+      "mode": "reader",
+      "initMs": 56.30000001192093,
+      "callMs": 8.599999994039536,
+      "lifetimeMs": 64.90000000596046,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 7,
+      "mode": "engine",
+      "initMs": 125.30000001192093,
+      "callMs": 42.5,
+      "lifetimeMs": 167.90000000596046,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 7,
+      "mode": "reader",
+      "initMs": 56,
+      "callMs": 11.900000005960464,
+      "lifetimeMs": 68,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 8,
+      "mode": "engine",
+      "initMs": 154.19999998807907,
+      "callMs": 59.70000001788139,
+      "lifetimeMs": 214,
+      "disposeCallMs": 0.09999999403953552,
+      "state": "disposed"
+    },
+    {
+      "pair": 8,
+      "mode": "reader",
+      "initMs": 59,
+      "callMs": 11.699999988079071,
+      "lifetimeMs": 70.69999998807907,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 9,
+      "mode": "engine",
+      "initMs": 123.80000001192093,
+      "callMs": 44.19999998807907,
+      "lifetimeMs": 168,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    },
+    {
+      "pair": 9,
+      "mode": "reader",
+      "initMs": 60.60000002384186,
+      "callMs": 9.199999988079071,
+      "lifetimeMs": 69.80000001192093,
+      "disposeCallMs": 0,
+      "state": "disposed"
+    }
+  ],
+  "metricsUnavailable": [
+    "total process/worker/WASM memory",
+    "cold startup",
+    "constrained machine",
+    "production network/compression"
+  ],
+  "passed": true,
+  "summary": {
+    "engine": {
+      "initMs": {
+        "p50": 143.2000000178814,
+        "p95": 214
+      },
+      "callMs": {
+        "p50": 50.599999994039536,
+        "p95": 73.09999999403954
+      },
+      "lifetimeMs": {
+        "p50": 193.90000000596046,
+        "p95": 269.30000001192093
+      },
+      "disposeCallMs": {
+        "p50": 0.09999999403953552,
+        "p95": 0.10000002384185791
+      }
+    },
+    "reader": {
+      "initMs": {
+        "p50": 60.60000002384186,
+        "p95": 95.5
+      },
+      "callMs": {
+        "p50": 10,
+        "p95": 13.5
+      },
+      "lifetimeMs": {
+        "p50": 70.69999998807907,
+        "p95": 109
+      },
+      "disposeCallMs": {
+        "p50": 0,
+        "p95": 0.09999999403953552
+      }
+    }
+  }
+}

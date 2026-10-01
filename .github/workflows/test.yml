@@ -7,6 +7,16 @@ on:
   pull_request:
     branches: [main]
 jobs:
+  docker:
+    name: Docker examples smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26.3.0'
+      - run: node test/docker/test.js
   test:
     name: Native, WASM and package (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest

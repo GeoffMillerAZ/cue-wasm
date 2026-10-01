@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "node": "v26.3.0",
+  "typescript": "5.9.3",
+  "publicRootAndReact": "passed",
+  "skipLibCheck": false,
+  "positiveConsumerAndBrowserCompiled": true,
+  "negativeUsagesRejected": 12,
+  "toolsExport": "defect",
+  "toolsDiagnostics": "types/generated-tools.ts(1,27): error TS7016: Could not find a declaration file for module '@geoff4lf/cue-wasm/tools'. '<checkout>/test/react-consumer/node_modules/@geoff4lf/cue-wasm/dist/workspace.js' implicitly has an 'any' type.\n  Try `npm i --save-dev @types/geoff4lf__cue-wasm` if it exists or add a new declaration (.d.ts) file containing `declare module '@geoff4lf/cue-wasm/tools';`",
+  "workerErrorConstructor": "defect",
+  "workerErrorDiagnostics": "types/generated-error.ts(2,34): error TS2559: Type '\"failure\"' has no properties in common with type 'ErrorOptions'.",
+  "browserExecution": "not performed by this command"
+}

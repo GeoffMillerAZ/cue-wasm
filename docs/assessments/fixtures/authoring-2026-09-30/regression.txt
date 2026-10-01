@@ -1,0 +1,163 @@
+
+> @geoff4lf/cue-wasm@1.4.5 test
+> npm run build:js && npm run test:unit && npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge && npm run test:package
+
+
+> @geoff4lf/cue-wasm@1.4.5 build:js
+> node scripts/generate-js.mjs
+
+
+> @geoff4lf/cue-wasm@1.4.5 test:unit
+> node test/unit/loader_logic.js && node test/unit/worker_logic.js && node --test test/unit/react_logic.mjs && node --test test/unit/generation.mjs && node --test test/unit/workspace_logic.mjs && node --test test/unit/runtime_environment.mjs
+
+Testing Browser Branching Logic...
+✅ Correctly defaulted to CDN in browser.
+✅ Correctly respected custom path in browser.
+
+Testing Node Branching Logic...
+✅ Node branch correctly avoided fetch and reached FS logic.
+
+Loader Logic Verification Passed!
+✔ readiness means selected engine ready; no background reader or hidden runtime (1.430708ms)
+✔ single active call, exact routing and immutable queued payloads (0.765834ms)
+✔ loading/unsupported/queue/input refusals do not dispatch extra work (0.985708ms)
+✔ reader supports syntax and explicitly refuses evaluation (0.259042ms)
+✔ evaluation errors settle one call and allow the next call (0.238417ms)
+✔ queued cancellation removes only that request; active abort rejects all and terminates (0.382459ms)
+✔ deadlines include queue wait and kill active computation (0.310875ms)
+✔ crash, decoding failure, runtime exit and malformed reply settle active and queued work (0.765167ms)
+✔ disposal during initialization is idempotent and settles all pending work (0.110583ms)
+✔ failed initialization rejects loader and disposes the worker (0.122958ms)
+✔ export and Workspace symbol results have the same shape as direct engine (0.3115ms)
+✔ worker version remains callable and distinct from package identity (0.099375ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11.493
+✔ separate providers own separate workers; equal inline options do not reload (2.148041ms)
+✔ cleanup aborts initialization and disposes a late result without updating state (0.507083ms)
+✔ effect replay retires the old attempt and ignores its late success (0.154166ms)
+✔ failed initialization exposes an error; retry creates a fresh owned attempt (0.420584ms)
+✔ configuration change disposes ready worker, invalidates retained helpers, and forwards options (0.184958ms)
+✔ helpers reject outside a provider, before readiness, and when a method is absent (0.146041ms)
+✔ helper signatures preserve entry points, tags, request options, this, and JSON symbols (0.704292ms)
+✔ legacy direct calls reject late success after unmount without pretending to dispose Go (0.121875ms)
+✔ retry immediately retires retained helpers and pending results (0.2025ms)
+✔ external signal cancels initialization; provider cleanup does not abort caller controller (0.167333ms)
+✔ terminal worker request failure reaches context error and permits retry (0.133583ms)
+✔ an idle worker failure becomes provider error on the next helper call (0.104625ms)
+✔ initialization signal is detached at readiness and pre-aborted signals are forwarded (0.082958ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92.351291
+✔ generator is idempotent and rejects drift in an isolated source copy (363.932334ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 446.224791
+✔ virtual paths reject traversal, URLs, selectors and aliases before mutating state (2.753417ms)
+✔ formatting cannot overwrite changed, removed or replaced drafts (0.542167ms)
+✔ two concurrent formats admit only the first still-current completion (2.112333ms)
+✔ stale syntax and symbol results are rejected, including invalid old syntax (0.258625ms)
+✔ module identity is escaped and unavailable files never invoke the engine (0.357958ms)
+✔ a parser rejection without a payload is still invalid syntax (0.103709ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 100.044875
+✔ virtual mount refuses backing access; unrelated paths delegate unchanged (2.20325ms)
+✔ adapter preserves real directory constants and requires the Go shim (0.261916ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 96.910083
+
+> @geoff4lf/cue-wasm@1.4.5 test:integration
+> node test/integration/test.js
+
+Running Integration Tests...
+Cue-WASM Initializing...
+Cue-WASM Ready.
+Test 1: Unify
+PASS: Unify
+Test 2: Validate (Valid)
+PASS: Validate (Valid)
+Test 3: Validate (Invalid)
+Caught Error: {"message":"conflicting values int and 'string' (mismatched types int and bytes)","details":"a: conflicting values int and 'string' (mismatched types int and bytes)"}
+PASS: Structured Error Verified
+Test 4: Export YAML
+PASS: Export YAML
+Test 5: Unify with Tags
+PASS: Unify with Tags
+All Tests Passed!
+
+> @geoff4lf/cue-wasm@1.4.5 test:security
+> node test/security/test_lfi.js
+
+Attempting LFI...
+Cue-WASM Initializing...
+Cue-WASM Ready.
+Caught expected error (safe): {"message":"import failed","details":"import failed: /__cue_wasm_workspace__/input_0.cue:2:16: imports are unavailable because there is no cue.mod/module.cue file","line":2,"column":16,"file":"/input_0.cue"}
+PASS: Did not read from disk (or failed to import)
+
+> @geoff4lf/cue-wasm@1.4.5 test:examples
+> node test/examples.js
+
+Found 5 examples to test.
+Running 01_validate.js...
+✅ 01_validate.js passed.
+Running 02_unify.js...
+✅ 02_unify.js passed.
+Running 03_tags.js...
+✅ 03_tags.js passed.
+Running 04_export.js...
+✅ 04_export.js passed.
+Running 05_workspace.js...
+✅ 05_workspace.js passed.
+All examples passed!
+
+> @geoff4lf/cue-wasm@1.4.5 test:edge
+> node test/integration/edge_cases.js
+
+Cue WASM loaded for Edge Case Tests.
+Cue-WASM Initializing...
+Cue-WASM Ready.
+Test 1: Null/Undefined Arguments
+Test 2: Invalid Argument Types
+Test 3: Parallel Execution
+✅ 50 Parallel Unify calls passed.
+Test 4: Large Input
+✅ Processed 1000 items in 64ms
+All Edge Case Tests Passed!
+
+> @geoff4lf/cue-wasm@1.4.5 test:package
+> npm run build:js && node test/package/smoke.mjs
+
+
+> @geoff4lf/cue-wasm@1.4.5 build:js
+> node scripts/generate-js.mjs
+
+PASS: independent tarball default load/evaluation without React
+PASS: missing-default-engine archive rejected by guard and default loader
+Receipt: <checkout>/test/package/receipt.json

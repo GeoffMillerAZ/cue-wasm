@@ -10,7 +10,7 @@
 | Explicit entries are supplied virtual files; imports never use ambient registries | native virtual boundary tests and native/WASM corpus |
 | Late helper results never replace edited/recreated Workspace drafts | test/unit/workspace_logic.mjs and installed browser fixture |
 | Generated JS/types derive from internal sources | scripts/generate-js.mjs --check |
-| Published archive must contain default engine/reader/shim | test/package/smoke.mjs positive and missing-asset negative checks |
+| Published archive must contain default engine/reader/shim and upstream notices | test/package/smoke.mjs positive and missing-asset negative checks |
 | React/Fathom/app-kit/providers are not core runtime dependencies | package manifest; installed Node smoke without React |
 | No source text, credentials or private corpus in routine telemetry | stated; security audit remains required |
 | Every new performance/support claim names its evidence and limits | stated; tracker/review gate |

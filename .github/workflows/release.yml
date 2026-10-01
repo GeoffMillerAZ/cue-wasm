@@ -58,6 +58,7 @@ jobs:
           bin/cue-engine.wasm \
           bin/wasm_exec.js \
           bin/manifest.json \
+          bin/THIRD_PARTY_NOTICES.txt \
           --title "Release $RELEASE_TAG" \
           --generate-notes
 

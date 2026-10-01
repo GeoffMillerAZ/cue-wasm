@@ -1,5 +1,29 @@
 [
   {
+    "name": "symbols empty",
+    "action": "getSymbols",
+    "args": [""],
+    "want": "[]"
+  },
+  {
+    "name": "symbols scalar",
+    "action": "getSymbols",
+    "args": ["42"],
+    "want": "[]"
+  },
+  {
+    "name": "symbols field",
+    "action": "getSymbols",
+    "args": ["answer: 42"],
+    "want": "[{\"name\":\"answer\",\"type\":\"field\",\"line\":1,\"column\":1}]"
+  },
+  {
+    "name": "symbols invalid syntax",
+    "action": "getSymbols",
+    "args": ["answer: ;"],
+    "error": true
+  },
+  {
     "name": "defaults",
     "action": "export",
     "args": [

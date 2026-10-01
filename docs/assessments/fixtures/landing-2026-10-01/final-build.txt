@@ -1,0 +1,5 @@
+
+> @geoff4lf/cue-wasm@1.4.5 build:wasm
+> ./build.sh
+
+Third-party notices: 18 components, 133141 bytes

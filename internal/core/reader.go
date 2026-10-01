@@ -91,7 +91,7 @@ func (s *CueService) GetSymbols(input string) (string, error) {
 		return "", fmt.Errorf("%s", FormatError(err))
 	}
 
-	var symbols []Symbol
+	symbols := []Symbol{}
 
 	// Recursive walk using ast.Walk
 	ast.Walk(f, func(n ast.Node) bool {

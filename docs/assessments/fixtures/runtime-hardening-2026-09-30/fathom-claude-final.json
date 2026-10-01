@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "name": "hooks_installed",
+      "status": "pass",
+      "reason": "all 20 fathom hooks wired (user + project scope)"
+    },
+    {
+      "name": "lefthook_gates",
+      "status": "pass",
+      "reason": "/Volumes/m2ext/code/geoffmilleraz/cue-wasm/lefthook.yml has a fathom verify step (no fathom review step present — optional, C3-1)"
+    },
+    {
+      "name": "harness_hooks",
+      "status": "skipped",
+      "reason": "Claude Code's hook files are covered by hooks_installed and hooks_firing"
+    },
+    {
+      "name": "stanza_present",
+      "status": "pass",
+      "reason": "AGENTS.md: fathom stanza well-formed; Claude Code loads it: imported by CLAUDE.md"
+    },
+    {
+      "name": "skills_installed",
+      "status": "pass",
+      "reason": "all 10 shipped skills current in /Volumes/m2ext/code/geoffmilleraz/cue-wasm/.claude/skills for claude"
+    },
+    {
+      "name": "wiring_drift",
+      "status": "pass",
+      "reason": "no drift across 34 checked entries"
+    },
+    {
+      "name": "config_valid",
+      "status": "pass",
+      "reason": "user + project .fathom/config.toml (where present) validate against the CUE schema"
+    },
+    {
+      "name": "binding_file",
+      "status": "pass",
+      "reason": ".fathom/modules.cue present but declares no bindings yet — scaffold awaiting opt-in (uncomment an example to activate)"
+    },
+    {
+      "name": "guard_file",
+      "status": "pass",
+      "reason": ".fathom/guard.cue valid — 3 guard(s)"
+    },
+    {
+      "name": "guard_include_modules_unbound",
+      "status": "pass",
+      "reason": "no guard sets include_modules"
+    },
+    {
+      "name": "user_scope_ignore",
+      "status": "pass",
+      "reason": "no ~/.fathom/ignore configured"
+    }
+  ],
+  "harness": "claude",
+  "root": "/Volumes/m2ext/code/geoffmilleraz/cue-wasm",
+  "service": "cue-wasm",
+  "summary": {
+    "fail": 0,
+    "pass": 10,
+    "skipped": 1,
+    "total": 11,
+    "warn": 0
+  }
+}

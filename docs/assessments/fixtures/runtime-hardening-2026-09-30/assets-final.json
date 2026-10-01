@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "node": "v26.3.0",
+  "compression": {
+    "gzipLevel": 9,
+    "brotliQuality": 5
+  },
+  "assets": [
+    {
+      "name": "cue-reader.wasm",
+      "bytes": 5875788,
+      "sha256": "1018c88c5467c49b050b9281011a3ed57c5eaf0e6abbf411961ba2ad52a4330e",
+      "gzip9": 1643419,
+      "brotli5": 1422263
+    },
+    {
+      "name": "cue-engine.wasm",
+      "bytes": 31701719,
+      "sha256": "7c4d2c1aa9a42b9eba1be23bb49807de766524e49dbf56b81864b18a8add5067",
+      "gzip9": 6892905,
+      "brotli5": 5778705
+    },
+    {
+      "name": "wasm_exec.js",
+      "bytes": 16992,
+      "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
+      "gzip9": 4352,
+      "brotli5": 4165
+    }
+  ],
+  "limitations": [
+    "Transfer sizes only; not startup or peak memory",
+    "Server must serve matching Content-Encoding; browser decompression costs not measured",
+    "Existing binary provenance must be checked separately"
+  ]
+}

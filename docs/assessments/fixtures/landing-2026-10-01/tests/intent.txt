@@ -1,0 +1,5 @@
+
+> @geoff4lf/cue-wasm@1.4.5 check:intent
+> node scripts/check-intent.mjs
+
+Intent structural subset passed: budgets, links, ADR shape/index, identical stanza, changelog, compatibility. Not host loading or semantic truth.

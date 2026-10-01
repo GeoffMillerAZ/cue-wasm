@@ -1,0 +1,13 @@
+✔ virtual paths reject traversal, URLs, selectors and aliases before mutating state (1.803458ms)
+✔ formatting cannot overwrite changed, removed or replaced drafts (0.304541ms)
+✔ two concurrent formats admit only the first still-current completion (0.096791ms)
+✔ stale syntax and symbol results are rejected, including invalid old syntax (0.446875ms)
+✔ module identity is escaped and unavailable files never invoke the engine (0.239917ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87.975125

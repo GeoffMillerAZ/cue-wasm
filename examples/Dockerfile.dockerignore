@@ -1,0 +1,13 @@
+**
+!go.mod
+!go.sum
+!main.go
+!build.sh
+!package.json
+!LICENSE
+!scripts/
+!scripts/**
+!internal/
+!internal/**
+!examples/
+!examples/**

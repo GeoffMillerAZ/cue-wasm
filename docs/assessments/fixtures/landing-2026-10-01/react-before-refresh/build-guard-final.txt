@@ -1,0 +1,16 @@
+
+> cue-wasm-react-consumer-verification@0.0.0 test:build
+> node --test scripts/build.test.mjs scripts/check-current.test.mjs
+
+✔ Frozen archive and local installation match; no sibling or source dependency (155.872625ms)
+✔ Two builds with the same installed inputs yield identical served bytes (300.400417ms)
+✔ Self-hosted prefix serves complete build, real worker and WASM with correct MIME; rejects missing/private/traversal routes (93.567375ms)
+✔ source/archive guard refuses declaration, export and binary drift without silently repinning (20.062667ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 664.717583

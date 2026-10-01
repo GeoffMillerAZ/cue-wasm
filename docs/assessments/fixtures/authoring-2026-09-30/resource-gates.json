@@ -1,0 +1,18 @@
+{
+  "workload": "authoring-resources-v1",
+  "passed": true,
+  "checked": [
+    "20 correct serialized lifetimes",
+    "all owners disposed",
+    "init p95 <=1500ms",
+    "call p95 <=100ms",
+    "engine gzip <=8MiB",
+    "reader gzip <=2MiB"
+  ],
+  "notQualified": [
+    "total memory",
+    "cold start",
+    "constrained host",
+    "production network"
+  ]
+}

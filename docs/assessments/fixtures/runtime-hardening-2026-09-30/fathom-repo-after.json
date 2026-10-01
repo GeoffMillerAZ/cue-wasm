@@ -1,0 +1,70 @@
+{
+  "checks": [
+    {
+      "name": "hooks_installed",
+      "status": "pass",
+      "reason": "8 of 8 fathom hook entries wired for Codex CLI (user ~/.codex/hooks.json); note: trust the fathom entries in `/hooks` (Codex records trust against each hook's hash; a changed command re-prompts) and keep `[features] hooks = true` in config.toml"
+    },
+    {
+      "name": "lefthook_gates",
+      "status": "fail",
+      "reason": "no lefthook.yml/lefthook.yaml at /Volumes/m2ext/code/geoffmilleraz/cue-wasm",
+      "remedy": "add a `fathom verify` (and optionally `fathom review`) step to lefthook.yml's pre-push — docs/adoption/claude-code.md §7.4"
+    },
+    {
+      "name": "harness_hooks",
+      "status": "skipped",
+      "reason": "Codex CLI's hook files are covered by hooks_installed and hooks_firing (the descriptor is verified: codex-cli 0.153.1 (2026-09-12, headless exec): hooks fired from CODEX_HOME/hooks.json, five live stdin captures replay through CodexCodec, and the MCP surface answered list_services over /rpc/agent)"
+    },
+    {
+      "name": "stanza_present",
+      "status": "pass",
+      "reason": "AGENTS.md: fathom stanza well-formed; Claude Code loads it: imported by CLAUDE.md"
+    },
+    {
+      "name": "skills_installed",
+      "status": "pass",
+      "reason": "all 10 shipped skills current in /Volumes/m2ext/code/geoffmilleraz/cue-wasm/.agents/skills for codex (.agents/skills links to .claude/skills) (discovery of .agents/skills by Codex CLI is unverified on this machine)"
+    },
+    {
+      "name": "wiring_drift",
+      "status": "pass",
+      "reason": "no drift across 34 checked entries"
+    },
+    {
+      "name": "config_valid",
+      "status": "pass",
+      "reason": "user + project .fathom/config.toml (where present) validate against the CUE schema"
+    },
+    {
+      "name": "binding_file",
+      "status": "pass",
+      "reason": ".fathom/modules.cue present but declares no bindings yet — scaffold awaiting opt-in (uncomment an example to activate)"
+    },
+    {
+      "name": "guard_file",
+      "status": "pass",
+      "reason": ".fathom/guard.cue present but declares no guards yet — scaffold awaiting opt-in (uncomment an example to activate)"
+    },
+    {
+      "name": "guard_include_modules_unbound",
+      "status": "pass",
+      "reason": "no guard sets include_modules"
+    },
+    {
+      "name": "user_scope_ignore",
+      "status": "pass",
+      "reason": "no ~/.fathom/ignore configured"
+    }
+  ],
+  "harness": "codex",
+  "root": "/Volumes/m2ext/code/geoffmilleraz/cue-wasm",
+  "service": "cue-wasm",
+  "summary": {
+    "fail": 1,
+    "pass": 9,
+    "skipped": 1,
+    "total": 11,
+    "warn": 0
+  }
+}

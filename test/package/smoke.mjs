@@ -13,7 +13,7 @@ const required = [
     'package.json', 'dist/index.js', 'dist/index.d.ts', 'dist/workspace.js',
     'dist/worker.js', 'dist/worker-manager.js', 'dist/react/index.js',
     'dist/react/index.d.ts', 'bin/cue.wasm', 'bin/cue-engine.wasm',
-    'bin/cue-reader.wasm', 'bin/wasm_exec.js', 'bin/package.json', 'bin/manifest.json',
+    'bin/cue-reader.wasm', 'bin/wasm_exec.js', 'bin/THIRD_PARTY_NOTICES.txt', 'bin/package.json', 'bin/manifest.json',
 ];
 const assets = {
     './cue.wasm': 'bin/cue.wasm',
@@ -23,6 +23,7 @@ const assets = {
     './wasm_exec.js': 'bin/wasm_exec.js',
     './worker.js': 'dist/worker.js',
     './manifest.json': 'bin/manifest.json',
+    './THIRD_PARTY_NOTICES.txt': 'bin/THIRD_PARTY_NOTICES.txt',
 };
 const json = path => JSON.parse(readFileSync(path, 'utf8'));
 const sha256 = path => createHash('sha256').update(readFileSync(path)).digest('hex');
@@ -40,6 +41,11 @@ function checkClosure(root) {
         assert.equal(sha256(join(root, 'bin', name)), asset.sha256, `Asset hash mismatch: ${name}`);
         assert.equal(statSync(join(root, 'bin', name)).size, asset.bytes);
     }
+    const notices = readFileSync(join(root, 'bin/THIRD_PARTY_NOTICES.txt'), 'utf8');
+    assert.ok(notices.includes(`COMPONENT: Go ${build.go}`));
+    assert.ok(notices.includes(`COMPONENT: cuelang.org/go ${build.cue}`));
+    assert.match(notices, /Apache License/);
+    assert.match(notices, /Redistribution and use in source and binary forms/);
     assert.equal(build.assets['cue.wasm'].sha256, build.assets['cue-engine.wasm'].sha256);
     assert.equal(json(join(root, 'bin/package.json')).type, 'commonjs');
     assert.equal(manifest.peerDependenciesMeta?.react?.optional, true);
@@ -133,6 +139,9 @@ if (process.argv[2] === '--probe') {
         assert.match(String(failure.stderr), /cue-engine\.wasm/);
         receipt.negative = { omitted: 'bin/cue-engine.wasm', archiveSha256: sha256(missingArchive),
             closureGuard: 'rejected missing required file', defaultLoader: 'failed ENOENT', exitCode: failure.status };
+        rmSync(join(positive.root, 'bin/THIRD_PARTY_NOTICES.txt'));
+        assert.throws(() => checkClosure(positive.root), /Missing required package file: bin\/THIRD_PARTY_NOTICES.txt/);
+        receipt.licenseGuard = 'Missing upstream notices rejected';
         receipt.status = 'passed';
         console.log('PASS: independent tarball default load/evaluation without React');
         console.log('PASS: missing-default-engine archive rejected by guard and default loader');

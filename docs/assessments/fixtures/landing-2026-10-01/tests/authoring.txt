@@ -1,0 +1,26 @@
+
+> @geoff4lf/cue-wasm@1.4.5 test:authoring
+> node --test test/authoring/session.test.mjs && node test/authoring/semantic.mjs
+
+✔ only evaluated current revision exports; returned preview cannot mutate owner (1.089792ms)
+✔ late evaluate never changes edited draft or preview (0.083625ms)
+✔ late format never changes edited draft or preview (0.065125ms)
+✔ cancel retires owner, preserves draft and refuses late result (0.082583ms)
+✔ replaced initialization disposes late owner (0.096791ms)
+✔ failure is recoverable and duplicate evaluations do not queue (0.489292ms)
+✔ dispose prevents all late notifications, is idempotent and rejects edits (0.287458ms)
+✔ input bounds reject bytes beyond limit without altering draft (0.204083ms)
+✔ initialization failure retries with finite worker budgets and preserves edits (0.430042ms)
+✔ worker crash enters retry state, never presenting invalid fresh output (0.248375ms)
+✔ structured diagnostics preserve source context without raw JSON wrappers (0.309083ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.440125
+Cue-WASM Initializing...
+Cue-WASM Ready.
+{"passed":10,"source":"authoring schema; official CUE v0.15.4 native and WASM","browser":false}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "packageVersion": "1.4.5",
+  "go": "go1.24.4",
+  "cue": "v0.15.4",
+  "target": "js/wasm",
+  "flags": [
+    "-mod=readonly",
+    "-trimpath",
+    "-buildvcs=false",
+    "-s",
+    "-w"
+  ],
+  "optimizer": "none",
+  "tags": {
+    "reader": [
+      "netgo",
+      "osusergo",
+      "reader"
+    ],
+    "engine": [
+      "netgo",
+      "osusergo"
+    ]
+  },
+  "linkerPackageVersion": "v1.4.5",
+  "sourceHashes": {
+    "build.sh": "27915c33215d4ef11cf99a2efb8392e66562809b77ece03ec38d9fae97ee8866",
+    "go.mod": "23351d67fe5a47e7e78361c83b7645ffffb0499b62d4f42004e56dbd6129c1f7",
+    "go.sum": "289f722f56d9191191f78419a4fe6f2f30e86ce4220277a6720d0c008a5af182",
+    "internal/core/engine.go": "776a58ce0007b3b5976ecaf0a931f585235b795809c208252ca34e9306d96929",
+    "internal/core/engine_stub.go": "e68319c21418eced4171ded966bc085f5f10a881885993b1bfeada1bebb73aba",
+    "internal/core/offline_registry.go": "4e0da289d30d9881307e7ec28e193daeee32b7486a25fdda4fd54e19420271b7",
+    "internal/core/reader.go": "bdf509cf1a1fb492478d56404acf0c38364295b9b4c90a2639acfe74bb3bbb97",
+    "internal/core/virtual.go": "deab8fb0e9bb78fcd819a09514b8170f2be1df33f297fbce52e2368f2523d099",
+    "main.go": "d1df9d6f018dfecd66f276e16cf2a97cef1be51512aacdba89b8efd4790f6a53",
+    "scripts/build-manifest.mjs": "4ab6b07b5adc3a2177dd69bf9442d0b02b5248ef723da383bd699e3bb82d4559",
+    "scripts/generate-notices.mjs": "094d678dd6195149aac44d4d66363f7cca9e65d155543086b931823882db5951"
+  },
+  "assets": {
+    "cue-reader.wasm": {
+      "sha256": "b502a5709fc88f45ce4855742568f67718d2c00ce1d5980a5f0520eb1961ea9a",
+      "bytes": 5876772
+    },
+    "cue-engine.wasm": {
+      "sha256": "02f502d5f28b616deb5fb277ec085c342f0ec91e75ba51d93443b350440ac84b",
+      "bytes": 31715725
+    },
+    "cue.wasm": {
+      "sha256": "02f502d5f28b616deb5fb277ec085c342f0ec91e75ba51d93443b350440ac84b",
+      "bytes": 31715725
+    },
+    "wasm_exec.js": {
+      "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
+      "bytes": 16992
+    },
+    "THIRD_PARTY_NOTICES.txt": {
+      "sha256": "dbafd54c6812ed6cbd4610c13e2f38a961cbf4af03728259621482f8b41a546d",
+      "bytes": 133141
+    }
+  }
+}

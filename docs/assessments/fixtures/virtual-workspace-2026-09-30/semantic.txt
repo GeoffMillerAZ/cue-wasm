@@ -1,0 +1,7 @@
+
+> @geoff4lf/cue-wasm@1.4.5 test:semantic
+> node test/semantic/compare.mjs
+
+Cue-WASM Initializing...
+Cue-WASM Ready.
+{"passed":19,"cueSource":"v0.15.4","oracle":"same pinned official engine native; fixed expected outcomes independently authored","limitations":["Not exhaustive language conformance","Diagnostic text/location equivalence not covered","No arbitrary module resolution qualified"]}

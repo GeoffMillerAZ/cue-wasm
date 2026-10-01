@@ -1,0 +1,21 @@
+what governs internal/js/worker-manager.js in cue-wasm (layer rules; store /Volumes/m2ext/code/geoffmilleraz/sextant/workspace/db/fleet.sqlite (rule daemon: the store recorded by serve-http pid 66418 on 127.0.0.1:7575 since 2026-09-30T02:56:14Z))
+
+ 1. [raw] Working boundaries
+      AGENTS.md#L18-L26 (obligations)
+      compiled layer incomplete: uncompiled; raw nearest guide served
+ 2. [raw] Working boundaries
+      CLAUDE.md#L18-L26 (obligations)
+      compiled layer incomplete: uncompiled; raw nearest guide served
+ 3. [doc-claimed] Workspace class must catch basic path errors before crossing the WASM boundary.
+      docs/design/architecture.md#L56-L56 (adr-rules)
+      hook, last 30 days: served 0 · complied 0 · violated 0
+ 4. [doc-claimed] Workspace class must ensure all paths start with / before passing to WASM.
+      docs/design/architecture.md#L54-L54 (adr-rules)
+      hook, last 30 days: served 0 · complied 0 · violated 0
+ 5. [doc-claimed] Workspace class must track which files are roots vs dependencies to optimize load.Instances.
+      docs/design/architecture.md#L55-L55 (adr-rules)
+      hook, last 30 days: served 0 · complied 0 · violated 0
+
+note: CLAUDE.md governs this path and was not compiled: 0/4 sections compiled; resume with `fathom compile --layer obligations --service cue-wasm --store /Volumes/m2ext/code/geoffmilleraz/sextant/workspace/db/fleet.sqlite --continue --dry-run=false`
+
+layer rules (/Volumes/m2ext/code/geoffmilleraz/cue-wasm/.fathom/guard.cue): none governs this path

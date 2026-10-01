@@ -4,7 +4,7 @@ Owner-authorized uplift, 2026-09-30. [Intent](../intent/README.md),
 [roadmap](../roadmap.md), [acceptance](../design/runtime-hardening.md).
 Baseline f703f9afcb10a03cda5388ee59def4c518f844c5; branch
 feat/authoring-runtime-hardening-20260930. Pre-existing agent/Fathom edits preserved;
-fleet-managed reconciliation has reversible receipt 01439419d159. No publish/push.
+fleet-managed reconciliation has reversible receipt 01439419d159. Push authorized by the owner; no npm publication or tag.
 Historical extraction/checklist claims remain in Git history, not current acceptance.
 
 ## Current outcomes
@@ -15,7 +15,7 @@ Historical extraction/checklist claims remain in Git history, not current accept
 | Worker ownership | One active request, finite queue/input/deadlines; cancellation, disposal, failure, immutable queued inputs; engine or explicit reader | Sustained resource/host qualification |
 | Semantic fidelity | Pinned Go1.24.4/CUE0.15.4; independent schema/data with scoped definitions; validated virtual paths, offline registry; temporary Go executor callbacks released | Supplied local modules and bounded paths pass; broader security qualification and CUE0.16.1 consumer compatibility |
 | Determinism | Generated JS/types idempotence + deliberate drift negative; two consecutive WASM builds have identical manifests | Reproduction from a clean independent checkout/CI |
-| Native/WASM | 19 shared fixed-outcome cases: precision, defaults, closedness, conflicts, incomplete data, scalar/list constraints, binding isolation, tags, builtin entry selection, virtual identity, offline dependencies and local modules | Not exhaustive CUE conformance or diagnostic equivalence |
+| Native/WASM | 23 shared fixed-outcome cases: precision, defaults, closedness, conflicts, incomplete data, scalar/list constraints, binding isolation, tags, builtin entry selection, virtual identity, offline dependencies and local modules | Not exhaustive CUE conformance or diagnostic equivalence |
 | Browser | Chrome154/macOS source and installed npm archive: 11 lifecycle/boundary groups pass, including restart after abort/fetch failure and three repeated mounts | Other browsers and resource qualification; no memory claim |
 | React | React19.2/StrictMode actual12 groups pass on final installed archive under nested hosting;20 workers terminated/0live; TS5.9 strict positive and12 negative cases; tools/error declarations fixed | Other React/browser versions and resource qualification; current-source/archive drift guard now required |
 | Project governance | Vision/intent/ADRs, migration, roadmap, generated/intent checks, CI and local pre-push updated | Remote CI not run; no production promotion |
@@ -73,3 +73,16 @@ Next: broader security/resource qualification and clean-source build proof. Keep
 no Rust CUE rewrite is admitted. No provider credentials, global config, daemon restart
 or remote publication was performed. Original app-kit work remains active; ARCH129/130
 record its checkpoint, diagrams remain the main visual priority after this prerequisite.
+
+## Landing checkpoint — 2026-10-01
+
+Accumulated intent/runtime work committed in d602b86 and 4559205. Review fixes:
+empty symbol results are arrays; generated notices include pinned Go/CUE/dependencies;
+Docker builds fresh source artifacts and has a bounded semantic/HTTP smoke gate.
+Final native, Node, 23-case native/WASM, authoring, generated and intent gates pass.
+Frozen current React package c35dbfcc passes strict types/build/HTTP/source parity and
+actual Chrome154 twelve-group lifecycle test (20 workers terminated, zero live).
+Docker Linux/arm64 passes; owned resources removed. Packet:
+../assessments/fixtures/landing-2026-10-01. Historical archives/hashes remain intact.
+Clean-checkout final revision and remote outcome are the next landing checks.
+Resource/security/other-browser qualification remains incomplete; no production promotion.

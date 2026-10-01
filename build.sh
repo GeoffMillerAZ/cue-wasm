@@ -16,4 +16,5 @@ cp -f bin/cue-engine.wasm bin/cue.wasm
 cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" bin/
 printf '%s\n' '{"type":"commonjs"}' > bin/package.json
 node scripts/generate-js.mjs
+node scripts/generate-notices.mjs
 node scripts/build-manifest.mjs

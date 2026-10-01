@@ -1,0 +1,3 @@
+# Frozen receipts and upstream notices retain original bytes and whitespace.
+docs/assessments/fixtures/** -text -whitespace
+test/react-consumer/vendor/THIRD_PARTY_NOTICES.txt -whitespace

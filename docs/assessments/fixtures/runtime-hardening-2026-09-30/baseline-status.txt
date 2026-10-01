@@ -1,0 +1,26 @@
+ M .claude/skills/fathom-activate/SKILL.md
+ M .claude/skills/fathom-custodian/SKILL.md
+ M .claude/skills/fathom-doctor/SKILL.md
+ M .claude/skills/fathom-feedback/SKILL.md
+ M .claude/skills/fathom-impact/SKILL.md
+ M .claude/skills/fathom-onboard/SKILL.md
+ M .claude/skills/fathom-plan/SKILL.md
+ M .claude/skills/fathom-rewire/SKILL.md
+ M .claude/skills/fathom-verify/SKILL.md
+ M AGENTS.md
+ M CLAUDE.md
+?? .agents/skills/fathom-activate/SKILL.md
+?? .agents/skills/fathom-custodian/SKILL.md
+?? .agents/skills/fathom-doctor/SKILL.md
+?? .agents/skills/fathom-feedback/SKILL.md
+?? .agents/skills/fathom-findings/SKILL.md
+?? .agents/skills/fathom-impact/SKILL.md
+?? .agents/skills/fathom-onboard/SKILL.md
+?? .agents/skills/fathom-plan/SKILL.md
+?? .agents/skills/fathom-rewire/SKILL.md
+?? .agents/skills/fathom-verify/SKILL.md
+?? .claude/settings.json
+?? .claude/skills/fathom-findings/SKILL.md
+?? .fathom/owned.json
+?? docs/assessments/fixtures/runtime-hardening-2026-09-30/baseline-status.txt
+?? docs/assessments/fixtures/runtime-hardening-2026-09-30/source-before.tar.gz

@@ -15,6 +15,9 @@ Release impact: breaking worker lifecycle/return-contract correction; no release
   terminates the owner and rejects queued work. Retry requires a fresh owner.
 
 ### Fixed
+- Symbol-free and empty valid drafts return `[]` from getSymbols, matching its public contract.
+- Packages and release assets carry hashed notices for the pinned Go/CUE dependency graph.
+- Docker examples build current source assets; bounded smoke tests verify semantics and HTTP delivery.
 - Public `/tools` declaration now resolves Workspace; CueWorkerError declares its actual
   `(code, message)` constructor. Real installed TypeScript checks retain negative cases.
 - Browser module-local imports use a reserved virtual mount without host filesystem access.

@@ -11,7 +11,7 @@ for (const name of await readdir(join(dependency, 'dist'))) {
   if (name.endsWith('.js')) await copyFile(join(dependency, 'dist', name), join(site, 'package/dist', name));
 }
 await copyFile(join(dependency, 'dist/react/index.js'), join(site, 'package/dist/react/index.js'));
-for (const name of ['cue-engine.wasm', 'cue-reader.wasm', 'wasm_exec.js', 'manifest.json']) {
+for (const name of ['cue-engine.wasm', 'cue-reader.wasm', 'wasm_exec.js', 'manifest.json', 'THIRD_PARTY_NOTICES.txt']) {
   await copyFile(join(dependency, 'bin', name), join(site, 'package/bin', name));
 }
 await copyFile(join(root, 'index.html'), join(site, 'index.html'));

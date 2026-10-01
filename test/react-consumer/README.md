@@ -3,11 +3,12 @@
 This private isolated fixture uses React/ReactDOM **19.2.0**, TypeScript **5.9.3**,
 esbuild **0.25.12**, and React declaration pins **19.2.2**. The dependency lock is
 local. Core runtime code is installed from the copied npm archive in `vendor/`,
-SHA-256 `1633ff5429dfaa7c01cdd0a3328eb02deacf03f4dfd76e98d07ad8e7847efe7b`.
-It is a frozen local npm pack of version 1.4.5 after main's declaration fixes,
-not a publication or claim about subsequent dirty root changes. The original
-`cue-wasm-1.4.5.tgz` archive is retained as before-fix proof, SHA-256
-`9ad024bb06aa8b3b1f600dc97ae1d8f19a21c9fd5fa16ebd3107d3978f407eeb`.
+SHA-256 `c35dbfcc8e6797fc00e88443e856f60756293cbd6dda2f8391df33dcd578fea1`.
+The active `cue-wasm-1.4.5-landing-20261001.tgz` includes the empty-symbol contract
+fix and upstream license notices. It is an unreleased local pack, not an npm
+publication. Both earlier archives and their browser/type receipts are preserved;
+`vendor/pin.json` records the previous and before-fix identities. Attribution for
+those older archives is adjacent in `vendor/ATTRIBUTION.md`.
 
 ## Commands
 
@@ -100,7 +101,7 @@ record original package defects in `evidence/types-before-fix.json`:
   inherits the standard Error constructor; the valid two-string call fails TS2559.
 
 Main fixed both in root source/generation; the active
-`cue-wasm-1.4.5-types-fixed.tgz` installs those fixes. The final type gate
+`cue-wasm-1.4.5-landing-20261001.tgz` preserves those fixes. The type gate
 **requires both probes to pass**, and the positive consumer imports the tools
 export and constructs a two-string CueWorkerError. Root/React success cannot
 hide a missing tools declaration or incorrect constructor. Final results are
@@ -127,3 +128,9 @@ this guard; this prevents an old passing consumer archive from certifying new so
 Final Chrome154/macOS actual12-group run under `/nested/` passed against1633ff54 archive,
 20 native Workers created/terminated and0live. `evidence/browser-nested.json` and screenshot
 retain it; no all-React-version, total-memory or production performance claim.
+
+Landing refresh, 2026-10-01: the current archive passes the same actual twelve
+Chrome154/macOS/React19.2 StrictMode groups under `/nested/`; 20 workers terminated,
+zero live (`evidence/browser-landing.json`). Installed type/build/HTTP checks and
+current-source archive parity also pass. The earlier nested receipt remains
+historical and is not relabeled as current. Performance is still unqualified.

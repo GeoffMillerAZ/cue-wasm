@@ -1,0 +1,83 @@
+{
+  "status": "passed",
+  "checks": [
+    "actual engine ready on resolution; unification/export and Workspace symbols agree",
+    "invalid source rejected; valid next request recovers",
+    "rebuilt engine: callable version and independent schema/data semantics",
+    "active cancellation settles queued work; disposal is repeatable",
+    "three independent engine mount/evaluate/dispose cycles",
+    "explicit reader capability refuses evaluation",
+    "missing asset refuses initialization",
+    "abort during initialization rejects and releases worker",
+    "fresh owner works after failed/aborted initialization"
+  ],
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "width": 3033,
+    "height": 925
+  },
+  "performanceQualified": false,
+  "disposed": true,
+  "capture": "Transcribed from actual CUA browser result 2026-09-30; no synthetic execution",
+  "installed": {
+    "schemaVersion": 1,
+    "archiveSha256": "e5f7c107f6f23ba1e06becbc414c3c28dd465ad17913e5833864ffb8d283527c",
+    "manifest": {
+      "schemaVersion": 1,
+      "packageVersion": "1.4.5",
+      "go": "go1.24.4",
+      "cue": "v0.15.4",
+      "target": "js/wasm",
+      "flags": [
+        "-mod=readonly",
+        "-trimpath",
+        "-buildvcs=false",
+        "-s",
+        "-w"
+      ],
+      "optimizer": "none",
+      "tags": {
+        "reader": [
+          "netgo",
+          "osusergo",
+          "reader"
+        ],
+        "engine": [
+          "netgo",
+          "osusergo"
+        ]
+      },
+      "linkerPackageVersion": "v1.4.5",
+      "sourceHashes": {
+        "build.sh": "44135fcbeee7e09093d3f818b2e019413082afd9f02508c03863618764813943",
+        "go.mod": "23351d67fe5a47e7e78361c83b7645ffffb0499b62d4f42004e56dbd6129c1f7",
+        "go.sum": "289f722f56d9191191f78419a4fe6f2f30e86ce4220277a6720d0c008a5af182",
+        "internal/core/engine.go": "4d7c94351128120a69ca3c7ce8c2a4d69844743f7eff1e1db552a6bb8c3304e5",
+        "internal/core/engine_stub.go": "e68319c21418eced4171ded966bc085f5f10a881885993b1bfeada1bebb73aba",
+        "internal/core/reader.go": "133d0f51a9d0a7b6c71fb4c96889fe13a87cdf2f60dc04508e128cd4f8f4389d",
+        "main.go": "d1df9d6f018dfecd66f276e16cf2a97cef1be51512aacdba89b8efd4790f6a53",
+        "scripts/build-manifest.mjs": "0ca1d7b3ff18ae4d4880cc78cced66b8da17bae8e2330c46054830c4d9676064"
+      },
+      "assets": {
+        "cue-reader.wasm": {
+          "sha256": "1018c88c5467c49b050b9281011a3ed57c5eaf0e6abbf411961ba2ad52a4330e",
+          "bytes": 5875788
+        },
+        "cue-engine.wasm": {
+          "sha256": "7c4d2c1aa9a42b9eba1be23bb49807de766524e49dbf56b81864b18a8add5067",
+          "bytes": 31701719
+        },
+        "cue.wasm": {
+          "sha256": "7c4d2c1aa9a42b9eba1be23bb49807de766524e49dbf56b81864b18a8add5067",
+          "bytes": 31701719
+        },
+        "wasm_exec.js": {
+          "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
+          "bytes": 16992
+        }
+      }
+    },
+    "source": "npm archive; source checkout used for test harness only",
+    "browserResult": "record separately; server startup is not browser proof"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "content": [
+      {
+        "text": "{\"default_ignored_dirs\":[\"dist\"],\"ok\":true,\"oversize_files\":0,\"root\":\"/Volumes/m2ext/code/geoffmilleraz/cue-wasm\",\"service\":\"cue-wasm\",\"typed_edges\":{\"edges\":0,\"failed\":false,\"packages_processed\":3,\"packages_seen\":4},\"unclassified_files\":0}",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "default_ignored_dirs": [
+        "dist"
+      ],
+      "ok": true,
+      "oversize_files": 0,
+      "root": "/Volumes/m2ext/code/geoffmilleraz/cue-wasm",
+      "service": "cue-wasm",
+      "typed_edges": {
+        "edges": 0,
+        "failed": false,
+        "packages_processed": 3,
+        "packages_seen": 4
+      },
+      "unclassified_files": 0
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "format": "cue-wasm.authoring-example.v1",
+  "title": "Deployment review",
+  "appearance": "dark",
+  "accent": "#818cf8",
+  "panels": [
+    {
+      "title": "Architecture",
+      "kind": "diagram",
+      "limit": 250
+    },
+    {
+      "title": "Recent changes",
+      "kind": "timeline",
+      "limit": 100
+    },
+    {
+      "title": "Resource inventory",
+      "kind": "table",
+      "limit": 50
+    }
+  ]
+}

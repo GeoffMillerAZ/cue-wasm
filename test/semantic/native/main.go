@@ -31,6 +31,8 @@ func main() {
 			return s
 		}
 		switch c.Action {
+		case "getSymbols":
+			result, err = svc.GetSymbols(str(0))
 		case "validate":
 			err = svc.Validate(str(0), str(1))
 			result = true

@@ -1,0 +1,10 @@
+docker build -f examples/Dockerfile -t cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816:test .
+docker run --name cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816-node --rm cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816:test node
+Node example semantic output passed.
+docker run -d --name cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816-serve -p 127.0.0.1::8080 cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816:test serve
+docker port cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816-serve 8080/tcp
+HTTP example, generated JavaScript and manifest-matched WASM assets passed.
+docker rm -f cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816-node
+docker rm -f cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816-serve
+docker image rm cue-wasm-smoke-bf69e29c-07dd-4d4d-ad58-ffed8e709816:test
+All Docker smoke checks passed.

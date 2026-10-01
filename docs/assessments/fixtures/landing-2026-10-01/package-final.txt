@@ -1,0 +1,11 @@
+
+> @geoff4lf/cue-wasm@1.4.5 test:package
+> npm run build:js && node test/package/smoke.mjs
+
+
+> @geoff4lf/cue-wasm@1.4.5 build:js
+> node scripts/generate-js.mjs
+
+PASS: independent tarball default load/evaluation without React
+PASS: missing-default-engine archive rejected by guard and default loader
+Receipt: /Volumes/m2ext/code/geoffmilleraz/cue-wasm/test/package/receipt.json

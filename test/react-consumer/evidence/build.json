@@ -6,7 +6,7 @@
   "esbuild": "0.25.12",
   "typescript": "5.9.3",
   "packageVersion": "1.4.5",
-  "archiveSha256": "1633ff5429dfaa7c01cdd0a3328eb02deacf03f4dfd76e98d07ad8e7847efe7b",
+  "archiveSha256": "c35dbfcc8e6797fc00e88443e856f60756293cbd6dda2f8391df33dcd578fea1",
   "packageManifest": {
     "schemaVersion": 1,
     "packageVersion": "1.4.5",
@@ -34,33 +34,38 @@
     },
     "linkerPackageVersion": "v1.4.5",
     "sourceHashes": {
-      "build.sh": "18cc0dc20e8907d46214e420285218d400197258e5eb9ef977100747ce89cc45",
+      "build.sh": "27915c33215d4ef11cf99a2efb8392e66562809b77ece03ec38d9fae97ee8866",
       "go.mod": "23351d67fe5a47e7e78361c83b7645ffffb0499b62d4f42004e56dbd6129c1f7",
       "go.sum": "289f722f56d9191191f78419a4fe6f2f30e86ce4220277a6720d0c008a5af182",
       "internal/core/engine.go": "776a58ce0007b3b5976ecaf0a931f585235b795809c208252ca34e9306d96929",
       "internal/core/engine_stub.go": "e68319c21418eced4171ded966bc085f5f10a881885993b1bfeada1bebb73aba",
       "internal/core/offline_registry.go": "4e0da289d30d9881307e7ec28e193daeee32b7486a25fdda4fd54e19420271b7",
-      "internal/core/reader.go": "cb3c83891cc96b602837ef6756b064e2c3d10db113ef6788eefb00df0b67c82b",
+      "internal/core/reader.go": "bdf509cf1a1fb492478d56404acf0c38364295b9b4c90a2639acfe74bb3bbb97",
       "internal/core/virtual.go": "deab8fb0e9bb78fcd819a09514b8170f2be1df33f297fbce52e2368f2523d099",
       "main.go": "d1df9d6f018dfecd66f276e16cf2a97cef1be51512aacdba89b8efd4790f6a53",
-      "scripts/build-manifest.mjs": "0ca1d7b3ff18ae4d4880cc78cced66b8da17bae8e2330c46054830c4d9676064"
+      "scripts/build-manifest.mjs": "4ab6b07b5adc3a2177dd69bf9442d0b02b5248ef723da383bd699e3bb82d4559",
+      "scripts/generate-notices.mjs": "094d678dd6195149aac44d4d66363f7cca9e65d155543086b931823882db5951"
     },
     "assets": {
       "cue-reader.wasm": {
-        "sha256": "bc944e2cc22ccb68ee3dab78ce7490b41db1f3f27b4f6e29480f36dea22c4f07",
-        "bytes": 5876769
+        "sha256": "b502a5709fc88f45ce4855742568f67718d2c00ce1d5980a5f0520eb1961ea9a",
+        "bytes": 5876772
       },
       "cue-engine.wasm": {
-        "sha256": "ba76a8a2447e32b702182a83bd3aa5b59cb8801b40467eb74f72278e94f277ae",
-        "bytes": 31715722
+        "sha256": "02f502d5f28b616deb5fb277ec085c342f0ec91e75ba51d93443b350440ac84b",
+        "bytes": 31715725
       },
       "cue.wasm": {
-        "sha256": "ba76a8a2447e32b702182a83bd3aa5b59cb8801b40467eb74f72278e94f277ae",
-        "bytes": 31715722
+        "sha256": "02f502d5f28b616deb5fb277ec085c342f0ec91e75ba51d93443b350440ac84b",
+        "bytes": 31715725
       },
       "wasm_exec.js": {
         "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
         "bytes": 16992
+      },
+      "THIRD_PARTY_NOTICES.txt": {
+        "sha256": "dbafd54c6812ed6cbd4610c13e2f38a961cbf4af03728259621482f8b41a546d",
+        "bytes": 133141
       }
     }
   },
@@ -74,9 +79,10 @@
     "build/chunk-4LMFSMNI.js": "8ef56e561ea7e0e71b0faae27f6f3b6bc011d894454ee69c5d63f10ff72be3de",
     "build/react.js": "9561f9a51f1cd5e722f6441f96c5e9cb8bac07134e59764ecf9424118d569717",
     "index.html": "94f152d0aecd69c15d8a406edcc05d83aa0317bb791f3a581b5113fac276771f",
-    "package/bin/cue-engine.wasm": "ba76a8a2447e32b702182a83bd3aa5b59cb8801b40467eb74f72278e94f277ae",
-    "package/bin/cue-reader.wasm": "bc944e2cc22ccb68ee3dab78ce7490b41db1f3f27b4f6e29480f36dea22c4f07",
-    "package/bin/manifest.json": "faa7f33fe6775706c883abec39caa90e10e64db44d5f466b91e3618eb2e67b26",
+    "package/bin/THIRD_PARTY_NOTICES.txt": "dbafd54c6812ed6cbd4610c13e2f38a961cbf4af03728259621482f8b41a546d",
+    "package/bin/cue-engine.wasm": "02f502d5f28b616deb5fb277ec085c342f0ec91e75ba51d93443b350440ac84b",
+    "package/bin/cue-reader.wasm": "b502a5709fc88f45ce4855742568f67718d2c00ce1d5980a5f0520eb1961ea9a",
+    "package/bin/manifest.json": "695b581bc07251f5e51e2565b79420d44370da7b509228673f205e2435b435ea",
     "package/bin/wasm_exec.js": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
     "package/dist/index.js": "37ee04b3ddc389a44df3c037ca4d2ae7bb95813e1e1d334f62ed488568240d42",
     "package/dist/react/index.js": "00a6f67a818ab0125e436256ef7fab9cee32930a674e30da9e8f0ae82fda480e",

@@ -1,0 +1,3 @@
+no concerns registered — the custodian has nothing to hold this repo to.
+Write ~/.fathom/concerns.cue (user default) or .fathom/concerns.cue (this repo governs);
+see docs/design/config-custodian.md for the concern model.

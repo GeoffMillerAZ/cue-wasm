@@ -1,0 +1,5 @@
+
+> @geoff4lf/cue-wasm@1.4.5 test:native
+> GOTOOLCHAIN=go1.24.4 go test ./internal/...
+
+ok  	github.com/GeoffMillerAZ/cue-wasm/internal/core	0.210s

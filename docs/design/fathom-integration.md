@@ -42,3 +42,8 @@ the JS-only Go entrypoint; adding its js/wasm build constraint resolved that fai
 Final ingest returned ok:true. No paid compile, global configuration or daemon restart.
 Plan gate currently passes because no incomplete rows are claimed done; two rows
 still lack static test reachability. Runtime JS evidence remains separate.
+
+The installed pre-push command uses `--strict` and propagates nonzero exits,
+including operational failures. The generated generic stanza’s fail-open wording
+does not waive this concrete repository gate. Retry the registered daemon or report
+a blocked push; never skip the hook or create a competing index to make it green.

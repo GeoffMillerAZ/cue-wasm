@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "checks": [
+    "ReactDOM StrictMode mounts actual installed engine; initial replay releases worker; all six helpers work",
+    "Invalid source rejects, subsequent valid request recovers on the same owner",
+    "Equivalent inline option values and irrelevant direct wasmPath preserve owner and helper identity",
+    "Changed options replace owner; saved helpers refuse retired sessions",
+    "Active abort settles queued requests, publishes provider error, and retry creates a working owner",
+    "Retry during active work settles both old promises and refuses stale completion",
+    "Missing self-hosted engine reports failure; retry genuinely reloads; corrected asset options recover",
+    "Actual reader supports syntax and refuses evaluation; switching back loads engine",
+    "Simultaneous providers own separate workers; unmounting one preserves the other",
+    "Unmount settles active helper and prevents saved helpers from publishing late results",
+    "Unmount during actual worker initialization terminates both StrictMode attempts without late commits",
+    "Three StrictMode mount/evaluate/unmount cycles; omitted and empty options are equivalent; installed default URLs work"
+  ],
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "react": "19.2.0",
+    "width": 2519,
+    "height": 915
+  },
+  "workerObservation": {
+    "created": 20,
+    "terminated": 20,
+    "live": 0
+  },
+  "performanceQualified": false,
+  "archiveSha256": "9ad024bb06aa8b3b1f600dc97ae1d8f19a21c9fd5fa16ebd3107d3978f407eeb"
+}
