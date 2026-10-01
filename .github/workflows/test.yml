@@ -1,74 +1,48 @@
 name: Test
 permissions:
   contents: read
-
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
-
+    branches: [main]
 jobs:
-  lint:
-    name: Lint Go
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.4'
-          cache: true
-
-      - name: Install dependencies
-        run: |
-          go mod download
-          go mod tidy
-
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
-        with:
-          version: latest
-        env:
-          GOOS: js
-          GOARCH: wasm
-          CGO_ENABLED: 0
-
   test:
-    name: Test (Node ${{ matrix.node-version }})
-    needs: lint
+    name: Native, WASM and package (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.24.4'
-        cache: true
-
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: |
-        go mod tidy
-        npm ci || npm install
-
-    - name: Build WASM
-      run: ./build.sh
-
-    - name: Run Standard Tests
-      run: npm test
-
-    - name: Run Docker Tests
-      # Docker tests only need to run once, so we run them only on the latest Node version
-      if: matrix.node-version == '22.x'
-      run: npm run test:docker
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.4'
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: go mod download
+      - run: go vet ./internal/... ./test/semantic/native
+      - run: npm run test:native
+      - run: npm run check:generated
+      - run: npm run build:wasm
+      - run: GOOS=js GOARCH=wasm CGO_ENABLED=0 go vet -tags netgo,osusergo .
+      - run: npm test
+      - run: npm run test:semantic
+      - run: npm run test:authoring
+      - name: Installed React and current archive boundary
+        if: matrix.node-version == '20.x'
+        run: |
+          npm ci --prefix test/react-consumer --ignore-scripts
+          npm test --prefix test/react-consumer
+          node test/react-consumer/scripts/check-current.mjs .
+      - run: npm run check:intent
+      - run: git diff --exit-code -- go.mod go.sum package-lock.json dist
+      - name: Retain exact binary provenance
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-manifest-node-${{ matrix.node-version }}
+          path: bin/manifest.json

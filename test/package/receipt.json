@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "node": "v26.3.0",
+  "status": "passed",
+  "binaryProvenance": "Packaged bin/manifest.json hashes checked against actual assets; build reproducibility is a separate receipt.",
+  "archive": {
+    "name": "geoff4lf-cue-wasm-1.4.5.tgz",
+    "sha256": "1633ff5429dfaa7c01cdd0a3328eb02deacf03f4dfd76e98d07ad8e7847efe7b",
+    "size": 15444625
+  },
+  "files": {
+    "package.json": "a2863f3d241501171b66bc414252871833b63a2ab0b116f913293172ef27b128",
+    "dist/index.js": "37ee04b3ddc389a44df3c037ca4d2ae7bb95813e1e1d334f62ed488568240d42",
+    "dist/index.d.ts": "6d53c57f9bc33aa915bca6fc0f8edcc7c50ffc0bc51b770fddf97c5057a5dc75",
+    "dist/workspace.js": "fa590b45831ea8c8567135264877d981c83e1764059f0e9babb42742259f54a2",
+    "dist/worker.js": "f27eb47e70d528e9b3c3d6c354d599532a6bb473b9e58fab0f4e72be2b553dcd",
+    "dist/worker-manager.js": "b471a483ccbd0a3487300efc1f7db31437233151bd26a30bffbc35e4927f01ca",
+    "dist/react/index.js": "00a6f67a818ab0125e436256ef7fab9cee32930a674e30da9e8f0ae82fda480e",
+    "dist/react/index.d.ts": "e238fbd0d482eb35511a2f41a675c4f335083300ff50929c9ccf277e7595f290",
+    "bin/cue.wasm": "ba76a8a2447e32b702182a83bd3aa5b59cb8801b40467eb74f72278e94f277ae",
+    "bin/cue-engine.wasm": "ba76a8a2447e32b702182a83bd3aa5b59cb8801b40467eb74f72278e94f277ae",
+    "bin/cue-reader.wasm": "bc944e2cc22ccb68ee3dab78ce7490b41db1f3f27b4f6e29480f36dea22c4f07",
+    "bin/wasm_exec.js": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
+    "bin/package.json": "dbf8353f77358bc12169b7bb7301e1978d5b503e002ee927229a8993672818fc",
+    "bin/manifest.json": "faa7f33fe6775706c883abec39caa90e10e64db44d5f466b91e3618eb2e67b26"
+  },
+  "positive": {
+    "requiredFiles": 14,
+    "defaultLoadAndEvaluation": "passed",
+    "reactInstalled": false
+  },
+  "negative": {
+    "omitted": "bin/cue-engine.wasm",
+    "archiveSha256": "4b5786bab1bdb45b668106ca484e14f83af11b6e2157f966a0ec10b2ec0fe3af",
+    "closureGuard": "rejected missing required file",
+    "defaultLoader": "failed ENOENT",
+    "exitCode": 1
+  },
+  "scratchCleaned": true
+}

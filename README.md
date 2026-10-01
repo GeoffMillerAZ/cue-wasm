@@ -1,90 +1,64 @@
 # @geoff4lf/cue-wasm
 
-[![NPM Version](https://img.shields.io/npm/v/@geoff4lf/cue-wasm)](https://www.npmjs.com/package/@geoff4lf/cue-wasm)
-[![CI Status](https://github.com/geoff4lf/cue-wasm/actions/workflows/test.yml/badge.svg)](https://github.com/geoff4lf/cue-wasm/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Official CUE evaluation and syntax tooling for browser and Node authoring tools.
+Go owns CUE semantics; JavaScript owns loading and worker lifecycle. React is optional.
+[Vision](VISION.md) · [Roadmap](docs/roadmap.md) · [Current evidence](docs/tracking/implementation_tracker.md)
 
-**Cuelang for the Modern Web.** A "Gold Standard" WebAssembly runtime and tooling layer for [Cuelang](https://cuelang.org/), designed for zero-config integration in Next.js, Browsers, and Node.js.
+## Browser worker
 
----
-
-## 🚀 Key Features
-
-- **Full CUE Engine**: Authority-level Unification, Validation, and Export powered by the official Go CUE API.
-- **Phased Loading**: Lightweight Reader (**5.2MB**) for instant interactivity, warming up the full Engine (**27.1MB**) in the background.
-- **Zero-Config CDN**: Browser builds automatically fetch the WASM binary from jsDelivr—no manual file copying required.
-- **Interactive Tooling**: JS-native `Workspace` manager for multi-file projects, AST symbol extraction, and auto-formatting.
-- **Next.js & React Ready**: Built-in `useCue` hook with high-performance Web Worker and IndexedDB caching support.
-- **Security Hardened**: Strict WASM sandbox isolation with verified LFI protection.
-
-## 📦 Installation
-
-```bash
-npm install @geoff4lf/cue-wasm
-```
-
-## 🎮 Performance Playground (Mission Control)
-
-Test the phased loading architecture and caching performance in our Dockerized playground:
-
-```bash
-./examples/performance/run.sh
-```
-Then visit [http://localhost:9876/examples/performance/](http://localhost:9876/examples/performance/)
-
-## 🛠 Usage
-
-### 1. In React / Next.js (Recommended)
-
-```tsx
-import { CueProvider, useCue } from '@geoff4lf/cue-wasm/react';
-
-function App() {
-  return (
-    // useWorker enables phased loading, web workers, and indexedDB caching
-    <CueProvider useWorker={true}>
-      <Validator />
-    </CueProvider>
-  );
+```js
+import { loadWasmWorker } from '@geoff4lf/cue-wasm';
+const cue = await loadWasmWorker({
+  workerPath: '/cue/worker.js',
+  enginePath: '/cue/cue-engine.wasm',
+  wasmExecPath: '/cue/wasm_exec.js',
+});
+try {
+  const json = await cue.unify({'app.cue': 'replicas: *3 | int'});
+  console.log(json);
+} finally {
+  cue.dispose();
 }
 ```
 
-### 2. In Node.js / Plain JS
+Copy the worker and matching assets from a prepared package to your hosting path.
+For syntax-only tools pass mode: 'reader' and readerPath. The default engine is ready
+for evaluation when initialization resolves; no second runtime loads automatically.
+Prepared viewers can consume exported JSON without loading CUE at all.
 
-```javascript
-import { loadWasm, Workspace } from '@geoff4lf/cue-wasm';
+## Try local authoring
 
-async function run() {
-  const cue = await loadWasm();
-  const ws = new Workspace();
+The [configuration studio](examples/authoring/README.md) installs a verified npm archive
+into a standalone static directory. Edit CUE, inspect resolved defaults and a structural
+preview, correct diagnostics, and export only the current validated revision.
+No app-kit, framework or service is required. It is a bounded example, not an IDE.
 
-  ws.addFile('schema.cue', 'package main\n#User: { name: string }');
-  ws.addFile('data.cue', 'package main\nuser: #User & { name: "Geoff" }', true);
+## Node and source builds
 
-  const res = await cue.unify(ws.getOverlay(), ws.getEntryPoints());
-  console.log(JSON.parse(res));
-}
+`loadWasm()` supports direct Node evaluation. `Workspace` manages virtual source files
+and symbol parsing. Public declarations are in dist/index.d.ts; changes are described
+in [migration](docs/design/runtime-migration.md). Browser workers provide stronger
+lifecycle ownership than the legacy direct browser loader.
+
+```sh
+npm ci
+npm run build:wasm       # pinned Go 1.24.4; builds matching shim and asset manifest
+npm run test:native
+npm test
+npm run test:semantic    # fixed expected outcomes + native/WASM comparison
+npm run check:generated
+node test/browser/serve.mjs
 ```
 
-## 📐 Architecture & Performance
+Open the printed local URL and run actual worker checks. These are distinct from
+mock lifecycle tests. Do not treat local success as all-browser production support.
 
-To prevent accidental "bloat" in your JS bundles and achieve near-instant TTI, this library is split into two distinct layers:
+## Status and security
 
-1.  **WASM Reader (~5.2MB raw / <1MB compressed)**: The lightweight syntax and formatting engine.
-2.  **WASM Engine (~27.1MB raw / ~6MB compressed)**: The authoritative evaluator.
+This checkout is undergoing owner-authorized hardening; no new release is published.
+Source CUE pin is v0.15.4. Engine, package and Go versions are separate metadata.
+[Performance guidance](docs/performance_guide.md) distinguishes measured bytes from
+startup and memory. [Security](SECURITY.md) describes current boundaries and gaps.
+No paid provider, backend, Fathom checkout or private corpus is required.
 
-> For detailed optimization strategies (HTTP Preloading, Compression), see the [Performance Guide](./docs/performance_guide.md).
-
-## 🧪 Documentation & Examples
-
-- **[Examples Inventory](./examples)**: Comprehensive Node, Browser, and Docker demos.
-- **[API Reference](./docs/specs/001-api-surface.md)**: Full method signatures and types.
-- **[Maintainer Guide](./docs/maintainer_guide.md)**: Contribution and build instructions.
-
-## 🛡 Security
-
-This project adheres to strict security standards. The WASM runtime is isolated from the host filesystem. For more details, see [SECURITY.md](./SECURITY.md).
-
-## 📄 License
-
-MIT © [Geoff Miller](https://github.com/GeoffMillerAZ)
+MIT. Contributions follow [AGENTS.md](AGENTS.md) and [intent](docs/intent/README.md).

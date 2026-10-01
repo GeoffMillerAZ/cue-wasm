@@ -1,3 +1,5 @@
+//go:build js && wasm
+
 package main
 
 import (
@@ -7,33 +9,34 @@ import (
 	"github.com/GeoffMillerAZ/cue-wasm/internal/core"
 )
 
+var packageVersion = "development"
+
 func main() {
 	fmt.Println("Cue-WASM Initializing...")
 	svc := core.NewCueService()
 
 	// Expose global object
 	js.Global().Set("CueWasm", js.ValueOf(map[string]interface{}{
-		"unify":    unifyFunc(svc),
-		"validate": validateFunc(svc),
-		"export":   exportFunc(svc),
-		"parse":    parseFunc(svc),
-		"format":   formatFunc(svc),
+		"unify":      unifyFunc(svc),
+		"validate":   validateFunc(svc),
+		"export":     exportFunc(svc),
+		"parse":      parseFunc(svc),
+		"format":     formatFunc(svc),
 		"getSymbols": getSymbolsFunc(svc),
 		"version": js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-			return js.ValueOf("v1.4.5") // Sync with package.json
+			return js.ValueOf(packageVersion)
 		}),
 	}))
 
 	fmt.Println("Cue-WASM Ready.")
-	
+
 	// Keep the Go program running
 	select {}
 }
 
 func exportFunc(svc *core.CueService) js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		promiseClass := js.Global().Get("Promise")
-		return promiseClass.New(js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+		return newPromise(func(this js.Value, promiseArgs []js.Value) interface{} {
 			resolve := promiseArgs[0]
 			reject := promiseArgs[1]
 
@@ -55,14 +58,13 @@ func exportFunc(svc *core.CueService) js.Func {
 			}()
 
 			return nil
-		}))
+		})
 	})
 }
 
 func unifyFunc(svc *core.CueService) js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		promiseClass := js.Global().Get("Promise")
-		return promiseClass.New(js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+		return newPromise(func(this js.Value, promiseArgs []js.Value) interface{} {
 			resolve := promiseArgs[0]
 			reject := promiseArgs[1]
 
@@ -122,14 +124,13 @@ func unifyFunc(svc *core.CueService) js.Func {
 			}()
 
 			return nil
-		}))
+		})
 	})
 }
 
 func validateFunc(svc *core.CueService) js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		promiseClass := js.Global().Get("Promise")
-		return promiseClass.New(js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+		return newPromise(func(this js.Value, promiseArgs []js.Value) interface{} {
 			resolve := promiseArgs[0]
 			reject := promiseArgs[1]
 
@@ -151,14 +152,13 @@ func validateFunc(svc *core.CueService) js.Func {
 			}()
 
 			return nil
-		}))
+		})
 	})
 }
 
 func parseFunc(svc *core.CueService) js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		promiseClass := js.Global().Get("Promise")
-		return promiseClass.New(js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+		return newPromise(func(this js.Value, promiseArgs []js.Value) interface{} {
 			resolve := promiseArgs[0]
 			reject := promiseArgs[1]
 
@@ -179,14 +179,13 @@ func parseFunc(svc *core.CueService) js.Func {
 			}()
 
 			return nil
-		}))
+		})
 	})
 }
 
 func formatFunc(svc *core.CueService) js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		promiseClass := js.Global().Get("Promise")
-		return promiseClass.New(js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+		return newPromise(func(this js.Value, promiseArgs []js.Value) interface{} {
 			resolve := promiseArgs[0]
 			reject := promiseArgs[1]
 
@@ -207,14 +206,13 @@ func formatFunc(svc *core.CueService) js.Func {
 			}()
 
 			return nil
-		}))
+		})
 	})
 }
 
 func getSymbolsFunc(svc *core.CueService) js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		promiseClass := js.Global().Get("Promise")
-		return promiseClass.New(js.FuncOf(func(this js.Value, promiseArgs []js.Value) interface{} {
+		return newPromise(func(this js.Value, promiseArgs []js.Value) interface{} {
 			resolve := promiseArgs[0]
 			reject := promiseArgs[1]
 
@@ -235,6 +233,14 @@ func getSymbolsFunc(svc *core.CueService) js.Func {
 			}()
 
 			return nil
-		}))
+		})
 	})
+}
+
+// Promise constructors invoke their executor synchronously. Release this short-lived
+// Go callback immediately; resolve/reject values remain valid for the goroutine.
+func newPromise(fn func(js.Value, []js.Value) interface{}) js.Value {
+	executor := js.FuncOf(fn)
+	defer executor.Release()
+	return js.Global().Get("Promise").New(executor)
 }

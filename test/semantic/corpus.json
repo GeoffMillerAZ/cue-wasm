@@ -1,0 +1,212 @@
+[
+  {
+    "name": "defaults",
+    "action": "export",
+    "args": [
+      "replicas: *3 | int",
+      "json"
+    ],
+    "want": "{\"replicas\":3}"
+  },
+  {
+    "name": "precision",
+    "action": "export",
+    "args": [
+      "id: 9007199254740993",
+      "json"
+    ],
+    "want": "{\"id\":9007199254740993}"
+  },
+  {
+    "name": "disjunction",
+    "action": "validate",
+    "args": [
+      "kind: \"a\" | \"b\"",
+      "kind: \"b\""
+    ],
+    "want": true
+  },
+  {
+    "name": "conflict",
+    "action": "validate",
+    "args": [
+      "x: int",
+      "x: \"bad\""
+    ],
+    "error": true
+  },
+  {
+    "name": "closed",
+    "action": "validate",
+    "args": [
+      "close({x:int})",
+      "{x:1,y:2}"
+    ],
+    "error": true
+  },
+  {
+    "name": "incomplete",
+    "action": "export",
+    "args": [
+      "x: int",
+      "json"
+    ],
+    "error": true
+  },
+  {
+    "name": "scalar",
+    "action": "validate",
+    "args": [
+      "int & >0",
+      "3"
+    ],
+    "want": true
+  },
+  {
+    "name": "list",
+    "action": "validate",
+    "args": [
+      "[...int]",
+      "[1,2]"
+    ],
+    "want": true
+  },
+  {
+    "name": "binding isolation",
+    "action": "validate",
+    "args": [
+      "let Limit = 10\nx: int & <Limit",
+      "let Limit = 100\nx: 90\ny: Limit"
+    ],
+    "error": true
+  },
+  {
+    "name": "definition scope",
+    "action": "validate",
+    "args": [
+      "#User: {name: string}",
+      "#User & {name: \"Ada\"}"
+    ],
+    "want": true
+  },
+  {
+    "name": "builtin",
+    "action": "unify",
+    "args": [
+      {
+        "a.cue": "import \"strings\"\nname: strings.ToUpper(\"app\")"
+      },
+      [],
+      []
+    ],
+    "want": "{\"name\":\"APP\"}"
+  },
+  {
+    "name": "tags",
+    "action": "unify",
+    "args": [
+      {
+        "a.cue": "region: string @tag(region)"
+      },
+      [],
+      [
+        "region=west"
+      ]
+    ],
+    "want": "{\"region\":\"west\"}"
+  },
+  {
+    "name": "selected entry",
+    "action": "unify",
+    "args": [
+      {
+        "a.cue": "a: 1",
+        "unused.cue": "a: 2"
+      },
+      [
+        "a.cue"
+      ],
+      []
+    ],
+    "want": "{\"a\":1}"
+  },
+  {
+    "name": "bad syntax",
+    "action": "export",
+    "args": [
+      "x: ;",
+      "json"
+    ],
+    "error": true
+  },
+  {
+    "name": "virtual alias collision",
+    "action": "unify",
+    "args": [
+      {
+        "a.cue": "x: 1",
+        "/a.cue": "x: 2"
+      },
+      [],
+      []
+    ],
+    "error": true
+  },
+  {
+    "name": "outside entry point",
+    "action": "unify",
+    "args": [
+      {
+        "a.cue": "x: 1"
+      },
+      [
+        "outside.cue"
+      ],
+      []
+    ],
+    "error": true
+  },
+  {
+    "name": "traversal refusal",
+    "action": "unify",
+    "args": [
+      {
+        "../a.cue": "x: 1"
+      },
+      [],
+      []
+    ],
+    "error": true
+  },
+  {
+    "name": "local module",
+    "action": "unify",
+    "args": [
+      {
+        "cue.mod/module.cue": "module: \"example.test/work@v0\"\nlanguage: version: \"v0.12.0\"",
+        "main.cue": "package main\nimport \"example.test/work/lib\"\nanswer: lib.value",
+        "lib/lib.cue": "package lib\nvalue: 42"
+      },
+      [
+        "main.cue"
+      ],
+      []
+    ],
+    "want": "{\"answer\":42}"
+  },
+  {
+    "name": "offline dependency",
+    "action": "unify",
+    "args": [
+      {
+        "cue.mod/module.cue": "module: \"example.test/work@v0\"\nlanguage: version: \"v0.12.0\"\ndeps: \"example.test/remote@v0\": v: \"v0.1.0\"",
+        "main.cue": "package main\nimport \"example.test/remote\"\nx: remote.value"
+      },
+      [
+        "main.cue"
+      ],
+      []
+    ],
+    "error": true
+  }
+]

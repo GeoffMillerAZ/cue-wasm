@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "node": "v26.3.0",
+  "typescript": "5.9.3",
+  "publicRootAndReact": "passed",
+  "skipLibCheck": false,
+  "positiveConsumerAndBrowserCompiled": true,
+  "negativeUsagesRejected": 12,
+  "toolsExport": "passed",
+  "toolsDiagnostics": "",
+  "workerErrorConstructor": "passed",
+  "workerErrorDiagnostics": "",
+  "browserExecution": "not performed by this command"
+}

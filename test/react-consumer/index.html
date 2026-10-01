@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installed cue-wasm React consumer verification</title>
+<script type="importmap">{"imports":{"react":"./build/react.js","@geoff4lf/cue-wasm":"./package/dist/index.js","@geoff4lf/cue-wasm/react":"./package/dist/react/index.js"}}</script>
+<script type="module" src="./build/browser.js"></script>
+<h1>React consumer verification</h1>
+<p>Real ReactDOM, development StrictMode, dedicated workers and installed WASM. One bounded run at a time.</p>
+<button id="run" type="button">Run verification</button>
+<button id="download" type="button" disabled>Download browser receipt</button>
+<div id="mount"></div>
+<pre id="result" role="status" aria-live="polite">Browser verification has not run.</pre>
+</html>

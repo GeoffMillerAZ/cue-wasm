@@ -1,105 +1,73 @@
-// Web Worker for CUE-WASM with Phased Loading & IndexedDB Caching
-let cue = null;
-let isFullEngine = false;
+/** Adapt only the reserved overlay mount; never provide a host filesystem. */
+function prepareVirtualFilesystem(host = globalThis) {
+    const backing = host.fs;
+    if (!backing) throw new Error('Load the matching Go shim before preparing the filesystem');
+    // Go captures this constant during package initialization, before main runs.
+    // Its browser stub uses -1, rejecting directory reads before consulting fs.open.
+    const filesystem = {...backing, constants: {...backing.constants}};
+    if (filesystem.constants.O_DIRECTORY === -1) filesystem.constants.O_DIRECTORY = 0;
+    const root = '/__cue_wasm_workspace__';
+    for (const name of ['open', 'stat', 'lstat', 'readdir']) {
+        filesystem[name] = function(path, ...args) {
+            if (typeof path === 'string' && (path === root || path.startsWith(root + '/'))) {
+                args.at(-1)(Object.assign(new Error('No backing file for virtual workspace'), {code: 'ENOENT'}));
+                return;
+            }
+            return backing[name].call(backing, path, ...args);
+        };
+    }
+    host.fs = filesystem;
+}
 
-const DB_NAME = 'CUE_WASM_CACHE';
-const STORE_NAME = 'wasm_bytes'; // Changed to bytes
-
-/**
- * Handles incoming messages from the main thread.
- */
-self.onmessage = async (event) => {
-    const { id, action, payload } = event.data;
-
+// One Go runtime per dedicated worker. Browser HTTP caching remains available;
+// custom IndexedDB byte caching is deliberately absent until bounded and verified.
+let cue = null, mode = null, initializing = false;
+self.onmessage = async ({data}) => {
+    const {id, action, payload} = data ?? {};
     try {
-        switch (action) {
-            case 'init':
-                await init(payload.wasmPath, payload.wasmExecPath, payload.version, payload.isReader);
-                self.postMessage({ id, success: true, isFullEngine });
-                break;
-            case 'unify':
-            case 'validate':
-                if (!isFullEngine) {
-                    throw new Error("Evaluation requires the Full Engine (still loading...)");
+        let result;
+        if (action === 'init') {
+            if (cue || initializing) throw new Error('Worker initialization already started');
+            if (!['reader', 'engine'].includes(payload.mode)) throw new Error('Invalid worker mode');
+            initializing = true;
+            importScripts(payload.wasmExecPath);
+            prepareVirtualFilesystem();
+            const response = await fetch(payload.wasmPath);
+            if (!response.ok) throw new Error(`WASM asset fetch failed (${response.status})`);
+            const limit = 64 * 1024 * 1024;
+            if (Number(response.headers.get('content-length')) > limit) throw new Error('WASM asset exceeds limit');
+            const chunks = []; let length = 0;
+            const reader = response.body?.getReader();
+            if (!reader) throw new Error('WASM asset stream unavailable');
+            try {
+                for (;;) { const part = await reader.read(); if (part.done) break;
+                    length += part.value.length; if (length > limit) throw new Error('WASM asset exceeds limit'); chunks.push(part.value);
                 }
-                const res = action === 'unify' 
-                    ? await cue.unify(payload.overlay, payload.entryPoints, payload.tags)
-                    : await cue.validate(payload.schema, payload.data);
-                self.postMessage({ id, success: true, result: res });
-                break;
-            case 'format':
-            case 'getSymbols':
-            case 'parse':
-                const result = action === 'format' ? await cue.format(payload.code)
-                             : action === 'getSymbols' ? JSON.parse(await cue.getSymbols(payload.code))
-                             : await cue.parse(payload.code);
-                self.postMessage({ id, success: true, result });
-                break;
-            default:
-                throw new Error(`Unknown action: ${action}`);
+            } catch (error) { await reader.cancel().catch(() => {}); throw error; }
+            finally { reader.releaseLock(); }
+            const bytes = new Uint8Array(length); let offset = 0;
+            for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+            const go = new Go(), compiled = await WebAssembly.instantiate(bytes, go.importObject);
+            go.run(compiled.instance).then(() => { cue = null; self.postMessage({fatal: true}); }, () => { cue = null; self.postMessage({fatal: true}); });
+            cue = self.CueWasm;
+            if (!cue || typeof cue.unify !== 'function') throw new Error('CUE runtime did not expose its API');
+            mode = payload.mode; result = {mode};
+        } else {
+            if (!cue) throw new Error('CUE worker is not ready');
+            if (mode === 'reader' && ['unify', 'validate', 'export'].includes(action)) throw new Error('Evaluation requires an engine worker');
+            switch (action) {
+                case 'unify': result = await cue.unify(payload.overlay, payload.entryPoints, payload.tags); break;
+                case 'validate': result = await cue.validate(payload.schema, payload.data); break;
+                case 'export': result = await cue.export(payload.code, payload.format); break;
+                case 'format': result = await cue.format(payload.code); break;
+                case 'parse': result = await cue.parse(payload.code); break;
+                case 'getSymbols': result = await cue.getSymbols(payload.code); break;
+                case 'version': result = cue.version(); break;
+                default: throw new Error('Unsupported CUE operation');
+            }
         }
+        self.postMessage({id, success: true, result});
     } catch (error) {
-        self.postMessage({ id, success: false, error: error.message || error.toString() });
+        self.postMessage({id, success: false, error: error?.message || String(error)});
     }
 };
-
-/**
- * Initializes the WASM engine.
- */
-async function init(wasmPath, wasmExecPath, version, isReaderRequest) {
-    if (typeof Go === 'undefined') {
-        importScripts(wasmExecPath || './wasm_exec.js');
-    }
-
-    const go = new Go();
-    const cacheKey = `${version}_${isReaderRequest ? 'reader' : 'engine'}`;
-    let bytes = await getCachedBytes(cacheKey);
-
-    let module;
-    if (bytes) {
-        console.log(`[CUE-WORKER] Loading cached WASM bytes (v${version})`);
-        module = await WebAssembly.compile(bytes);
-    } else {
-        console.log(`[CUE-WORKER] Fetching WASM from network: ${wasmPath}`);
-        const response = await fetch(wasmPath);
-        bytes = await response.arrayBuffer();
-        module = await WebAssembly.compile(bytes);
-        await cacheBytes(cacheKey, bytes);
-    }
-
-    const instance = await WebAssembly.instantiate(module, go.importObject);
-    go.run(instance);
-    cue = self.CueWasm;
-    isFullEngine = !isReaderRequest;
-}
-
-async function getCachedBytes(key) {
-    return new Promise((resolve) => {
-        try {
-            const request = indexedDB.open(DB_NAME, 2);
-            request.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE_NAME);
-            request.onsuccess = (e) => {
-                const db = e.target.result;
-                const transaction = db.transaction(STORE_NAME, 'readonly');
-                const getReq = transaction.objectStore(STORE_NAME).get(key);
-                getReq.onsuccess = () => resolve(getReq.result);
-                getReq.onerror = () => resolve(null);
-            };
-            request.onerror = () => resolve(null);
-        } catch (_) { resolve(null); }
-    });
-}
-
-async function cacheBytes(key, bytes) {
-    return new Promise((resolve) => {
-        try {
-            const request = indexedDB.open(DB_NAME, 2);
-            request.onsuccess = (e) => {
-                const db = e.target.result;
-                const transaction = db.transaction(STORE_NAME, 'readwrite');
-                transaction.objectStore(STORE_NAME).put(bytes, key);
-                transaction.oncomplete = () => resolve();
-            };
-        } catch (_) { resolve(); }
-    });
-}

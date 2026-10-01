@@ -1,0 +1,15 @@
+pre-push:
+  parallel: false
+  commands:
+    generated:
+      run: npm run check:generated
+    intent:
+      run: npm run check:intent
+    native:
+      run: npm run test:native
+    package-and-lifecycle:
+      run: npm test
+    semantics:
+      run: npm run test:semantic
+    plan-claims:
+      run: command -v fathom >/dev/null || { echo 'fathom missing — gate NOT run'; exit 1; }; fathom verify --service cue-wasm --plan docs/plans/runtime-hardening.md --strict --quiet

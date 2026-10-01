@@ -12,6 +12,9 @@ async function testBrowserLogic() {
     
     // Save original state
     const originalWindow = global.window;
+    const originalFS = global.fs;
+    const originalAPI = global.CueWasm;
+    global.fs = {constants: {O_DIRECTORY: -1}};
     const originalFetch = global.fetch;
     const originalWebAssembly = global.WebAssembly;
 
@@ -37,13 +40,14 @@ async function testBrowserLogic() {
         // Mock Go (required by loader)
         global.Go = class {
             constructor() { this.importObject = { gojs: {} }; }
-            run() {}
+            run() {setTimeout(()=>{global.CueWasm={unify(){}};},5);return new Promise(()=>{});}
         };
 
         const { loadWasm } = await import(loaderPath);
         
         // Test Case 1: Default CDN
-        await loadWasm();
+        const ready = await loadWasm();
+        assert.equal(typeof ready.unify, "function", "Must wait for asynchronous bridge publication");
         const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8'));
         const version = pkg.version;
         const expectedCdn = `https://cdn.jsdelivr.net/npm/@geoff4lf/cue-wasm@${version}/bin/cue-engine.wasm`;
@@ -58,6 +62,8 @@ async function testBrowserLogic() {
 
     } finally {
         // Cleanup
+        global.fs = originalFS;
+        global.CueWasm = originalAPI;
         global.window = originalWindow;
         global.fetch = originalFetch;
         global.WebAssembly = originalWebAssembly;
@@ -72,6 +78,8 @@ async function testNodeLogic() {
     const originalWindow = global.window;
     global.window = undefined;
 
+    const originalFS = global.fs;
+    global.fs = {constants:{O_DIRECTORY:-1}};
     const originalFetch = global.fetch;
     global.fetch = () => { throw new Error("Should NOT call fetch in Node"); };
 
@@ -99,12 +107,13 @@ async function testNodeLogic() {
             if (e.message === "FS_SUCCESS_SIGNAL") {
                 console.log("✅ Node branch correctly avoided fetch and reached FS logic.");
             } else {
-                assert.ok(!e.message.includes("fetch"), "Node should use fs, not fetch. Got: " + e.message);
+                throw e;
             }
         }
 
         global.WebAssembly = originalWA;
     } finally {
+        global.fs = originalFS;
         global.fetch = originalFetch;
         global.window = originalWindow;
         delete global.Go;

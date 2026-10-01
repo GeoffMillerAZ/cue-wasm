@@ -1,70 +1,102 @@
 import React from 'react';
-import { loadWasm, loadWasmWorker } from '../../dist/index.js'; // Fixed via build.sh
+import { loadWasm, loadWasmWorker } from '../../dist/index.js'; // Rewritten by generate-js.mjs.
 
-// Create Context
+const methods = ['validate', 'unify', 'export', 'parse', 'format', 'getSymbols'];
+const unavailable = () => new Error('CUE runtime is unavailable; wait for readiness or retry');
+const asError = error => error instanceof Error ? error : new Error(String(error));
 const CueContext = React.createContext({
-    instance: null,
-    isLoading: true,
-    error: null,
-    // Default no-op functions that warn if used before load
-    validate: async () => { throw new Error("CUE WASM not loaded yet"); },
-    unify: async () => { throw new Error("CUE WASM not loaded yet"); },
-    export: async () => { throw new Error("CUE WASM not loaded yet"); },
-    parse: async () => { throw new Error("CUE WASM not loaded yet"); },
-    format: async () => { throw new Error("CUE WASM not loaded yet"); },
-    getSymbols: async () => { throw new Error("CUE WASM not loaded yet"); }
+    instance: null, isLoading: true, error: null,
+    retry: () => { throw new Error('CueProvider is required'); },
+    ...Object.fromEntries(methods.map(name => [name, async () => { throw unavailable(); }])),
 });
 
-// Singleton promise to prevent double-loading
-let loadingPromise = null;
-
 function CueProvider({ children, wasmPath, useWorker = false, workerOptions = {} }) {
-    const [state, setState] = React.useState({
-        instance: null,
-        isLoading: true,
-        error: null
-    });
+    // Compare supported option values, not the caller's object identity. Inline
+    // options and omitted options must not restart a provider on every render.
+    const { mode, workerPath, readerPath, enginePath, wasmExecPath, signal,
+        timeoutMs, initializationTimeoutMs, maxPending, maxInputBytes } = useWorker ? workerOptions : {};
+    const directPath = useWorker ? undefined : wasmPath;
+    const config = React.useMemo(() => ({ useWorker, wasmPath: directPath, workerOptions: {
+        mode, workerPath, readerPath, enginePath, wasmExecPath, signal,
+        timeoutMs, initializationTimeoutMs, maxPending, maxInputBytes,
+    } }), [useWorker, directPath, mode, workerPath, readerPath, enginePath, wasmExecPath,
+        signal, timeoutMs, initializationTimeoutMs, maxPending, maxInputBytes]);
+    const owner = React.useRef(null);
+    const [attempt, setAttempt] = React.useState(0);
+    const [state, setState] = React.useState({ config: null, attempt: 0,
+        session: null, isLoading: true, error: null });
+    const retry = React.useCallback(() => {
+        if (!owner.current?.live) return;
+        owner.current.release();
+        setAttempt(value => value + 1);
+    }, []);
 
     React.useEffect(() => {
-        if (state.instance) return;
-
-        if (!loadingPromise) {
-            loadingPromise = useWorker ? loadWasmWorker(workerOptions) : loadWasm(wasmPath);
+        const controller = new AbortController();
+        const externalSignal = config.workerOptions.signal;
+        const abort = () => controller.abort();
+        const detach = () => externalSignal?.removeEventListener('abort', abort);
+        const session = { live: true, instance: null, release() {
+            if (!session.live) return;
+            session.live = false;
+            detach(); controller.abort();
+            // The legacy direct Go host has no disposal contract.
+            if (config.useWorker) session.instance?.dispose();
+        } };
+        owner.current = session;
+        setState({ config, attempt, session: null, isLoading: true, error: null });
+        async function start() {
+            try {
+                if (config.useWorker) {
+                    externalSignal?.addEventListener('abort', abort, { once: true });
+                    if (externalSignal?.aborted) controller.abort();
+                }
+                const instance = config.useWorker
+                    ? await loadWasmWorker({ ...config.workerOptions, signal: controller.signal })
+                    : await loadWasm(config.wasmPath);
+                if (!session.live) {
+                    if (config.useWorker) instance.dispose();
+                    return;
+                }
+                session.instance = instance;
+                setState({ config, attempt, session, isLoading: false, error: null });
+            } catch (error) {
+                if (session.live) setState({ config, attempt, session: null,
+                    isLoading: false, error: asError(error) });
+            } finally { detach(); }
         }
+        start();
+        return () => session.release();
+    }, [config, attempt]);
 
-        loadingPromise
-            .then(instance => {
-                setState({
-                    instance,
-                    isLoading: false,
-                    error: null
-                });
-            })
-            .catch(err => {
-                setState(prev => ({ ...prev, isLoading: false, error: err }));
-            });
-    }, [wasmPath, useWorker, workerOptions, state.instance]);
-
-    // Helpers bound to the instance
-    const helpers = React.useMemo(() => ({
-        validate: state.instance ? state.instance.validate.bind(state.instance) : async () => {},
-        unify: state.instance ? state.instance.unify.bind(state.instance) : async () => {},
-        export: state.instance ? (state.instance.export ? state.instance.export.bind(state.instance) : async () => {}) : async () => {},
-        parse: state.instance ? state.instance.parse.bind(state.instance) : async () => {},
-        format: state.instance ? state.instance.format.bind(state.instance) : async () => {},
-        getSymbols: state.instance ? state.instance.getSymbols.bind(state.instance) : async () => {},
-    }), [state.instance]);
-
-    const value = {
-        ...state,
-        ...helpers
-    };
-
-    return React.createElement(CueContext.Provider, { value }, children);
+    // Hide the previous configuration even before its effect cleanup runs.
+    const current = state.config === config && state.attempt === attempt
+        ? state : { session: null, isLoading: true, error: null };
+    const session = current.session;
+    const helpers = React.useMemo(() => Object.fromEntries(methods.map(name => [name, async (...args) => {
+        if (!session?.live || owner.current !== session) throw current.error || unavailable();
+        const instance = session.instance;
+        try {
+            if (config.useWorker && instance.state !== 'ready') throw unavailable();
+            if (typeof instance[name] !== 'function') throw new Error(`CUE operation ${name} is unavailable`);
+            const result = await instance[name](...args);
+            // Direct calls cannot be canceled, but their retired result must not
+            // escape a provider after cleanup, replacement, or retry.
+            if (!session.live || owner.current !== session) throw unavailable();
+            return result;
+        } catch (error) {
+            if (session.live && owner.current === session && config.useWorker &&
+                ['failed', 'disposed'].includes(instance.state)) {
+                setState({ config, attempt, session: null, isLoading: false, error: asError(error) });
+            }
+            throw error;
+        }
+    }])), [session, current.error, config, attempt]);
+    return React.createElement(CueContext.Provider, { value: {
+        instance: session?.instance ?? null, isLoading: current.isLoading,
+        error: current.error, retry, ...helpers,
+    } }, children);
 }
 
-function useCue() {
-    return React.useContext(CueContext);
-}
-
+function useCue() { return React.useContext(CueContext); }
 export { CueProvider, useCue };

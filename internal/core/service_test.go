@@ -63,10 +63,10 @@ func TestValidate(t *testing.T) {
 	svc := core.NewCueService()
 
 	tests := []struct {
-		name      string
-		schema    string
-		data      string
-		wantErr   bool
+		name    string
+		schema  string
+		data    string
+		wantErr bool
 	}{
 		{
 			name:    "Valid",
@@ -98,6 +98,30 @@ func TestValidate(t *testing.T) {
 				if !strings.Contains(err.Error(), "message") {
 					t.Errorf("Expected structured error JSON, got %v", err)
 				}
+			}
+		})
+	}
+}
+
+func TestValidateIndependentValues(t *testing.T) {
+	svc := core.NewCueService()
+	for _, tc := range []struct {
+		name, schema, data string
+		valid              bool
+	}{
+		{"scalar", "int & >0", "3", true},
+		{"scalar conflict", "int & >0", "-1", false},
+		{"list", "[...int]", "[1,2]", true},
+		{"list conflict", "[...int]", "[1,\"bad\"]", false},
+		{"schema local binding", "let Limit = 10\nx: int & <Limit", "x: 9", true},
+		{"data binding cannot override schema", "let Limit = 10\nx: int & <Limit", "let Limit = 100\nx: 90\ny: Limit", false},
+		{"data reuses definition", "#User: {name: string}", "#User & {name: \"Ada\"}", true},
+		{"incomplete", "x: int", "{}", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			err := svc.Validate(tc.schema, tc.data)
+			if (err == nil) != tc.valid {
+				t.Fatalf("valid=%v error=%v", tc.valid, err)
 			}
 		})
 	}

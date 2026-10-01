@@ -8,7 +8,13 @@
     ".": "./dist/index.js",
     "./cue.wasm": "./bin/cue.wasm",
     "./react": "./dist/react/index.js",
-    "./tools": "./dist/workspace.js"
+    "./tools": "./dist/workspace.js",
+    "./bin/cue.wasm": "./bin/cue.wasm",
+    "./cue-engine.wasm": "./bin/cue-engine.wasm",
+    "./cue-reader.wasm": "./bin/cue-reader.wasm",
+    "./wasm_exec.js": "./bin/wasm_exec.js",
+    "./worker.js": "./dist/worker.js",
+    "./manifest.json": "./bin/manifest.json"
   },
   "types": "dist/index.d.ts",
   "repository": {
@@ -18,16 +24,29 @@
   "files": [
     "dist/",
     "bin/cue.wasm",
-    "bin/wasm_exec.js"
+    "bin/cue-engine.wasm",
+    "bin/cue-reader.wasm",
+    "bin/wasm_exec.js",
+    "bin/package.json",
+    "bin/manifest.json"
   ],
   "scripts": {
-    "test": "npm run test:unit && npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge",
-    "test:unit": "node test/unit/loader_logic.js && node test/unit/worker_logic.js",
+    "test": "npm run build:js && npm run test:unit && npm run test:integration && npm run test:security && npm run test:examples && npm run test:edge && npm run test:package",
+    "test:unit": "node test/unit/loader_logic.js && node test/unit/worker_logic.js && node --test test/unit/react_logic.mjs && node --test test/unit/generation.mjs && node --test test/unit/workspace_logic.mjs && node --test test/unit/runtime_environment.mjs",
     "test:integration": "node test/integration/test.js",
     "test:security": "node test/security/test_lfi.js",
     "test:examples": "node test/examples.js",
     "test:edge": "node test/integration/edge_cases.js",
-    "test:docker": "node test/docker/test.js"
+    "test:docker": "node test/docker/test.js",
+    "build:js": "node scripts/generate-js.mjs",
+    "test:package": "npm run build:js && node test/package/smoke.mjs",
+    "check:generated": "node scripts/generate-js.mjs --check",
+    "test:native": "GOTOOLCHAIN=go1.24.4 go test ./internal/...",
+    "build:wasm": "./build.sh",
+    "test:semantic": "node test/semantic/compare.mjs",
+    "check:intent": "node scripts/check-intent.mjs",
+    "test:authoring": "node --test test/authoring/session.test.mjs && node test/authoring/semantic.mjs",
+    "example:authoring": "node scripts/prepare-authoring.mjs"
   },
   "keywords": [
     "cuelang",
@@ -42,5 +61,10 @@
     "react": ">=16.8.0"
   },
   "author": "Geoff Miller",
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
 }

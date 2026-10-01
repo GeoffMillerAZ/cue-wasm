@@ -3,7 +3,10 @@
 package core
 
 import (
+	"cuelang.org/go/cue/ast"
+	"cuelang.org/go/cue/parser"
 	"fmt"
+	"sort"
 	"strings"
 
 	"cuelang.org/go/cue"
@@ -13,46 +16,64 @@ import (
 	"cuelang.org/go/encoding/yaml"
 )
 
-// Unify takes a map of filename to cue content, a list of specific paths to load, 
+// Unify takes a map of filename to cue content, a list of specific paths to load,
 // and a list of tags (key=value). It unifies them and returns the JSON result.
 func (s *CueService) Unify(files map[string]string, loadPaths []string, tags []string) (string, error) {
 	ctx := cuecontext.New()
-	
+
+	const virtualRoot = VirtualRoot
 	overlay := make(map[string]load.Source)
+	var names []string
+	for name := range files {
+		names = append(names, name)
+	}
+	sort.Strings(names)
 	var allPaths []string
-	for name, content := range files {
-		// Ensure absolute path for overlay
-		path := name
-		if !strings.HasPrefix(path, "/") {
-			path = "/" + path
+	for _, name := range names {
+		canonical, err := NormalizeVirtualPath(name)
+		if err != nil {
+			return "", fmt.Errorf("%s", FormatError(err))
 		}
-		overlay[path] = load.FromString(content)
-		allPaths = append(allPaths, path)
+		filename := virtualRoot + canonical
+		if _, exists := overlay[filename]; exists {
+			return "", fmt.Errorf("%s", FormatError(fmt.Errorf("duplicate virtual file identity")))
+		}
+		overlay[filename] = load.FromString(files[name])
+		if !strings.HasPrefix(canonical, "/cue.mod/") {
+			allPaths = append(allPaths, filename)
+		}
 	}
-
-	// Use specific load paths if provided, otherwise load all files from overlay
-	pathsToLoad := loadPaths
-	if len(pathsToLoad) == 0 {
+	var pathsToLoad []string
+	if len(loadPaths) == 0 {
 		pathsToLoad = allPaths
-	}
-
-	cfg := &load.Config{
-		Overlay: overlay,
-		Tags:    tags,
-		Dir:     "/",
-	}
-
-	// Clean paths for loading
-	var cleanLoadPaths []string
-	for _, p := range pathsToLoad {
-		cp := p
-		if strings.HasPrefix(cp, "/") {
-			cp = cp[1:]
+	} else {
+		for _, name := range loadPaths {
+			canonical, err := NormalizeVirtualPath(name)
+			if err != nil {
+				return "", fmt.Errorf("%s", FormatError(err))
+			}
+			filename := virtualRoot + canonical
+			if _, exists := overlay[filename]; !exists {
+				return "", fmt.Errorf("%s", FormatError(fmt.Errorf("entry point is not a supplied virtual file")))
+			}
+			pathsToLoad = append(pathsToLoad, filename)
 		}
-		cleanLoadPaths = append(cleanLoadPaths, cp)
+	}
+	if len(pathsToLoad) == 0 {
+		return "", fmt.Errorf("%s", FormatError(fmt.Errorf("no source entry points")))
+	}
+	cfg := &load.Config{
+		Overlay: overlay, Tags: tags, Dir: virtualRoot, ModuleRoot: virtualRoot,
+		Registry: offlineRegistry{}, Env: []string{},
+		ParseFile: func(name string, src interface{}, cfg parser.Config) (*ast.File, error) {
+			if _, exists := overlay[name]; !exists {
+				return nil, fmt.Errorf("file is outside supplied virtual workspace")
+			}
+			return parser.ParseFile(name, src, cfg)
+		},
 	}
 
-	bps := load.Instances(cleanLoadPaths, cfg)
+	bps := load.Instances(pathsToLoad, cfg)
 	if len(bps) == 0 {
 		return "", fmt.Errorf(`{"message": "failed to load instances"}`)
 	}
@@ -87,8 +108,16 @@ func (s *CueService) Unify(files map[string]string, loadPaths []string, tags []s
 
 func (s *CueService) Validate(schemaStr string, dataStr string) error {
 	ctx := cuecontext.New()
-	
-	val := ctx.CompileString(schemaStr + "\n" + dataStr)
+
+	schema := ctx.CompileString(schemaStr, cue.Filename("schema.cue"))
+	if schema.Err() != nil {
+		return fmt.Errorf("%s", FormatError(schema.Err()))
+	}
+	data := ctx.CompileString(dataStr, cue.Filename("data.cue"), cue.Scope(schema))
+	if data.Err() != nil {
+		return fmt.Errorf("%s", FormatError(data.Err()))
+	}
+	val := schema.Unify(data)
 	if val.Err() != nil {
 		return fmt.Errorf("%s", FormatError(val.Err()))
 	}

@@ -30,28 +30,39 @@ jobs:
 
     - name: Install dependencies
       run: |
-        go mod tidy
-        npm ci || npm install
+        go mod download
+        npm ci
 
     - name: Verify Build & Tests
       run: |
+        npm run check:generated
+        npm run check:intent
+        npm run test:native
         ./build.sh
         npm test
+        npm run test:semantic
+        npm run test:authoring
+        npm ci --prefix test/react-consumer --ignore-scripts
+        npm test --prefix test/react-consumer
+        node test/react-consumer/scripts/check-current.mjs .
+        git diff --exit-code -- go.mod go.sum package-lock.json dist
 
     - name: Create Release and Upload Assets
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_TAG: ${{ github.ref_name }}
       run: |
-        gh release create ${{ github.ref_name }} \
+        node -e 'const p=require("./package.json"); if(process.env.RELEASE_TAG!==`v${p.version}`) throw Error("Tag/package version mismatch")'
+        gh release create "$RELEASE_TAG" \
           bin/cue-reader.wasm \
           bin/cue-engine.wasm \
           bin/wasm_exec.js \
-          --title "Release ${{ github.ref_name }}" \
+          bin/manifest.json \
+          --title "Release $RELEASE_TAG" \
           --generate-notes
 
     - name: Publish to NPM
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
-        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
         npm publish --access public

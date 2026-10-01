@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CUE · Configuration studio</title><link rel="stylesheet" href="./style.css"></head>
+<body>
+<header><div><strong>CUE</strong><span class="divider">/</span><h1>Configuration studio</h1></div><span class="local">Local evaluation · no service</span></header>
+<main>
+<section class="source" aria-labelledby="source-title">
+  <div class="section-head"><h2 id="source-title">Workspace draft</h2><span>CUE</span></div>
+  <p id="draft-help">Change a title, theme or panel. Evaluate to resolve defaults and check constraints.</p>
+  <label class="sr-only" for="draft">CUE configuration</label><textarea id="draft" spellcheck="false" aria-describedby="draft-help" autocapitalize="off"></textarea>
+  <div class="actions"><button id="start">Start evaluator</button><button id="evaluate" class="primary" disabled>Evaluate</button><button id="format" disabled>Format</button><button id="cancel" disabled>Cancel</button></div>
+  <p id="status" role="status">Evaluator not loaded.</p><pre id="error" role="alert" hidden></pre>
+  <details><summary>Schema and constraints</summary><pre id="schema"></pre></details>
+</section>
+<section class="result" aria-labelledby="result-title">
+  <div class="section-head"><h2 id="result-title">Preview</h2><span id="freshness">Not evaluated</span></div>
+  <p>Configuration preview. Panels have no connected data.</p>
+  <div id="preview"><p>Evaluate the draft to see its workspace structure and appearance.</p></div>
+  <div class="section-head output-head"><h2>Resolved JSON</h2><button id="download" disabled>Download JSON</button></div>
+  <pre id="json">Validated output will appear here.</pre>
+</section>
+</main><script type="module" src="./app.mjs"></script></body></html>

@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"cuelang.org/go/cue/ast"
 	"cuelang.org/go/cue/errors"
@@ -19,6 +20,7 @@ func NewCueService() *CueService {
 // StructuredError represents a parse/validation error
 type StructuredError struct {
 	Message string `json:"message"`
+	Details string `json:"details,omitempty"`
 	Line    int    `json:"line,omitempty"`
 	Column  int    `json:"column,omitempty"`
 	File    string `json:"file,omitempty"`
@@ -29,7 +31,7 @@ func FormatError(err error) string {
 	if err == nil {
 		return ""
 	}
-	
+
 	msg := err.Error()
 	sErr := StructuredError{Message: msg}
 
@@ -44,7 +46,10 @@ func FormatError(err error) string {
 		}
 		sErr.Line = pos.Line()
 		sErr.Column = pos.Column()
-		sErr.File = pos.Filename()
+		sErr.File = strings.TrimPrefix(pos.Filename(), VirtualRoot)
+		if msg != sErr.Message {
+			sErr.Details = msg
+		}
 	}
 
 	b, _ := json.Marshal(sErr)
