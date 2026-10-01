@@ -89,3 +89,25 @@ build/native/Node/semantic/authoring/React/parity/generation/intent gates. Only 
 expected test/package/receipt.json changed during tests; source outputs stayed clean.
 Existing pinned toolchain/module/npm caches were warm; this is not a cold-start claim.
 Resource/security/other-browser qualification remains incomplete; no production promotion.
+
+## Dependency triage checkpoint — 2026-10-01
+
+Pushed main/origin/main03d514a (normal hooks; no npm publication/tag). The completed
+[dependency assessment](../assessments/2026-10-01-dependency-triage.md) and
+[sanitized snapshot](../assessments/fixtures/landing-2026-10-01/dependency-triage-alerts.json)
+preserve the observation: historical push warning56 (1 critical/20 high/31 moderate/4 low)
+versus one open moderate #48 and no open critical/high at triage time. Removed root
+MCP development-lock dependencies explain the historical npm alerts; the optional
+React consumer fixture is distinct from linked Go/WASM dependencies. This docs-only
+handoff adds no new security evidence and leaves Go1.24.4/CUEv0.15.4 pins unchanged.
+
+Next separately verified maintenance unit, already owner-authorized: establish
+x/net/html package/function reachability for engine and reader under both WASM tag
+sets; review Go standard-library advisories separately; resolve x/netv0.46.0 → v0.55.0
+with its Go>=1.25.0 compatibility floor and a deliberately selected supported patch,
+keeping CUEv0.15.4 initially. Review the resolved graph; align build/notices/CI/test
+pins; rebuild manifests/shim/notices; run native/vet, generated, Node/package,
+native/WASM semantic and authoring gates; refresh the installed React archive and
+source-parity guard; rerun actual installed-browser lifecycle; confirm alert resolution.
+Exact commands and evidence limits are in the assessment. No severity-only
+exploitability claim or additional approval gate; app-kit diagram/chooser UX continues.

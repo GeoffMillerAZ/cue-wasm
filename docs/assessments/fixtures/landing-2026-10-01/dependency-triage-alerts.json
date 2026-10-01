@@ -1,0 +1,1362 @@
+[
+  {
+    "number": 74,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-yaml"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-2883-xcg3-v3hh",
+    "cve": "CVE-2026-84375",
+    "severity": "high",
+    "summary": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+    "range": ">= 4.0.0, < 4.3.2",
+    "patched": "4.3.2",
+    "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh"
+  },
+  {
+    "number": 73,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "extract-zip"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-7pqw-9j4j-h8q3",
+    "cve": "CVE-2026-19693",
+    "severity": "high",
+    "summary": "extract-zip allows arbitrary file writes through symlink archive entries",
+    "range": "<= 2.0.1",
+    "patched": null,
+    "url": "https://github.com/advisories/GHSA-7pqw-9j4j-h8q3"
+  },
+  {
+    "number": 72,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-gqvv-2mrq-wpjv",
+    "cve": "CVE-2026-84365",
+    "severity": "medium",
+    "summary": "Hono: Incomplete fix for CVE-2026-39408: `toSSG()` still writes files outside the output directory",
+    "range": "< 4.13.5",
+    "patched": "4.13.5",
+    "url": "https://github.com/advisories/GHSA-gqvv-2mrq-wpjv"
+  },
+  {
+    "number": 71,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-crvj-82cr-hjcx",
+    "cve": "CVE-2026-84363",
+    "severity": "medium",
+    "summary": "Hono: Query parser reads parameters after the URL fragment, causing cache-key and proxy interpretation differentials",
+    "range": "< 4.13.5",
+    "patched": "4.13.5",
+    "url": "https://github.com/advisories/GHSA-crvj-82cr-hjcx"
+  },
+  {
+    "number": 70,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-g6gw-c38x-mqfc",
+    "cve": "CVE-2026-84364",
+    "severity": "medium",
+    "summary": "Hono: Unbounded dot-notation nesting in `parseBody()` can cause memory exhaustion",
+    "range": "< 4.13.5",
+    "patched": "4.13.5",
+    "url": "https://github.com/advisories/GHSA-g6gw-c38x-mqfc"
+  },
+  {
+    "number": 69,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "qs"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-4mjr-xmp4-gh2g",
+    "cve": "CVE-2026-82417",
+    "severity": "medium",
+    "summary": "qs: Denial of Service via Attacker Controlled isBuffer",
+    "range": ">= 2.2.5, < 6.16.0",
+    "patched": "6.16.0",
+    "url": "https://github.com/advisories/GHSA-4mjr-xmp4-gh2g"
+  },
+  {
+    "number": 68,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-jqff-g426-hqxp",
+    "cve": "CVE-2026-76172",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to host confusion via percent-encoded scheme normalization",
+    "range": ">= 3.0.0, < 3.1.6",
+    "patched": "3.1.6",
+    "url": "https://github.com/advisories/GHSA-jqff-g426-hqxp"
+  },
+  {
+    "number": 67,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-f65p-4m7j-42xc",
+    "cve": "CVE-2026-75975",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to server-side request forgery via malformed IPv6 normalization",
+    "range": ">= 3.0.0, < 3.1.6",
+    "patched": "3.1.6",
+    "url": "https://github.com/advisories/GHSA-f65p-4m7j-42xc"
+  },
+  {
+    "number": 66,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "extract-zip"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-jmr9-qjv8-65gv",
+    "cve": "CVE-2026-56876",
+    "severity": "high",
+    "summary": "extract-zip unvalidated symlink path traversal",
+    "range": "<= 2.0.1",
+    "patched": null,
+    "url": "https://github.com/advisories/GHSA-jmr9-qjv8-65gv"
+  },
+  {
+    "number": 65,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hono/node-server"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-frvp-7c67-39w9",
+    "cve": null,
+    "severity": "medium",
+    "summary": "Node.js Adapter for Hono: Path traversal in `serve-static` on Windows via encoded backslash (`%5C`)",
+    "range": "< 1.19.15",
+    "patched": "1.19.15",
+    "url": "https://github.com/advisories/GHSA-frvp-7c67-39w9"
+  },
+  {
+    "number": 64,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-q3j6-qgpj-74h6",
+    "cve": "CVE-2026-6321",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to path traversal via percent-encoded dot segments",
+    "range": ">= 3.0.0, <= 3.1.0",
+    "patched": "3.1.1",
+    "url": "https://github.com/advisories/GHSA-q3j6-qgpj-74h6"
+  },
+  {
+    "number": 63,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-v39h-62p7-jpjc",
+    "cve": "CVE-2026-6322",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to host confusion via percent-encoded authority delimiters",
+    "range": ">= 3.0.0, <= 3.1.1",
+    "patched": "3.1.2",
+    "url": "https://github.com/advisories/GHSA-v39h-62p7-jpjc"
+  },
+  {
+    "number": 62,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-yaml"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-5p4m-2wfm-xmqj",
+    "cve": null,
+    "severity": "high",
+    "summary": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) \u2014 CVE-2026-59870 fix not backported",
+    "range": ">= 4.0.0, < 4.3.1",
+    "patched": "4.3.1",
+    "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj"
+  },
+  {
+    "number": 61,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-f23p-vx2j-j53r",
+    "cve": "CVE-2026-71850",
+    "severity": "medium",
+    "summary": "Hono: `memo()` retains SSR output across requests, leading to cross-user data disclosure",
+    "range": ">= 3.8.0, < 4.12.34",
+    "patched": "4.12.34",
+    "url": "https://github.com/advisories/GHSA-f23p-vx2j-j53r"
+  },
+  {
+    "number": 60,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-79qm-7rj5-m7r9",
+    "cve": "CVE-2026-71849",
+    "severity": "low",
+    "summary": "Hono: Proxy Helper does not remove response headers listed in the `Connection` header",
+    "range": ">= 4.7.0, < 4.12.34",
+    "patched": "4.12.34",
+    "url": "https://github.com/advisories/GHSA-79qm-7rj5-m7r9"
+  },
+  {
+    "number": 59,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-7p8r-x3mc-p8w7",
+    "cve": "CVE-2026-18446",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to host confusion via backslash authority introducer",
+    "range": ">= 3.0.0, < 3.1.5",
+    "patched": "3.1.5",
+    "url": "https://github.com/advisories/GHSA-7p8r-x3mc-p8w7"
+  },
+  {
+    "number": 58,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ip-address"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-mwp4-54f8-5fhr",
+    "cve": "CVE-2026-69192",
+    "severity": "high",
+    "summary": "ip-address: Address4 decodes leading-zero octets as decimal while resolvers decode them as octal, allowing SSRF and trust-boundary bypass",
+    "range": "<= 10.3.0",
+    "patched": "10.3.1",
+    "url": "https://github.com/advisories/GHSA-mwp4-54f8-5fhr"
+  },
+  {
+    "number": 57,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-8j4g-w8fx-2239",
+    "cve": "CVE-2026-69207",
+    "severity": "medium",
+    "summary": "Hono: ReDoS in CORS middleware via Access-Control-Request-Headers",
+    "range": "< 4.12.34",
+    "patched": "4.12.34",
+    "url": "https://github.com/advisories/GHSA-8j4g-w8fx-2239"
+  },
+  {
+    "number": 56,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-yaml"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-52cp-r559-cp3m",
+    "cve": "CVE-2026-59869",
+    "severity": "high",
+    "summary": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+    "range": ">= 4.0.0, < 4.3.0",
+    "patched": "4.3.0",
+    "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m"
+  },
+  {
+    "number": 55,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-v2hh-gcrm-f6hx",
+    "cve": "CVE-2026-16221",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to host confusion via literal backslash authority delimiter",
+    "range": ">= 3.0.0, <= 3.1.3",
+    "patched": "3.1.4",
+    "url": "https://github.com/advisories/GHSA-v2hh-gcrm-f6hx"
+  },
+  {
+    "number": 54,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-uri"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-4c8g-83qw-93j6",
+    "cve": "CVE-2026-13676",
+    "severity": "high",
+    "summary": "fast-uri vulnerable to host confusion via failed IDN canonicalization",
+    "range": ">= 3.0.0, < 3.1.3",
+    "patched": "3.1.3",
+    "url": "https://github.com/advisories/GHSA-4c8g-83qw-93j6"
+  },
+  {
+    "number": 53,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-w62v-xxxg-mg59",
+    "cve": "CVE-2026-59895",
+    "severity": "medium",
+    "summary": "Hono: Server-Side XSS via JSX Escaping Bypass in cx() Utility",
+    "range": ">= 4.0.0, < 4.12.27",
+    "patched": "4.12.27",
+    "url": "https://github.com/advisories/GHSA-w62v-xxxg-mg59"
+  },
+  {
+    "number": 52,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-xgm2-5f3f-mvvc",
+    "cve": "CVE-2026-59897",
+    "severity": "medium",
+    "summary": "Hono: API Gateway v1 adapter can drop a distinct repeated request header value during de-duplication",
+    "range": ">= 4.3.3, < 4.12.27",
+    "patched": "4.12.27",
+    "url": "https://github.com/advisories/GHSA-xgm2-5f3f-mvvc"
+  },
+  {
+    "number": 50,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "body-parser"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-v422-hmwv-36x6",
+    "cve": "CVE-2026-12590",
+    "severity": "low",
+    "summary": "body-parser vulnerable to denial of service when invalid limit value silently disables size enforcement",
+    "range": ">= 2.0.0, < 2.3.0",
+    "patched": "2.3.0",
+    "url": "https://github.com/advisories/GHSA-v422-hmwv-36x6"
+  },
+  {
+    "number": 49,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-yaml"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-h67p-54hq-rp68",
+    "cve": "CVE-2026-53550",
+    "severity": "medium",
+    "summary": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+    "range": ">= 4.0.0, <= 4.1.1",
+    "patched": "4.2.0",
+    "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68"
+  },
+  {
+    "number": 48,
+    "state": "open",
+    "dependency": {
+      "package": {
+        "ecosystem": "go",
+        "name": "golang.org/x/net"
+      },
+      "manifest_path": "go.mod",
+      "scope": "runtime",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-5cv4-jp36-h3mw",
+    "cve": "CVE-2026-25680",
+    "severity": "medium",
+    "summary": "Go Net HTML parser is vulnerable to denial of service",
+    "range": "< 0.55.0",
+    "patched": "0.55.0",
+    "url": "https://github.com/advisories/GHSA-5cv4-jp36-h3mw"
+  },
+  {
+    "number": 46,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ws"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-96hv-2xvq-fx4p",
+    "cve": "CVE-2026-48779",
+    "severity": "high",
+    "summary": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+    "range": ">= 8.0.0, < 8.21.0",
+    "patched": "8.21.0",
+    "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p"
+  },
+  {
+    "number": 45,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "form-data"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-hmw2-7cc7-3qxx",
+    "cve": "CVE-2026-12143",
+    "severity": "high",
+    "summary": "form-data: CRLF injection in form-data via unescaped multipart field names and filenames",
+    "range": ">= 4.0.0, < 4.0.6",
+    "patched": "4.0.6",
+    "url": "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx"
+  },
+  {
+    "number": 44,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-rv63-4mwf-qqc2",
+    "cve": "CVE-2026-54288",
+    "severity": "medium",
+    "summary": "hono: Body Limit Middleware can be bypassed on AWS Lambda by understating `Content-Length`",
+    "range": "< 4.12.25",
+    "patched": "4.12.25",
+    "url": "https://github.com/advisories/GHSA-rv63-4mwf-qqc2"
+  },
+  {
+    "number": 43,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-wgpf-jwqj-8h8p",
+    "cve": "CVE-2026-54289",
+    "severity": "medium",
+    "summary": "hono: Lambda@Edge adapter keeps only the last value of a repeated request header, dropping the rest",
+    "range": "< 4.12.25",
+    "patched": "4.12.25",
+    "url": "https://github.com/advisories/GHSA-wgpf-jwqj-8h8p"
+  },
+  {
+    "number": 42,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-88fw-hqm2-52qc",
+    "cve": "CVE-2026-54290",
+    "severity": "high",
+    "summary": "hono: CORS Middleware reflects any Origin with credentials when `origin` defaults to the wildcard",
+    "range": "< 4.12.25",
+    "patched": "4.12.25",
+    "url": "https://github.com/advisories/GHSA-88fw-hqm2-52qc"
+  },
+  {
+    "number": 41,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-j6c9-x7qj-28xf",
+    "cve": "CVE-2026-54287",
+    "severity": "medium",
+    "summary": "hono: AWS Lambda adapter merges multiple `Set-Cookie` headers into one value, dropping cookies on ALB single-header and Lattice",
+    "range": "< 4.12.25",
+    "patched": "4.12.25",
+    "url": "https://github.com/advisories/GHSA-j6c9-x7qj-28xf"
+  },
+  {
+    "number": 40,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-wwfh-h76j-fc44",
+    "cve": "CVE-2026-54286",
+    "severity": "medium",
+    "summary": "hono: Path traversal in `serve-static` on Windows via encoded backslash (`%5C`)",
+    "range": "< 4.12.25",
+    "patched": "4.12.25",
+    "url": "https://github.com/advisories/GHSA-wwfh-h76j-fc44"
+  },
+  {
+    "number": 39,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-2gcr-mfcq-wcc3",
+    "cve": "CVE-2026-47676",
+    "severity": "medium",
+    "summary": "Hono: app.mount() strips mount prefix using undecoded path, causing incorrect routing for percent-encoded paths",
+    "range": "< 4.12.21",
+    "patched": "4.12.21",
+    "url": "https://github.com/advisories/GHSA-2gcr-mfcq-wcc3"
+  },
+  {
+    "number": 38,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-xrhx-7g5j-rcj5",
+    "cve": "CVE-2026-47674",
+    "severity": "medium",
+    "summary": "Hono: IP Restriction bypasses static deny rules for non-canonical IPv6 ",
+    "range": "< 4.12.21",
+    "patched": "4.12.21",
+    "url": "https://github.com/advisories/GHSA-xrhx-7g5j-rcj5"
+  },
+  {
+    "number": 37,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-3hrh-pfw6-9m5x",
+    "cve": "CVE-2026-47675",
+    "severity": "medium",
+    "summary": "Hono: Cookie helper does not sanitize sameSite and priority, allowing Set-Cookie injection",
+    "range": "< 4.12.21",
+    "patched": "4.12.21",
+    "url": "https://github.com/advisories/GHSA-3hrh-pfw6-9m5x"
+  },
+  {
+    "number": 36,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-f577-qrjj-4474",
+    "cve": "CVE-2026-47673",
+    "severity": "medium",
+    "summary": "Hono: JWT middleware accepts any Authorization scheme, not only Bearer",
+    "range": "< 4.12.21",
+    "patched": "4.12.21",
+    "url": "https://github.com/advisories/GHSA-f577-qrjj-4474"
+  },
+  {
+    "number": 35,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ws"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-58qx-3vcg-4xpx",
+    "cve": "CVE-2026-45736",
+    "severity": "medium",
+    "summary": "ws: Uninitialized memory disclosure",
+    "range": ">= 8.0.0, < 8.20.1",
+    "patched": "8.20.1",
+    "url": "https://github.com/advisories/GHSA-58qx-3vcg-4xpx"
+  },
+  {
+    "number": 34,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "qs"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-q8mj-m7cp-5q26",
+    "cve": "CVE-2026-8723",
+    "severity": "medium",
+    "summary": "qs has a remotely triggerable DoS: qs.stringify crashes with TypeError on null/undefined entries in comma-format arrays when encodeValuesOnly is set",
+    "range": ">= 6.11.1, <= 6.15.1",
+    "patched": "6.15.2",
+    "url": "https://github.com/advisories/GHSA-q8mj-m7cp-5q26"
+  },
+  {
+    "number": 32,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-qp7p-654g-cw7p",
+    "cve": "CVE-2026-44458",
+    "severity": "medium",
+    "summary": "Hono has CSS Declaration Injection via Style Object Values in JSX SSR",
+    "range": "< 4.12.18",
+    "patched": "4.12.18",
+    "url": "https://github.com/advisories/GHSA-qp7p-654g-cw7p"
+  },
+  {
+    "number": 31,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-hm8q-7f3q-5f36",
+    "cve": "CVE-2026-44459",
+    "severity": "low",
+    "summary": "Hono has improper validation of NumericDate claims (exp, nbf, iat) in JWT verify()",
+    "range": "< 4.12.18",
+    "patched": "4.12.18",
+    "url": "https://github.com/advisories/GHSA-hm8q-7f3q-5f36"
+  },
+  {
+    "number": 30,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-p77w-8qqv-26rm",
+    "cve": "CVE-2026-44457",
+    "severity": "medium",
+    "summary": "Hono's Cache Middleware ignores Vary: Authorization / Vary: Cookie leading to cross-user cache leakage",
+    "range": "< 4.12.18",
+    "patched": "4.12.18",
+    "url": "https://github.com/advisories/GHSA-p77w-8qqv-26rm"
+  },
+  {
+    "number": 28,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-9vqf-7f2p-gf9v",
+    "cve": "CVE-2026-44456",
+    "severity": "medium",
+    "summary": "Hono: bodyLimit() can be bypassed for chunked / unknown-length requests",
+    "range": "< 4.12.16",
+    "patched": "4.12.16",
+    "url": "https://github.com/advisories/GHSA-9vqf-7f2p-gf9v"
+  },
+  {
+    "number": 27,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-69xw-7hcm-h432",
+    "cve": "CVE-2026-44455",
+    "severity": "medium",
+    "summary": "hono/jsx has Unvalidated JSX Tag Names that May Allow HTML Injection",
+    "range": "< 4.12.16",
+    "patched": "4.12.16",
+    "url": "https://github.com/advisories/GHSA-69xw-7hcm-h432"
+  },
+  {
+    "number": 26,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "basic-ftp"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-rpmf-866q-6p89",
+    "cve": "CVE-2026-44240",
+    "severity": "high",
+    "summary": "basic-ftp allows a malicious FTP server to cause client-side denial of service via unbounded multiline control response buffering",
+    "range": "<= 5.3.0",
+    "patched": "5.3.1",
+    "url": "https://github.com/advisories/GHSA-rpmf-866q-6p89"
+  },
+  {
+    "number": 25,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ip-address"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-v2v4-37r5-5v8g",
+    "cve": "CVE-2026-42338",
+    "severity": "medium",
+    "summary": "ip-address has XSS in Address6 HTML-emitting methods",
+    "range": "<= 10.1.0",
+    "patched": "10.1.1",
+    "url": "https://github.com/advisories/GHSA-v2v4-37r5-5v8g"
+  },
+  {
+    "number": 24,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "basic-ftp"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-rp42-5vxx-qpwr",
+    "cve": "CVE-2026-41324",
+    "severity": "high",
+    "summary": "basic-ftp vulnerable to denial of service via unbounded memory consumption in Client.list()",
+    "range": "<= 5.2.2",
+    "patched": "5.3.0",
+    "url": "https://github.com/advisories/GHSA-rp42-5vxx-qpwr"
+  },
+  {
+    "number": 23,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-458j-xx4x-4375",
+    "cve": "CVE-2026-56761",
+    "severity": "medium",
+    "summary": "hono Improperly Handles JSX Attribute Names Allows HTML Injection in hono/jsx SSR",
+    "range": "< 4.12.14",
+    "patched": "4.12.14",
+    "url": "https://github.com/advisories/GHSA-458j-xx4x-4375"
+  },
+  {
+    "number": 22,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "basic-ftp"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-6v7q-wjvx-w8wg",
+    "cve": null,
+    "severity": "high",
+    "summary": "basic-ftp: Incomplete CRLF Injection Protection Allows Arbitrary FTP Command Execution via Credentials and MKD Commands",
+    "range": "<= 5.2.1",
+    "patched": "5.2.2",
+    "url": "https://github.com/advisories/GHSA-6v7q-wjvx-w8wg"
+  },
+  {
+    "number": 21,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-r5rp-j6wh-rvv4",
+    "cve": "CVE-2026-39410",
+    "severity": "medium",
+    "summary": "Hono: Non-breaking space prefix bypass in cookie name handling in getCookie()",
+    "range": "< 4.12.12",
+    "patched": "4.12.12",
+    "url": "https://github.com/advisories/GHSA-r5rp-j6wh-rvv4"
+  },
+  {
+    "number": 20,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-26pp-8wgv-hjvm",
+    "cve": "CVE-2026-56762",
+    "severity": "medium",
+    "summary": "Hono missing validation of cookie name on write path in setCookie()",
+    "range": "< 4.12.12",
+    "patched": "4.12.12",
+    "url": "https://github.com/advisories/GHSA-26pp-8wgv-hjvm"
+  },
+  {
+    "number": 19,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-xpcf-pg52-r92g",
+    "cve": "CVE-2026-39409",
+    "severity": "medium",
+    "summary": "Hono has incorrect IP matching in ipRestriction() for IPv4-mapped IPv6 addresses",
+    "range": "< 4.12.12",
+    "patched": "4.12.12",
+    "url": "https://github.com/advisories/GHSA-xpcf-pg52-r92g"
+  },
+  {
+    "number": 18,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-wmmm-f939-6g9c",
+    "cve": "CVE-2026-39407",
+    "severity": "medium",
+    "summary": "Hono: Middleware bypass via repeated slashes in serveStatic",
+    "range": "< 4.12.12",
+    "patched": "4.12.12",
+    "url": "https://github.com/advisories/GHSA-wmmm-f939-6g9c"
+  },
+  {
+    "number": 17,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-xf4j-xp2r-rqqx",
+    "cve": "CVE-2026-39408",
+    "severity": "medium",
+    "summary": "Hono: Path traversal in toSSG() allows writing files outside the output directory",
+    "range": ">= 4.0.0, <= 4.12.11",
+    "patched": "4.12.12",
+    "url": "https://github.com/advisories/GHSA-xf4j-xp2r-rqqx"
+  },
+  {
+    "number": 16,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hono/node-server"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-92pp-h63x-v22m",
+    "cve": "CVE-2026-39406",
+    "severity": "medium",
+    "summary": "@hono/node-server: Middleware bypass via repeated slashes in serveStatic",
+    "range": "< 1.19.13",
+    "patched": "1.19.13",
+    "url": "https://github.com/advisories/GHSA-92pp-h63x-v22m"
+  },
+  {
+    "number": 15,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "path-to-regexp"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-27v5-c462-wpq7",
+    "cve": "CVE-2026-4923",
+    "severity": "medium",
+    "summary": "path-to-regexp vulnerable to Regular Expression Denial of Service via multiple wildcards",
+    "range": ">= 8.0.0, < 8.4.0",
+    "patched": "8.4.0",
+    "url": "https://github.com/advisories/GHSA-27v5-c462-wpq7"
+  },
+  {
+    "number": 14,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "path-to-regexp"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-j3q9-mxjg-w52f",
+    "cve": "CVE-2026-4926",
+    "severity": "high",
+    "summary": "path-to-regexp vulnerable to Denial of Service via sequential optional groups",
+    "range": ">= 8.0.0, < 8.4.0",
+    "patched": "8.4.0",
+    "url": "https://github.com/advisories/GHSA-j3q9-mxjg-w52f"
+  },
+  {
+    "number": 12,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-v8w9-8mx6-g223",
+    "cve": null,
+    "severity": "medium",
+    "summary": "Hono vulnerable to Prototype Pollution possible through __proto__ key allowed in parseBody({ dot: true })",
+    "range": "< 4.12.7",
+    "patched": "4.12.7",
+    "url": "https://github.com/advisories/GHSA-v8w9-8mx6-g223"
+  },
+  {
+    "number": 11,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hono/node-server"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-wc8c-qw6v-h7f6",
+    "cve": "CVE-2026-29087",
+    "severity": "high",
+    "summary": "@hono/node-server has authorization bypass for protected static paths via encoded slashes in Serve Static Middleware",
+    "range": "< 1.19.10",
+    "patched": "1.19.10",
+    "url": "https://github.com/advisories/GHSA-wc8c-qw6v-h7f6"
+  },
+  {
+    "number": 10,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-5pq2-9x2x-5p6w",
+    "cve": "CVE-2026-29086",
+    "severity": "medium",
+    "summary": "Hono Vulnerable to Cookie Attribute Injection via Unsanitized domain and path in setCookie()",
+    "range": "< 4.12.4",
+    "patched": "4.12.4",
+    "url": "https://github.com/advisories/GHSA-5pq2-9x2x-5p6w"
+  },
+  {
+    "number": 9,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-q5qw-h33p-qvwr",
+    "cve": "CVE-2026-29045",
+    "severity": "high",
+    "summary": "Hono vulnerable to arbitrary file access via serveStatic vulnerability ",
+    "range": "< 4.12.4",
+    "patched": "4.12.4",
+    "url": "https://github.com/advisories/GHSA-q5qw-h33p-qvwr"
+  },
+  {
+    "number": 8,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-p6xx-57qc-3wxr",
+    "cve": "CVE-2026-29085",
+    "severity": "medium",
+    "summary": "Hono Vulnerable to SSE Control Field Injection via CR/LF in writeSSE()",
+    "range": "< 4.12.4",
+    "patched": "4.12.4",
+    "url": "https://github.com/advisories/GHSA-p6xx-57qc-3wxr"
+  },
+  {
+    "number": 7,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "basic-ftp"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-5rq4-664w-9x2c",
+    "cve": "CVE-2026-27699",
+    "severity": "critical",
+    "summary": "Basic FTP has Path Traversal Vulnerability in its downloadToDir()\u00a0method",
+    "range": "< 5.2.0",
+    "patched": "5.2.0",
+    "url": "https://github.com/advisories/GHSA-5rq4-664w-9x2c"
+  },
+  {
+    "number": 6,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ajv"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-2g4f-4pwh-qvx6",
+    "cve": "CVE-2025-69873",
+    "severity": "medium",
+    "summary": "ajv has ReDoS when using `$data` option",
+    "range": ">= 7.0.0-alpha.0, < 8.18.0",
+    "patched": "8.18.0",
+    "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6"
+  },
+  {
+    "number": 5,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hono"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-gq3j-xvxp-8hrf",
+    "cve": null,
+    "severity": "low",
+    "summary": "Hono added timing comparison hardening in basicAuth and bearerAuth",
+    "range": "< 4.11.10",
+    "patched": "4.11.10",
+    "url": "https://github.com/advisories/GHSA-gq3j-xvxp-8hrf"
+  },
+  {
+    "number": 4,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "qs"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-w7fw-mjwx-w883",
+    "cve": "CVE-2026-2391",
+    "severity": "low",
+    "summary": "qs's arrayLimit bypass in comma parsing allows denial of service",
+    "range": ">= 6.7.0, <= 6.14.1",
+    "patched": "6.14.2",
+    "url": "https://github.com/advisories/GHSA-w7fw-mjwx-w883"
+  },
+  {
+    "number": 3,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@modelcontextprotocol/sdk"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "direct"
+    },
+    "ghsa": "GHSA-345p-7cg4-v4c7",
+    "cve": "CVE-2026-25536",
+    "severity": "high",
+    "summary": "@modelcontextprotocol/sdk has cross-client data leak via shared server/transport instance reuse",
+    "range": ">= 1.10.0, <= 1.25.3",
+    "patched": "1.26.0",
+    "url": "https://github.com/advisories/GHSA-345p-7cg4-v4c7"
+  },
+  {
+    "number": 1,
+    "state": "fixed",
+    "dependency": {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@modelcontextprotocol/sdk"
+      },
+      "manifest_path": "package-lock.json",
+      "scope": "development",
+      "relationship": "transitive"
+    },
+    "ghsa": "GHSA-w48q-cv73-mx4w",
+    "cve": "CVE-2025-66414",
+    "severity": "high",
+    "summary": "Model Context Protocol (MCP) TypeScript SDK does not enable DNS rebinding protection by default",
+    "range": "< 1.24.0",
+    "patched": "1.24.0",
+    "url": "https://github.com/advisories/GHSA-w48q-cv73-mx4w"
+  }
+]
