@@ -1,0 +1,1 @@
+Current public contract, generated module closure and WASM manifest/assets match the tested archive.

@@ -1,0 +1,59 @@
+{
+  "revision": "9af3ce9f67147bf87dd49fccb7c66ed6fd787338",
+  "initialWorktree": "clean",
+  "node": "v26.3.0",
+  "gates": [
+    {
+      "name": "build",
+      "exit": 0,
+      "seconds": 4.13
+    },
+    {
+      "name": "native",
+      "exit": 0,
+      "seconds": 2.78
+    },
+    {
+      "name": "suite",
+      "exit": 0,
+      "seconds": 11.36
+    },
+    {
+      "name": "semantic",
+      "exit": 0,
+      "seconds": 0.98
+    },
+    {
+      "name": "authoring",
+      "exit": 0,
+      "seconds": 0.82
+    },
+    {
+      "name": "react-install",
+      "exit": 0,
+      "seconds": 0.6
+    },
+    {
+      "name": "react",
+      "exit": 0,
+      "seconds": 5.21
+    },
+    {
+      "name": "archive-parity",
+      "exit": 0,
+      "seconds": 0.18
+    },
+    {
+      "name": "generated",
+      "exit": 0,
+      "seconds": 0.23
+    },
+    {
+      "name": "intent",
+      "exit": 0,
+      "seconds": 0.24
+    }
+  ],
+  "independentRebuildManifestAndAllAssetHashes": "identical",
+  "postTestStatus": " M test/package/receipt.json\n"
+}

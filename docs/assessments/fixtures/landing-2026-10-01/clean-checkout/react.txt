@@ -1,0 +1,31 @@
+
+> cue-wasm-react-consumer-verification@0.0.0 test
+> npm run test:types && npm run build && npm run test:build
+
+
+> cue-wasm-react-consumer-verification@0.0.0 test:types
+> node scripts/types.mjs
+
+Public root/React declarations pass; 12 negative usages individually rejected.
+Mandatory ./tools and CueWorkerError(code, message) declaration probes both pass.
+
+> cue-wasm-react-consumer-verification@0.0.0 build
+> node scripts/build.mjs
+
+Built self-contained site from installed archive c35dbfcc8e6797fc00e88443e856f60756293cbd6dda2f8391df33dcd578fea1.
+
+> cue-wasm-react-consumer-verification@0.0.0 test:build
+> node --test scripts/build.test.mjs scripts/check-current.test.mjs
+
+✔ Frozen archive and local installation match; no sibling or source dependency (43.1765ms)
+✔ Two builds with the same installed inputs yield identical served bytes (235.528834ms)
+✔ Self-hosted prefix serves complete build, real worker and WASM with correct MIME; rejects missing/private/traversal routes (91.131792ms)
+✔ source/archive guard refuses declaration, export and binary drift without silently repinning (11.5745ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 469.746208

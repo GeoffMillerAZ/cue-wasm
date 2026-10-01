@@ -11,10 +11,10 @@ Historical extraction/checklist claims remain in Git history, not current accept
 
 | Need | Implementation and verified behavior | Remaining acceptance |
 |---|---|---|
-| Package closure | Required engine/reader/shim/manifest shipped; independent npm archive evaluates without React/network; missing-engine archive is refused; hashes checked | Clean-checkout and target-version matrix |
+| Package closure | Required engine/reader/shim/manifest shipped; independent npm archive evaluates without React/network; missing-engine archive is refused; hashes checked | Target-version matrix beyond local Node26.3 |
 | Worker ownership | One active request, finite queue/input/deadlines; cancellation, disposal, failure, immutable queued inputs; engine or explicit reader | Sustained resource/host qualification |
 | Semantic fidelity | Pinned Go1.24.4/CUE0.15.4; independent schema/data with scoped definitions; validated virtual paths, offline registry; temporary Go executor callbacks released | Supplied local modules and bounded paths pass; broader security qualification and CUE0.16.1 consumer compatibility |
-| Determinism | Generated JS/types idempotence + deliberate drift negative; two consecutive WASM builds have identical manifests | Reproduction from a clean independent checkout/CI |
+| Determinism | Generated JS/types idempotence + deliberate drift negative; two consecutive WASM builds have identical manifests | Remote CI and cold-cache/toolchain reproducibility |
 | Native/WASM | 23 shared fixed-outcome cases: precision, defaults, closedness, conflicts, incomplete data, scalar/list constraints, binding isolation, tags, builtin entry selection, virtual identity, offline dependencies and local modules | Not exhaustive CUE conformance or diagnostic equivalence |
 | Browser | Chrome154/macOS source and installed npm archive: 11 lifecycle/boundary groups pass, including restart after abort/fetch failure and three repeated mounts | Other browsers and resource qualification; no memory claim |
 | React | React19.2/StrictMode actual12 groups pass on final installed archive under nested hosting;20 workers terminated/0live; TS5.9 strict positive and12 negative cases; tools/error declarations fixed | Other React/browser versions and resource qualification; current-source/archive drift guard now required |
@@ -84,5 +84,8 @@ Frozen current React package c35dbfcc passes strict types/build/HTTP/source pari
 actual Chrome154 twelve-group lifecycle test (20 workers terminated, zero live).
 Docker Linux/arm64 passes; owned resources removed. Packet:
 ../assessments/fixtures/landing-2026-10-01. Historical archives/hashes remain intact.
-Clean-checkout final revision and remote outcome are the next landing checks.
+Clean independent clone9af3ce9 rebuilt identical manifest/assets and passed all ten
+build/native/Node/semantic/authoring/React/parity/generation/intent gates. Only the
+expected test/package/receipt.json changed during tests; source outputs stayed clean.
+Existing pinned toolchain/module/npm caches were warm; this is not a cold-start claim.
 Resource/security/other-browser qualification remains incomplete; no production promotion.
