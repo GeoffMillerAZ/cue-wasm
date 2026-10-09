@@ -10,7 +10,7 @@ Run fathom prime when the harness has not supplied a session primer.
 
 ## Repository wiring
 
-AGENTS.md owns the generated Fathom stanza; CLAUDE.md imports it. Repo-local skills
+AGENTS.md is the only instruction file and owns the generated Fathom stanza. Repo-local skills
 are shared through .agents/skills -> ../.claude/skills after fleet reconciliation.
 Project hooks live in .claude/settings.json. Never silently overwrite modified hooks
 or rebaseline drift. Reconciliation is reversible via its receipt.
