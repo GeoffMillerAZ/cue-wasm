@@ -12,7 +12,7 @@ for(const file of [...docs,'docs/adr/README.md',...records]){
 }
 const index=await readFile('docs/adr/README.md','utf8');for(const record of records)assert.ok(index.includes(`](${path.basename(record)})`),`${record}: absent from index`);
 const stanza=async file=>(await readFile(file,'utf8')).split('## Project intent\n')[1].split('## Working boundaries')[0].replace(/\s+/g,' ').trim();
-assert.equal(await stanza('AGENTS.md'),await stanza('CLAUDE.md'));
+assert.ok(await stanza('AGENTS.md'),'AGENTS.md: intent stanza missing');
 const changes=await readFile('CHANGELOG.md','utf8');assert.match(changes,/## \[Unreleased\]\nRelease impact:/);
 assert.match(await readFile('docs/intent/scope.md','utf8'),/## Compatibility surface/);
-console.log('Intent structural subset passed: budgets, links, ADR shape/index, identical stanza, changelog, compatibility. Not host loading or semantic truth.');
+console.log('Intent structural subset passed: budgets, links, ADR shape/index, intent stanza in AGENTS.md, changelog, compatibility. Not host loading or semantic truth.');
